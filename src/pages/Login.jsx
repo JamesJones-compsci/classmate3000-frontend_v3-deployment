@@ -1,54 +1,91 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
 import { useAuth } from "../auth/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-        try {
-            const res = await api.post("/api/v1/auth/login", {
-                email,
-                password
-            });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
-            login(res.data.token);
-            navigate("/dashboard");
-        } catch (err) {
-            console.error("Login failed:", err);
-        }
-    };
+    try {
+      const res = await api.post("/api/v1/auth/login", { email, password });
+      login(res.data.token);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError("Login failed. Please check your credentials and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    return (
-        <div>
-            <h2>Login</h2>
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-brand">ClassMate™</div>
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                />
+        <h1 className="auth-title">Login</h1>
+        <p className="auth-subtitle">
+          Sign in to manage courses, tasks, grades, and reminders.
+        </p>
 
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                />
+        {error ? <div className="auth-error">{error}</div> : null}
 
-                <button type="submit">Login</button>
-            </form>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="auth-row">
+            <label className="auth-label" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              className="auth-input"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+              required
+            />
+          </div>
 
-            <p>
-                Don't have an account? <Link to="/signup">Sign up here</Link>
-            </p>
+          <div className="auth-row">
+            <label className="auth-label" htmlFor="password">
+              Password
+            </label>
+            <input
+              id="password"
+              className="auth-input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+              required
+            />
+          </div>
+
+          <button className="auth-button" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Signing in..." : "Login"}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <span>Don&apos;t have an account?</span>{" "}
+          <Link to="/signup" className="auth-link">
+            Sign up here
+          </Link>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "code": "COMP3059",
+    "title": "Capstone Project I",
+    "instructor": "Laily Ajellu",
+    "schedule": "Mon 10am–12pm | Zoom",
+    "progress": 26,
+    "total": 32,
+    "currentGrade": 81,
+    "upcoming": [
+      "Sprint 4 – Due Nov 23",
+      "Presentation Slides – Nov 24",
+      "Peer Evaluations – Dec 1"
+    ]
+  },
+  {
+    "id": 2,
+    "code": "COMP3074",
+    "title": "Mobile App Development I",
+    "instructor": "Laily Ajellu",
+    "schedule": "Fri 2pm–4pm | Zoom",
+    "progress": 39,
+    "total": 47,
+    "currentGrade": 85
+  }
+]

@@ -1,0 +1,30 @@
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.logo,
+.card,
+.read-the-docs {
+  display: none;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.leftpanel-slot {
+  margin-top: 8px;
+}
+
+.leftpanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
