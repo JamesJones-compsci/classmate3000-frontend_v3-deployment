@@ -1,3 +1,13 @@
+/* =========================================================
+   index.css 
+   Covers:
+   1) Global base styles + typography + element defaults
+   2) App-wide layout primitives (app-shell, sidebar, main, tabs, panels)
+   3) Shared components (buttons, nav items, banners)
+   4) Auth screens design system (Login/Signup: auth-* classes)
+   5) Section shells used across pages (reminders-shell, section-shell)
+   ========================================================= */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -205,6 +215,10 @@ button:focus-visible {
   margin: 0;
   padding-left: 18px;
 }
+
+/* =========================
+   AUTH (Login / Signup)
+   ========================= */
 .auth-page {
   min-height: 100vh;
   display: grid;
@@ -262,6 +276,7 @@ button:focus-visible {
   padding: 12px 12px;
   font-size: 14px;
   outline: none;
+  background: #ffffff;
 }
 
 .auth-input:focus {
@@ -282,6 +297,11 @@ button:focus-visible {
   background: #d3e8d5;
 }
 
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .auth-footer {
   margin-top: 16px;
   font-size: 14px;
@@ -292,6 +312,7 @@ button:focus-visible {
   color: #2563eb;
   font-weight: 700;
 }
+
 .auth-error {
   border: 1px solid #fecaca;
   background: #fef2f2;
@@ -301,6 +322,88 @@ button:focus-visible {
   font-size: 14px;
   margin: 10px 0 0 0;
 }
+
+/* Auth: password eye icon inside input */
+.auth-input-wrap {
+  position: relative;
+  display: grid;
+}
+
+.auth-input--with-icon {
+  padding-right: 46px; /* space for the icon button */
+}
+
+.auth-icon-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.auth-icon-btn:hover {
+  color: #111827;
+}
+
+
+.auth-hint {
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.auth-hint--error {
+  color: #b42318;
+}
+
+.auth-input--error {
+  border-color: #ef4444;
+}
+
+/* ----------------------------------------------------------------
+   Deprecated (old password toggle layout)
+   Keep commented to avoid styling conflicts with the new icon system.
+------------------------------------------------------------------- */
+/*
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-row .auth-input {
+  flex: 1;
+}
+
+.toggle-btn {
+  border-radius: 12px;
+  border: 1px solid #c7dfc9;
+  background: #ffffff;
+  padding: 12px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.toggle-btn:hover {
+  background: #f3f4f6;
+}
+
+.password-error {
+  color: #b42318;
+  font-size: 13px;
+  margin-top: -6px;
+}
+*/
+
+/* =========================
+   REMINDERS
+   ========================= */
 .reminders-shell {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -450,6 +553,10 @@ button:focus-visible {
   padding: 10px 18px;
   font-weight: 900;
 }
+
+/* =========================
+   GENERIC SECTION SHELL
+   ========================= */
 .section-shell {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -463,4 +570,3 @@ button:focus-visible {
   border-radius: 14px;
   padding: 16px;
 }
-

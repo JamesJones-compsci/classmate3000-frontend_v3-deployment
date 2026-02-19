@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api/axios";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar";
 
 const TABS = ["Courses", "Tasks", "Reminders", "Grades"];
 
-/* Tab background tints (Figma feel) */
+/* Tab background tints */
 const TAB_THEME = {
   Courses: { bg: "#EAF4E6" },
   Tasks: { bg: "#E9F3FF" },
@@ -38,18 +38,13 @@ export default function Dashboard() {
 
   const [courses, setCourses] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [grades, setGrades] = useState([]);
+  const [progressSnapshots, setProgressSnapshots] = useState([]); // was grades
   const [reminders, setReminders] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
   const { logout } = useAuth();
   const navigate = useNavigate();
-
-  const isDemoMode = useMemo(() => {
-    const token = localStorage.getItem("token") || "";
-    return token === "FAKE_TOKEN";
-  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -61,6 +56,7 @@ export default function Dashboard() {
         return Array.isArray(res.data) ? res.data : [];
       } catch (err) {
         if (err?.response?.status === 401) throw err;
+        // minimal fallback to keep UI moving when backend is flaky
         return loadMockCourses();
       }
     };
@@ -75,9 +71,10 @@ export default function Dashboard() {
       }
     };
 
-    const fetchGrades = async () => {
+    // courseprogress-service baseline (replaces legacy /grades)
+    const fetchCourseProgress = async () => {
       try {
-        const res = await api.get("/api/v1/grades");
+        const res = await api.get("/api/v1/course-progress");
         return Array.isArray(res.data) ? res.data : [];
       } catch (err) {
         if (err?.response?.status === 401) throw err;
@@ -99,19 +96,20 @@ export default function Dashboard() {
       try {
         safeSet(setLoading)(true);
 
-        const [c, t, g, r] = await Promise.all([
+        const [c, t, p, r] = await Promise.all([
           fetchCourses(),
           fetchTasks(),
-          fetchGrades(),
+          fetchCourseProgress(),
           fetchReminders(),
         ]);
 
         safeSet(setCourses)(c);
         safeSet(setTasks)(t);
-        safeSet(setGrades)(g);
+        safeSet(setProgressSnapshots)(p);
         safeSet(setReminders)(r);
       } catch (err) {
         if (err?.response?.status === 401) {
+          // Token invalid/expired: enforce re-auth
           logout();
           navigate("/login");
           return;
@@ -119,7 +117,7 @@ export default function Dashboard() {
 
         safeSet(setCourses)(loadMockCourses());
         safeSet(setTasks)([]);
-        safeSet(setGrades)([]);
+        safeSet(setProgressSnapshots)([]);
         safeSet(setReminders)([]);
       } finally {
         safeSet(setLoading)(false);
@@ -143,9 +141,11 @@ export default function Dashboard() {
     setTasks((prev) => [...prev, res.data]);
   };
 
-  const createGrade = async (gradeData) => {
-    const res = await api.post("/api/v1/grades", gradeData);
-    setGrades((prev) => [...prev, res.data]);
+  // courseprogress-service baseline (POST /course-progress)
+  // NOTE: payload must match backend DTO; this is a placeholder for now.
+  const createCourseProgress = async (payload) => {
+    const res = await api.post("/api/v1/course-progress", payload);
+    setProgressSnapshots((prev) => [...prev, res.data]);
   };
 
   const createReminder = async (reminderData) => {
@@ -169,13 +169,13 @@ export default function Dashboard() {
       });
     }
     if (activeTab === "Grades") {
-      return createGrade({
-        courseCode: "CS101",
-        courseName: "Introduction to CS",
-        type: "Exam",
-        grade: 95,
-        weight: 30,
-        feedback: "Excellent performance",
+      // We don't know the exact DTO yet; keep as a safe placeholder.
+      // swagger example, we’ll align this payload precisely.
+      return createCourseProgress({
+        courseId: 1,
+        weekOf: "2026-02-15",
+        currentGradePercent: 85,
+        computedAt: new Date().toISOString(),
       });
     }
     if (activeTab === "Reminders") {
@@ -233,7 +233,10 @@ export default function Dashboard() {
                       {courses.map((course) => {
                         const s = demoStatsForCourse(course);
                         return (
-                          <div key={course.id ?? `${course.code}-${course.title}`} className="course-card">
+                          <div
+                            key={course.courseId ?? course.id ?? `${course.code}-${course.title}`}
+                            className="course-card"
+                          >
                             <div className="course-card__top">
                               <div className="course-code">{course.code}</div>
                               <div className="course-title">{course.title}</div>
@@ -337,32 +340,47 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* GRADES */}
+              {/* GRADES (Course Progress Snapshots) */}
               {activeTab === "Grades" && (
                 <div className="panel">
                   <div className="panel-header">
                     <h2 className="panel-title">Grades</h2>
+                    <p className="muted" style={{ marginTop: 4 }}>
+                      Backed by <code>/api/v1/course-progress</code> (courseprogress-service)
+                    </p>
                   </div>
 
-                  {grades.length === 0 ? (
-                    <p className="muted">No grades yet.</p>
+                  {progressSnapshots.length === 0 ? (
+                    <p className="muted">No progress snapshots yet.</p>
                   ) : (
                     <div className="card-grid grades-grid">
-                      {grades.map((g) => (
-                        <div key={g.id ?? `${g.courseCode}-${g.type}-${g.grade}`} className="grade-card">
-                          <div className="grade-card__top">
-                            <div className="grade-course">{g.courseCode}</div>
-                            <div className="grade-type muted">{g.type ?? "Grade"}</div>
+                      {progressSnapshots.map((p) => {
+                        const idKey =
+                          p.progressId ?? p.id ?? `${p.courseId ?? "course"}-${p.weekOf ?? p.computedAt ?? "snap"}`;
+
+                        const courseLabel = p.courseCode ?? p.courseId ?? "—";
+                        const gradeValue =
+                          p.currentGradePercent ?? p.currentGrade ?? p.gradePercent ?? p.grade ?? null;
+
+                        return (
+                          <div key={idKey} className="grade-card">
+                            <div className="grade-card__top">
+                              <div className="grade-course">{courseLabel}</div>
+                              <div className="grade-type muted">{p.weekOf ? `Week of ${p.weekOf}` : "Progress"}</div>
+                            </div>
+
+                            <div className="grade-value">{gradeValue !== null ? `${gradeValue}%` : "—"}</div>
+
+                            <div className="grade-foot muted">
+                              {p.canMeetGoal !== undefined ? `Can meet goal: ${String(p.canMeetGoal)}` : ""}
+                              {p.computedAt ? ` • computedAt: ${p.computedAt}` : ""}
+                            </div>
                           </div>
-                          <div className="grade-value">{g.grade}%</div>
-                          <div className="grade-foot muted">
-                            Weight: {g.weight ?? "—"} {g.feedback ? `• ${g.feedback}` : ""}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
 
                       <button type="button" className="ghost-add" onClick={handlePrimaryAction}>
-                        +Add Grade
+                        +Add Snapshot
                       </button>
                     </div>
                   )}
