@@ -4,6 +4,8 @@ import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
@@ -14,6 +16,8 @@ export default function Signup() {
 
         try {
             const res = await api.post("/api/v1/auth/register", {
+                firstName,
+                lastName,
                 email,
                 password
             });
@@ -30,6 +34,18 @@ export default function Signup() {
             <h2>Sign Up</h2>
 
             <form onSubmit={handleSubmit}>
+                <input
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="First Name"
+                />
+
+                <input
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Last Name"
+                />
+
                 <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
