@@ -7,27 +7,30 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login } = useAuth();
+  const { login, loading } = useAuth(); // use loading from context
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setIsSubmitting(true);
 
     try {
       const res = await api.post("/api/v1/auth/login", { email, password });
-      login(res.data.token);
-      navigate("/dashboard");
+      console.log("Login successful:", res.data);
+
+      if (res.data.token) {
+        login(res.data.token); // store token & update context
+        navigate("/dashboard"); // redirect immediately
+      }
     } catch (err) {
       console.error("Login failed:", err);
       setError("Login failed. Please check your credentials and try again.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
+
+  // Optional: show loading if login is in progress from context
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="auth-page">
@@ -39,7 +42,7 @@ export default function Login() {
           Sign in to manage courses, tasks, grades, and reminders.
         </p>
 
-        {error ? <div className="auth-error">{error}</div> : null}
+        {error && <div className="auth-error">{error}</div>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-row">
@@ -74,8 +77,8 @@ export default function Login() {
             />
           </div>
 
-          <button className="auth-button" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Signing in..." : "Login"}
+          <button className="auth-button" type="submit">
+            Login
           </button>
         </form>
 
