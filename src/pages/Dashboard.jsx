@@ -207,6 +207,72 @@ export default function Dashboard() {
     return selectedItem?.type === type && selectedItem?.id === id;
   };
 
+  // Show a lightweight preview of the currently selected item.
+  const renderSelectedPreview = () => {
+    if (!selectedItem) return null;
+
+    const { type, data } = selectedItem;
+
+    if (type === "course") {
+      return (
+        <div className="panel" style={{ marginBottom: 16 }}>
+          <div className="panel-header">
+            <h3 className="panel-title">Selected Course</h3>
+          </div>
+          <p><strong>Code:</strong> {data.code ?? "—"}</p>
+          <p><strong>Title:</strong> {data.title ?? "—"}</p>
+          <p><strong>Description:</strong> {data.description ?? "—"}</p>
+        </div>
+      );
+    }
+
+    if (type === "task") {
+      return (
+        <div className="panel" style={{ marginBottom: 16 }}>
+          <div className="panel-header">
+            <h3 className="panel-title">Selected Task</h3>
+          </div>
+          <p><strong>Title:</strong> {data.title ?? "—"}</p>
+          <p><strong>Description:</strong> {data.description ?? "—"}</p>
+        </div>
+      );
+    }
+
+    if (type === "reminder") {
+      return (
+        <div className="panel" style={{ marginBottom: 16 }}>
+          <div className="panel-header">
+            <h3 className="panel-title">Selected Reminder</h3>
+          </div>
+          <p><strong>Title:</strong> {data.title ?? "—"}</p>
+          <p><strong>Due Date:</strong> {data.dueDate ?? "—"}</p>
+        </div>
+      );
+    }
+
+    if (type === "grade") {
+      return (
+        <div className="panel" style={{ marginBottom: 16 }}>
+          <div className="panel-header">
+            <h3 className="panel-title">Selected Grade Snapshot</h3>
+          </div>
+          <p><strong>Course:</strong> {data.courseCode ?? data.courseId ?? "—"}</p>
+          <p><strong>Week:</strong> {data.weekOf ?? "—"}</p>
+          <p>
+            <strong>Current Grade:</strong>{" "}
+            {data.currentGradePercent ??
+              data.currentGrade ??
+              data.gradePercent ??
+              data.grade ??
+              "—"}
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className="app-shell dashboard-page">
       <Sidebar
@@ -246,6 +312,8 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
+              {renderSelectedPreview()}
+
               {/* Keep actions in the left panel to avoid duplicated controls in the content area. */}
 
               {activeTab === "Courses" && (
@@ -280,7 +348,9 @@ export default function Dashboard() {
                             }}
                             style={{
                               cursor: "pointer",
-                              outline: isSelected("course", courseId) ? "2px solid #5b8def" : "none",
+                              outline: isSelected("course", courseId)
+                                ? "2px solid #5b8def"
+                                : "none",
                             }}
                           >
                             <div className="course-card__top">
@@ -342,7 +412,9 @@ export default function Dashboard() {
                             }}
                             style={{
                               cursor: "pointer",
-                              outline: isSelected("task", taskId) ? "2px solid #5b8def" : "none",
+                              outline: isSelected("task", taskId)
+                                ? "2px solid #5b8def"
+                                : "none",
                             }}
                           >
                             <div className="row-card__left">
@@ -388,7 +460,9 @@ export default function Dashboard() {
                             }}
                             style={{
                               cursor: "pointer",
-                              outline: isSelected("reminder", reminderId) ? "2px solid #5b8def" : "none",
+                              outline: isSelected("reminder", reminderId)
+                                ? "2px solid #5b8def"
+                                : "none",
                             }}
                           >
                             <div className="row-card__left">
@@ -448,7 +522,9 @@ export default function Dashboard() {
                             }}
                             style={{
                               cursor: "pointer",
-                              outline: isSelected("grade", idKey) ? "2px solid #5b8def" : "none",
+                              outline: isSelected("grade", idKey)
+                                ? "2px solid #5b8def"
+                                : "none",
                             }}
                           >
                             <div className="grade-card__top">
