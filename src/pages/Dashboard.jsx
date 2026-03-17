@@ -21,9 +21,11 @@ function hashToInt(str = "") {
   for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
   return h;
 }
+
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
+
 function demoStatsForCourse(course) {
   const seed = hashToInt(`${course?.code ?? ""}-${course?.title ?? ""}`);
   const todo = 1 + (seed % 6); // 1..6
@@ -38,7 +40,7 @@ export default function Dashboard() {
 
   const [courses, setCourses] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [progressSnapshots, setProgressSnapshots] = useState([]); // was grades
+  const [progressSnapshots, setProgressSnapshots] = useState([]);
   const [reminders, setReminders] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -56,7 +58,7 @@ export default function Dashboard() {
         return Array.isArray(res.data) ? res.data : [];
       } catch (err) {
         if (err?.response?.status === 401) throw err;
-        // minimal fallback to keep UI moving when backend is flaky
+        // Keep the UI usable when the backend is temporarily unavailable.
         return loadMockCourses();
       }
     };
@@ -71,7 +73,6 @@ export default function Dashboard() {
       }
     };
 
-    // courseprogress-service baseline (replaces legacy /grades)
     const fetchCourseProgress = async () => {
       try {
         const res = await api.get("/api/v1/course-progress");
@@ -109,7 +110,7 @@ export default function Dashboard() {
         safeSet(setReminders)(r);
       } catch (err) {
         if (err?.response?.status === 401) {
-          // Token invalid/expired: enforce re-auth
+          // Force re-login if the token is invalid or expired.
           logout();
           navigate("/login");
           return;
@@ -141,8 +142,7 @@ export default function Dashboard() {
     setTasks((prev) => [...prev, res.data]);
   };
 
-  // courseprogress-service baseline (POST /course-progress)
-  // NOTE: payload must match backend DTO; this is a placeholder for now.
+  // Keep the payload simple for now until the final DTO is locked.
   const createCourseProgress = async (payload) => {
     const res = await api.post("/api/v1/course-progress", payload);
     setProgressSnapshots((prev) => [...prev, res.data]);
@@ -161,6 +161,7 @@ export default function Dashboard() {
         description: "Basics of Computer Science",
       });
     }
+
     if (activeTab === "Tasks") {
       return createTask({
         code: "TASK-001",
@@ -168,9 +169,8 @@ export default function Dashboard() {
         description: "Frontend integration task",
       });
     }
+
     if (activeTab === "Grades") {
-      // We don't know the exact DTO yet; keep as a safe placeholder.
-      // swagger example, we’ll align this payload precisely.
       return createCourseProgress({
         courseId: 1,
         weekOf: "2026-02-15",
@@ -178,6 +178,7 @@ export default function Dashboard() {
         computedAt: new Date().toISOString(),
       });
     }
+
     if (activeTab === "Reminders") {
       return createReminder({
         title: "Study for exam",
@@ -197,7 +198,10 @@ export default function Dashboard() {
         }}
       />
 
-      <main className="main" style={{ background: TAB_THEME[activeTab]?.bg ?? "#fff" }}>
+      <main
+        className="main"
+        style={{ background: TAB_THEME[activeTab]?.bg ?? "#fff" }}
+      >
         <div className="top-tabs">
           {TABS.map((t) => (
             <button
@@ -219,7 +223,8 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
-              {/* COURSES */}
+              {/* Keep actions in the left panel to avoid duplicated controls in the content area. */}
+
               {activeTab === "Courses" && (
                 <div className="panel">
                   <div className="panel-header">
@@ -232,9 +237,14 @@ export default function Dashboard() {
                     <div className="card-grid">
                       {courses.map((course) => {
                         const s = demoStatsForCourse(course);
+
                         return (
                           <div
-                            key={course.courseId ?? course.id ?? `${course.code}-${course.title}`}
+                            key={
+                              course.courseId ??
+                              course.id ??
+                              `${course.code}-${course.title}`
+                            }
                             className="course-card"
                           >
                             <div className="course-card__top">
@@ -263,16 +273,11 @@ export default function Dashboard() {
                           </div>
                         );
                       })}
-
-                      <button type="button" className="ghost-add" onClick={handlePrimaryAction}>
-                        +Add Course
-                      </button>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* TASKS */}
               {activeTab === "Tasks" && (
                 <div className="panel">
                   <div className="panel-header">
@@ -284,29 +289,24 @@ export default function Dashboard() {
                   ) : (
                     <div className="stack">
                       {tasks.map((task) => (
-                        <div key={task.id ?? `${task.code}-${task.title}`} className="row-card">
+                        <div
+                          key={task.id ?? `${task.code}-${task.title}`}
+                          className="row-card"
+                        >
                           <div className="row-card__left">
                             <span className="dot" aria-hidden />
                             <div className="row-title">{task.title}</div>
                           </div>
-                          <div className="row-meta muted">{task.description ? task.description : "—"}</div>
+                          <div className="row-meta muted">
+                            {task.description ? task.description : "—"}
+                          </div>
                         </div>
                       ))}
-
-                      <div className="row-actions">
-                        <button type="button" className="btn-soft">
-                          Edit
-                        </button>
-                        <button type="button" className="btn-soft">
-                          Delete
-                        </button>
-                      </div>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* REMINDERS */}
               {activeTab === "Reminders" && (
                 <div className="panel">
                   <div className="panel-header">
@@ -318,29 +318,24 @@ export default function Dashboard() {
                   ) : (
                     <div className="stack">
                       {reminders.map((r) => (
-                        <div key={r.id ?? `${r.title}-${r.dueDate ?? ""}`} className="row-card row-card--warm">
+                        <div
+                          key={r.id ?? `${r.title}-${r.dueDate ?? ""}`}
+                          className="row-card row-card--warm"
+                        >
                           <div className="row-card__left">
                             <span className="dot dot--warm" aria-hidden />
                             <div className="row-title">{r.title}</div>
                           </div>
-                          <div className="row-meta muted">{r.dueDate ? `Due: ${r.dueDate}` : "No due date"}</div>
+                          <div className="row-meta muted">
+                            {r.dueDate ? `Due: ${r.dueDate}` : "No due date"}
+                          </div>
                         </div>
                       ))}
-
-                      <div className="row-actions">
-                        <button type="button" className="btn-soft">
-                          Edit
-                        </button>
-                        <button type="button" className="btn-soft">
-                          Delete
-                        </button>
-                      </div>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* GRADES (Course Progress Snapshots) */}
               {activeTab === "Grades" && (
                 <div className="panel">
                   <div className="panel-header">
@@ -356,32 +351,40 @@ export default function Dashboard() {
                     <div className="card-grid grades-grid">
                       {progressSnapshots.map((p) => {
                         const idKey =
-                          p.progressId ?? p.id ?? `${p.courseId ?? "course"}-${p.weekOf ?? p.computedAt ?? "snap"}`;
+                          p.progressId ??
+                          p.id ??
+                          `${p.courseId ?? "course"}-${p.weekOf ?? p.computedAt ?? "snap"}`;
 
                         const courseLabel = p.courseCode ?? p.courseId ?? "—";
                         const gradeValue =
-                          p.currentGradePercent ?? p.currentGrade ?? p.gradePercent ?? p.grade ?? null;
+                          p.currentGradePercent ??
+                          p.currentGrade ??
+                          p.gradePercent ??
+                          p.grade ??
+                          null;
 
                         return (
                           <div key={idKey} className="grade-card">
                             <div className="grade-card__top">
                               <div className="grade-course">{courseLabel}</div>
-                              <div className="grade-type muted">{p.weekOf ? `Week of ${p.weekOf}` : "Progress"}</div>
+                              <div className="grade-type muted">
+                                {p.weekOf ? `Week of ${p.weekOf}` : "Progress"}
+                              </div>
                             </div>
 
-                            <div className="grade-value">{gradeValue !== null ? `${gradeValue}%` : "—"}</div>
+                            <div className="grade-value">
+                              {gradeValue !== null ? `${gradeValue}%` : "—"}
+                            </div>
 
                             <div className="grade-foot muted">
-                              {p.canMeetGoal !== undefined ? `Can meet goal: ${String(p.canMeetGoal)}` : ""}
+                              {p.canMeetGoal !== undefined
+                                ? `Can meet goal: ${String(p.canMeetGoal)}`
+                                : ""}
                               {p.computedAt ? ` • computedAt: ${p.computedAt}` : ""}
                             </div>
                           </div>
                         );
                       })}
-
-                      <button type="button" className="ghost-add" onClick={handlePrimaryAction}>
-                        +Add Snapshot
-                      </button>
                     </div>
                   )}
                 </div>
