@@ -28,15 +28,16 @@ function clamp(n, min, max) {
 
 function demoStatsForCourse(course) {
   const seed = hashToInt(`${course?.code ?? ""}-${course?.title ?? ""}`);
-  const todo = 1 + (seed % 6); // 1..6
-  const upcoming = (seed >> 3) % 4; // 0..3
-  const progress = clamp(20 + (seed % 81), 0, 100); // 20..100
-  const grade = clamp(60 + (seed % 41), 0, 100); // 60..100
+  const todo = 1 + (seed % 6);
+  const upcoming = (seed >> 3) % 4;
+  const progress = clamp(20 + (seed % 81), 0, 100);
+  const grade = clamp(60 + (seed % 41), 0, 100);
   return { todo, upcoming, progress, grade };
 }
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Courses");
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const [courses, setCourses] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -132,6 +133,11 @@ export default function Dashboard() {
     };
   }, [logout, navigate]);
 
+  useEffect(() => {
+    // Clear selection when switching tabs so action state stays consistent.
+    setSelectedItem(null);
+  }, [activeTab]);
+
   const createCourse = async (courseData) => {
     const res = await api.post("/api/v1/courses", courseData);
     setCourses((prev) => [...prev, res.data]);
@@ -187,11 +193,19 @@ export default function Dashboard() {
     }
   };
 
+  const handleShowAll = () => {
+    // The current dashboard already shows all records for the active tab.
+    setSelectedItem(null);
+  };
+
   return (
     <div className="app-shell dashboard-page">
       <Sidebar
         activeTab={activeTab}
         onPrimaryAction={handlePrimaryAction}
+        onShowAll={handleShowAll}
+        canEdit={!!selectedItem}
+        canDelete={!!selectedItem}
         onLogout={() => {
           logout();
           navigate("/login");
