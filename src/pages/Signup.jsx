@@ -74,10 +74,37 @@ export default function Signup() {
       login(res.data.token);
       navigate("/dashboard");
     } catch (err) {
-      const message =
-        err?.response?.data?.message ||
-        (typeof err?.response?.data === "string" ? err.response.data : null) ||
-        `Signup failed (status: ${err?.response?.status ?? "unknown"})`;
+      console.error("Signup request failed", {
+        status: err?.response?.status,
+        data: err?.response?.data,
+        url: err?.config?.url,
+        method: err?.config?.method,
+        message: err?.message,
+      });
+
+      let message = "Something went wrong during sign up. Please try again.";
+
+      if (err?.response?.status === 409) {
+        message = "This email is already in use. Please try a different email.";
+      } else if (err?.response?.status === 400) {
+        message =
+          err?.response?.data?.message ||
+          "Please check your input and try again.";
+      } else if (err?.response?.status === 401) {
+        message = "Authentication failed. Please try again.";
+      } else if (err?.response?.status === 403) {
+        message = "Access was denied. Please try again or contact the team.";
+      } else if (err?.response?.status === 404) {
+        message = "Signup service was not found. Please check the backend configuration.";
+      } else if (err?.response?.status >= 500) {
+        message = "The server is having a problem right now. Please try again later.";
+      } else if (err?.request && !err?.response) {
+        message = "Could not reach the server. Please make sure the backend is running.";
+      } else if (typeof err?.response?.data === "string") {
+        message = err.response.data;
+      } else if (err?.response?.data?.message) {
+        message = err.response.data.message;
+      }
 
       setError(message);
     } finally {
@@ -90,7 +117,9 @@ export default function Signup() {
       <div className="auth-card">
         <div className="auth-brand">ClassMate™</div>
         <h2 className="auth-title">Sign Up</h2>
-        <p className="auth-subtitle">Create your account to manage courses, tasks, grades, and reminders.</p>
+        <p className="auth-subtitle">
+          Create your account to manage courses, tasks, grades, and reminders.
+        </p>
 
         {error && <div className="auth-error">{error}</div>}
 
