@@ -198,6 +198,15 @@ export default function Dashboard() {
     setSelectedItem(null);
   };
 
+  // Store selection in a consistent shape so sidebar actions can depend on it.
+  const selectItem = (type, id, data) => {
+    setSelectedItem({ type, id, data });
+  };
+
+  const isSelected = (type, id) => {
+    return selectedItem?.type === type && selectedItem?.id === id;
+  };
+
   return (
     <div className="app-shell dashboard-page">
       <Sidebar
@@ -251,15 +260,28 @@ export default function Dashboard() {
                     <div className="card-grid">
                       {courses.map((course) => {
                         const s = demoStatsForCourse(course);
+                        const courseId =
+                          course.courseId ??
+                          course.id ??
+                          `${course.code}-${course.title}`;
 
                         return (
                           <div
-                            key={
-                              course.courseId ??
-                              course.id ??
-                              `${course.code}-${course.title}`
-                            }
-                            className="course-card"
+                            key={courseId}
+                            className={`course-card ${isSelected("course", courseId) ? "is-selected" : ""}`}
+                            onClick={() => selectItem("course", courseId, course)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                selectItem("course", courseId, course);
+                              }
+                            }}
+                            style={{
+                              cursor: "pointer",
+                              outline: isSelected("course", courseId) ? "2px solid #5b8def" : "none",
+                            }}
                           >
                             <div className="course-card__top">
                               <div className="course-code">{course.code}</div>
@@ -302,20 +324,37 @@ export default function Dashboard() {
                     <p className="muted">No tasks yet.</p>
                   ) : (
                     <div className="stack">
-                      {tasks.map((task) => (
-                        <div
-                          key={task.id ?? `${task.code}-${task.title}`}
-                          className="row-card"
-                        >
-                          <div className="row-card__left">
-                            <span className="dot" aria-hidden />
-                            <div className="row-title">{task.title}</div>
+                      {tasks.map((task) => {
+                        const taskId = task.id ?? `${task.code}-${task.title}`;
+
+                        return (
+                          <div
+                            key={taskId}
+                            className={`row-card ${isSelected("task", taskId) ? "is-selected" : ""}`}
+                            onClick={() => selectItem("task", taskId, task)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                selectItem("task", taskId, task);
+                              }
+                            }}
+                            style={{
+                              cursor: "pointer",
+                              outline: isSelected("task", taskId) ? "2px solid #5b8def" : "none",
+                            }}
+                          >
+                            <div className="row-card__left">
+                              <span className="dot" aria-hidden />
+                              <div className="row-title">{task.title}</div>
+                            </div>
+                            <div className="row-meta muted">
+                              {task.description ? task.description : "—"}
+                            </div>
                           </div>
-                          <div className="row-meta muted">
-                            {task.description ? task.description : "—"}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -331,20 +370,37 @@ export default function Dashboard() {
                     <p className="muted">No reminders yet.</p>
                   ) : (
                     <div className="stack">
-                      {reminders.map((r) => (
-                        <div
-                          key={r.id ?? `${r.title}-${r.dueDate ?? ""}`}
-                          className="row-card row-card--warm"
-                        >
-                          <div className="row-card__left">
-                            <span className="dot dot--warm" aria-hidden />
-                            <div className="row-title">{r.title}</div>
+                      {reminders.map((r) => {
+                        const reminderId = r.id ?? `${r.title}-${r.dueDate ?? ""}`;
+
+                        return (
+                          <div
+                            key={reminderId}
+                            className={`row-card row-card--warm ${isSelected("reminder", reminderId) ? "is-selected" : ""}`}
+                            onClick={() => selectItem("reminder", reminderId, r)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                selectItem("reminder", reminderId, r);
+                              }
+                            }}
+                            style={{
+                              cursor: "pointer",
+                              outline: isSelected("reminder", reminderId) ? "2px solid #5b8def" : "none",
+                            }}
+                          >
+                            <div className="row-card__left">
+                              <span className="dot dot--warm" aria-hidden />
+                              <div className="row-title">{r.title}</div>
+                            </div>
+                            <div className="row-meta muted">
+                              {r.dueDate ? `Due: ${r.dueDate}` : "No due date"}
+                            </div>
                           </div>
-                          <div className="row-meta muted">
-                            {r.dueDate ? `Due: ${r.dueDate}` : "No due date"}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -378,7 +434,23 @@ export default function Dashboard() {
                           null;
 
                         return (
-                          <div key={idKey} className="grade-card">
+                          <div
+                            key={idKey}
+                            className={`grade-card ${isSelected("grade", idKey) ? "is-selected" : ""}`}
+                            onClick={() => selectItem("grade", idKey, p)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                selectItem("grade", idKey, p);
+                              }
+                            }}
+                            style={{
+                              cursor: "pointer",
+                              outline: isSelected("grade", idKey) ? "2px solid #5b8def" : "none",
+                            }}
+                          >
                             <div className="grade-card__top">
                               <div className="grade-course">{courseLabel}</div>
                               <div className="grade-type muted">
