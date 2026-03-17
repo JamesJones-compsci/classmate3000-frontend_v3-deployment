@@ -277,6 +277,12 @@ export default function Dashboard() {
     return selectedItem?.type === type && selectedItem?.id === id;
   };
 
+  // Look up course name by courseId for display in grade cards and preview.
+  const getCourseLabel = (courseId) => {
+    const match = courses.find((c) => c.courseId === courseId);
+    return match ? `${match.code} — ${match.title}` : `Course ${courseId}`;
+  };
+
   // Renders a small info panel above the list when an item is selected.
   const renderSelectedPreview = () => {
     if (!selectedItem) return null;
@@ -323,7 +329,7 @@ export default function Dashboard() {
           <div className="panel-header">
             <h3 className="panel-title">Selected Grade Snapshot</h3>
           </div>
-          <p><strong>Course ID:</strong> {data.courseId ?? "—"}</p>
+          <p><strong>Course:</strong> {getCourseLabel(data.courseId)}</p>
           <p><strong>Week:</strong> {data.weekOf ?? "—"}</p>
           <p><strong>Current Grade:</strong> {data.currentGradePercent ?? "—"}%</p>
         </div>
@@ -359,12 +365,21 @@ export default function Dashboard() {
         <EditReminderModal reminder={selectedItem.data} onClose={() => setShowEditReminder(false)} onSave={updateReminder} />
       )}
 
-      {/* Grade modals */}
+      {/* Grade modals — courses list passed so user can select by name instead of ID */}
       {showAddGrade && (
-        <AddGradeModal onClose={() => setShowAddGrade(false)} onSave={createGrade} />
+        <AddGradeModal
+          onClose={() => setShowAddGrade(false)}
+          onSave={createGrade}
+          courses={courses}
+        />
       )}
       {showEditGrade && selectedItem?.type === "grade" && (
-        <EditGradeModal grade={selectedItem.data} onClose={() => setShowEditGrade(false)} onSave={updateGrade} />
+        <EditGradeModal
+          grade={selectedItem.data}
+          onClose={() => setShowEditGrade(false)}
+          onSave={updateGrade}
+          courses={courses}
+        />
       )}
 
       {/* Shared delete confirm modal — works for all item types */}
@@ -552,7 +567,6 @@ export default function Dashboard() {
                       {progressSnapshots.map((p) => {
                         // Use progressId from backend as the stable key.
                         const idKey = p.progressId ?? p.id ?? `${p.courseId ?? "course"}-${p.weekOf ?? p.computedAt ?? "snap"}`;
-                        const courseLabel = p.courseCode ?? `Course ${p.courseId}` ?? "—";
                         const gradeValue = p.currentGradePercent ?? null;
                         return (
                           <div
@@ -565,7 +579,8 @@ export default function Dashboard() {
                             style={{ cursor: "pointer", outline: isSelected("grade", idKey) ? "2px solid #5b8def" : "none" }}
                           >
                             <div className="grade-card__top">
-                              <div className="grade-course">{courseLabel}</div>
+                              {/* Resolve course name from the courses list instead of showing a raw ID */}
+                              <div className="grade-course">{getCourseLabel(p.courseId)}</div>
                               <div className="grade-type muted">{p.weekOf ? `Week of ${p.weekOf}` : "Progress"}</div>
                             </div>
                             <div className="grade-value">{gradeValue !== null ? `${gradeValue}%` : "—"}</div>

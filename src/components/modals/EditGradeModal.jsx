@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 
-export default function EditGradeModal({ grade, onClose, onSave }) {
+export default function EditGradeModal({ grade, onClose, onSave, courses = [] }) {
   const [form, setForm] = useState({
     courseId: grade.courseId ?? "",
     currentGradePercent: grade.currentGradePercent ?? "",
-    weekOf: grade.weekOf ?? "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -29,7 +28,7 @@ export default function EditGradeModal({ grade, onClose, onSave }) {
       await onSave(grade.progressId, {
         courseId: Number(form.courseId),
         currentGradePercent: Number(form.currentGradePercent),
-        weekOf: form.weekOf || null,
+        weekOf: grade.weekOf ?? null,
         computedAt: new Date().toISOString(),
       });
       onClose();
@@ -49,13 +48,19 @@ export default function EditGradeModal({ grade, onClose, onSave }) {
         <div className="modal-form">
 
           <div className="modal-field">
-            <label className="modal-label">COURSE ID</label>
-            <input
+            <label className="modal-label">COURSE</label>
+            <select
               className="modal-input"
-              type="number"
               value={form.courseId}
               onChange={handleChange("courseId")}
-            />
+            >
+              <option value="">Select a course…</option>
+              {courses.map((c) => (
+                <option key={c.courseId} value={c.courseId}>
+                  {c.code} — {c.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-field">
@@ -67,16 +72,6 @@ export default function EditGradeModal({ grade, onClose, onSave }) {
               onChange={handleChange("currentGradePercent")}
               min={0}
               max={100}
-            />
-          </div>
-
-          <div className="modal-field">
-            <label className="modal-label">WEEK OF</label>
-            <input
-              className="modal-input"
-              type="date"
-              value={form.weekOf}
-              onChange={handleChange("weekOf")}
             />
           </div>
 

@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 
-export default function AddGradeModal({ onClose, onSave }) {
+export default function AddGradeModal({ onClose, onSave, courses = [] }) {
   const [form, setForm] = useState({
     courseId: "",
     currentGradePercent: "",
-    weekOf: "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -18,7 +17,7 @@ export default function AddGradeModal({ onClose, onSave }) {
 
   const handleSave = async () => {
     if (!form.courseId || !form.currentGradePercent) {
-      setError("Course ID and Grade are required.");
+      setError("Course and Grade are required.");
       return;
     }
 
@@ -26,10 +25,16 @@ export default function AddGradeModal({ onClose, onSave }) {
     setError(null);
 
     try {
+      // weekOf is auto-set to the current Monday; computedAt is set to now.
+      const today = new Date();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+      const weekOf = monday.toISOString().split("T")[0];
+
       await onSave({
         courseId: Number(form.courseId),
         currentGradePercent: Number(form.currentGradePercent),
-        weekOf: form.weekOf || null,
+        weekOf,
         computedAt: new Date().toISOString(),
       });
       onClose();
@@ -49,14 +54,19 @@ export default function AddGradeModal({ onClose, onSave }) {
         <div className="modal-form">
 
           <div className="modal-field">
-            <label className="modal-label">COURSE ID</label>
-            <input
+            <label className="modal-label">COURSE</label>
+            <select
               className="modal-input"
-              type="number"
               value={form.courseId}
               onChange={handleChange("courseId")}
-              placeholder="e.g. 1"
-            />
+            >
+              <option value="">Select a course…</option>
+              {courses.map((c) => (
+                <option key={c.courseId} value={c.courseId}>
+                  {c.code} — {c.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-field">
@@ -69,16 +79,6 @@ export default function AddGradeModal({ onClose, onSave }) {
               placeholder="e.g. 85"
               min={0}
               max={100}
-            />
-          </div>
-
-          <div className="modal-field">
-            <label className="modal-label">WEEK OF</label>
-            <input
-              className="modal-input"
-              type="date"
-              value={form.weekOf}
-              onChange={handleChange("weekOf")}
             />
           </div>
 
