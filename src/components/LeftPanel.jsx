@@ -6,6 +6,8 @@ export default function LeftPanel({
   onShowAll,
   canEdit = false,
   canDelete = false,
+  onEditAction,
+  onDeleteAction,
 }) {
   // Labels per tab
   const labels = {
@@ -73,22 +75,24 @@ export default function LeftPanel({
           <span className="subpanel-arrow">{">"}</span>
         </button>
 
-        {/* Edit (disabled until selection logic exists) */}
+        {/* Edit — active only when an item is selected */}
         <button
           type="button"
           className="subpanel-item"
           disabled={!canEdit}
+          onClick={canEdit ? onEditAction : undefined}
           style={{ opacity: canEdit ? 1 : 0.5, cursor: canEdit ? "pointer" : "not-allowed" }}
         >
           <span>{t.edit}</span>
           <span className="subpanel-arrow">{">"}</span>
         </button>
 
-        {/* Delete (disabled until selection logic exists) */}
+        {/* Delete — active only when an item is selected */}
         <button
           type="button"
           className="subpanel-item"
           disabled={!canDelete}
+          onClick={canDelete ? onDeleteAction : undefined}
           style={{ opacity: canDelete ? 1 : 0.5, cursor: canDelete ? "pointer" : "not-allowed" }}
         >
           <span>{t.del}</span>

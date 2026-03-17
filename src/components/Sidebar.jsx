@@ -7,6 +7,8 @@ export default function Sidebar({
   onShowAll,
   canEdit = false,
   canDelete = false,
+  onEditAction,
+  onDeleteAction,
   onLogout,
 }) {
   return (
@@ -20,16 +22,14 @@ export default function Sidebar({
           onShowAll={onShowAll}
           canEdit={canEdit}
           canDelete={canDelete}
+          onEditAction={onEditAction}
+          onDeleteAction={onDeleteAction}
         />
       </div>
 
       <div className="nav-divider" />
 
-      <button
-        type="button"
-        className="nav-item nav-item--danger"
-        onClick={onLogout}
-      >
+      <button type="button" className="nav-item nav-item--danger" onClick={onLogout}>
         Logout
       </button>
     </aside>
