@@ -1,16 +1,107 @@
-# React + Vite
+# ClassMate — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite frontend for the ClassMate student dashboard application.  
+Connects to the ClassMate microservices backend via API Gateway.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 18
+- Vite
+- React Router v6
+- Axios
+- Plain CSS (no UI framework)
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+
+- ClassMate backend running locally (see [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3))
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Setup
+```bash
+npm install
+```
+
+Create a `.env` file in the project root:
+```env
+VITE_API_GATEWAY_URL=http://localhost:8091
+```
+
+### Run
+```bash
+npm run dev
+```
+
+App runs at `http://localhost:5173`.
+
+---
+
+## Auth
+
+JWT-based authentication. Login and register endpoints are public.  
+All other requests require a valid Bearer token, which is automatically attached by the Axios interceptor in `src/api/axios.js`.
+
+Token is stored in `localStorage` under the key `token`.
+
+---
+
+## Project Structure
+```
+src/
+├── api/
+│   └── axios.js              # Axios instance + JWT interceptor
+├── auth/
+│   ├── AuthContext.jsx        # Global auth state (login, logout, user)
+│   └── ProtectedRoute.jsx     # Redirects to /login if no token
+├── components/
+│   ├── Sidebar.jsx            # Left sidebar wrapper
+│   ├── LeftPanel.jsx          # Tab-aware action menu (Add, Edit, Delete)
+│   ├── Navbar.jsx
+│   ├── AppShell.jsx
+│   └── modals/
+│       ├── AddCourseModal.jsx
+│       ├── EditCourseModal.jsx
+│       ├── AddTaskModal.jsx
+│       ├── EditTaskModal.jsx
+│       ├── AddReminderModal.jsx
+│       ├── EditReminderModal.jsx
+│       ├── AddGradeModal.jsx
+│       ├── EditGradeModal.jsx
+│       └── DeleteConfirmModal.jsx
+├── mocks/
+│   └── loadMockCourses.js     # Fallback data when backend is unavailable
+├── pages/
+│   ├── Login.jsx
+│   ├── Signup.jsx
+│   └── Dashboard.jsx          # Main page — owns all state and API calls
+└── styles/
+    ├── index.css
+    ├── dashboard.css
+    └── App.css
+```
+
+---
+
+## Dashboard
+
+The dashboard has four tabs: **Courses**, **Tasks**, **Reminders**, **Grades**.
+
+Each tab supports full CRUD:
+
+| Tab | Backend endpoint | Primary key |
+|---|---|---|
+| Courses | `/api/v1/courses` | `courseId` |
+| Tasks | `/api/v1/tasks` | `taskId` |
+| Reminders | `/api/v1/reminders` | `reminderId` |
+| Grades | `/api/v1/course-progress` | `progressId` |
+
+Clicking any item selects it and activates the **Edit** and **Delete** buttons in the left panel.  
+All write operations update the local state immediately without a full page reload.
+
+---
+
+## Backend
+
+See [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3) for setup instructions.  
+The frontend expects the API Gateway on port `8091`.
