@@ -10,7 +10,7 @@ function toDateInput(isoString) {
   return isoString.split("T")[0];
 }
 
-export default function EditTaskModal({ task, onClose, onSave }) {
+export default function EditTaskModal({ task, onClose, onSave, courses = [] }) {
   const [form, setForm] = useState({
     courseId: task.courseId ?? "",
     title: task.title ?? "",
@@ -63,13 +63,19 @@ export default function EditTaskModal({ task, onClose, onSave }) {
         <div className="modal-form">
 
           <div className="modal-field">
-            <label className="modal-label">COURSE ID</label>
-            <input
+            <label className="modal-label">COURSE</label>
+            <select
               className="modal-input"
-              type="number"
               value={form.courseId}
               onChange={handleChange("courseId")}
-            />
+            >
+              <option value="">Select a course…</option>
+              {courses.map((c) => (
+                <option key={c.courseId} value={c.courseId}>
+                  {c.code} — {c.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-field">
@@ -131,20 +137,10 @@ export default function EditTaskModal({ task, onClose, onSave }) {
         </div>
 
         <div className="modal-actions">
-          <button
-            type="button"
-            className="modal-btn modal-btn--cancel"
-            onClick={onClose}
-            disabled={saving}
-          >
+          <button type="button" className="modal-btn modal-btn--cancel" onClick={onClose} disabled={saving}>
             Cancel
           </button>
-          <button
-            type="button"
-            className="modal-btn modal-btn--save"
-            onClick={handleSave}
-            disabled={saving}
-          >
+          <button type="button" className="modal-btn modal-btn--save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving…" : "Save"}
           </button>
         </div>

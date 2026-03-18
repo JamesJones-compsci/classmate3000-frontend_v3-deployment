@@ -350,19 +350,38 @@ export default function Dashboard() {
       )}
 
       {/* Task modals */}
+      {/* courses list passed so user can select by name instead of ID */}
       {showAddTask && (
-        <AddTaskModal onClose={() => setShowAddTask(false)} onSave={createTask} />
+        <AddTaskModal
+          onClose={() => setShowAddTask(false)}
+          onSave={createTask}
+          courses={courses}
+        />
       )}
       {showEditTask && selectedItem?.type === "task" && (
-        <EditTaskModal task={selectedItem.data} onClose={() => setShowEditTask(false)} onSave={updateTask} />
+        <EditTaskModal
+          task={selectedItem.data}
+          onClose={() => setShowEditTask(false)}
+          onSave={updateTask}
+          courses={courses}
+        />
       )}
 
-      {/* Reminder modals */}
+      {/* Reminder modals — tasks list passed so user can select by title instead of raw ID */}
       {showAddReminder && (
-        <AddReminderModal onClose={() => setShowAddReminder(false)} onSave={createReminder} />
+        <AddReminderModal
+          onClose={() => setShowAddReminder(false)}
+          onSave={createReminder}
+          tasks={tasks}
+        />
       )}
       {showEditReminder && selectedItem?.type === "reminder" && (
-        <EditReminderModal reminder={selectedItem.data} onClose={() => setShowEditReminder(false)} onSave={updateReminder} />
+        <EditReminderModal
+          reminder={selectedItem.data}
+          onClose={() => setShowEditReminder(false)}
+          onSave={updateReminder}
+          tasks={tasks}
+        />
       )}
 
       {/* Grade modals — courses list passed so user can select by name instead of ID */}

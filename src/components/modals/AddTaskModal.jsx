@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const TASK_TYPES = ["ASSIGNMENT", "STUDY", "LAB", "EXAM", "PROJECT", "OTHER"];
 
-export default function AddTaskModal({ onClose, onSave }) {
+export default function AddTaskModal({ onClose, onSave, courses = [] }) {
   const [form, setForm] = useState({
     courseId: "",
     title: "",
@@ -24,7 +24,7 @@ export default function AddTaskModal({ onClose, onSave }) {
 
   const handleSave = async () => {
     if (!form.title.trim() || !form.courseId) {
-      setError("Title and Course ID are required.");
+      setError("Course and Title are required.");
       return;
     }
 
@@ -57,14 +57,19 @@ export default function AddTaskModal({ onClose, onSave }) {
         <div className="modal-form">
 
           <div className="modal-field">
-            <label className="modal-label">COURSE ID</label>
-            <input
+            <label className="modal-label">COURSE</label>
+            <select
               className="modal-input"
-              type="number"
               value={form.courseId}
               onChange={handleChange("courseId")}
-              placeholder="e.g. 1"
-            />
+            >
+              <option value="">Select a course…</option>
+              {courses.map((c) => (
+                <option key={c.courseId} value={c.courseId}>
+                  {c.code} — {c.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-field">
@@ -128,20 +133,10 @@ export default function AddTaskModal({ onClose, onSave }) {
         </div>
 
         <div className="modal-actions">
-          <button
-            type="button"
-            className="modal-btn modal-btn--cancel"
-            onClick={onClose}
-            disabled={saving}
-          >
+          <button type="button" className="modal-btn modal-btn--cancel" onClick={onClose} disabled={saving}>
             Cancel
           </button>
-          <button
-            type="button"
-            className="modal-btn modal-btn--save"
-            onClick={handleSave}
-            disabled={saving}
-          >
+          <button type="button" className="modal-btn modal-btn--save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving…" : "Save"}
           </button>
         </div>

@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
-// Strip time portion from ISO string for the datetime-local input.
+// Strip seconds from ISO string for the datetime-local input.
 function toDateTimeInput(isoString) {
   if (!isoString) return "";
   return isoString.slice(0, 16);
 }
 
-export default function AddReminderModal({ onClose, onSave }) {
+export default function AddReminderModal({ onClose, onSave, tasks = [] }) {
   const [form, setForm] = useState({
     taskId: "",
     message: "",
@@ -26,7 +26,7 @@ export default function AddReminderModal({ onClose, onSave }) {
 
   const handleSave = async () => {
     if (!form.message.trim() || !form.taskId) {
-      setError("Task ID and Message are required.");
+      setError("Task and Message are required.");
       return;
     }
 
@@ -57,14 +57,20 @@ export default function AddReminderModal({ onClose, onSave }) {
         <div className="modal-form">
 
           <div className="modal-field">
-            <label className="modal-label">TASK ID</label>
-            <input
+            <label className="modal-label">TASK</label>
+            {/* Tasks list passed from Dashboard so user selects by title instead of raw ID. */}
+            <select
               className="modal-input"
-              type="number"
               value={form.taskId}
               onChange={handleChange("taskId")}
-              placeholder="e.g. 1001"
-            />
+            >
+              <option value="">Select a task…</option>
+              {tasks.map((t) => (
+                <option key={t.taskId} value={t.taskId}>
+                  {t.title} {t.type ? `(${t.type})` : ""}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-field">

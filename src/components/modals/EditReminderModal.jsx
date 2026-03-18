@@ -8,7 +8,7 @@ function toDateTimeInput(isoString) {
   return isoString.slice(0, 16);
 }
 
-export default function EditReminderModal({ reminder, onClose, onSave }) {
+export default function EditReminderModal({ reminder, onClose, onSave, tasks = [] }) {
   const [form, setForm] = useState({
     taskId: reminder.taskId ?? "",
     message: reminder.message ?? "",
@@ -57,13 +57,20 @@ export default function EditReminderModal({ reminder, onClose, onSave }) {
         <div className="modal-form">
 
           <div className="modal-field">
-            <label className="modal-label">TASK ID</label>
-            <input
+            <label className="modal-label">TASK</label>
+            {/* Tasks list passed from Dashboard so user selects by title instead of raw ID. */}
+            <select
               className="modal-input"
-              type="number"
               value={form.taskId}
               onChange={handleChange("taskId")}
-            />
+            >
+              <option value="">Select a task…</option>
+              {tasks.map((t) => (
+                <option key={t.taskId} value={t.taskId}>
+                  {t.title} {t.type ? `(${t.type})` : ""}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-field">
