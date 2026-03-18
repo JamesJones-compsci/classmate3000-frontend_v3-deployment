@@ -62,13 +62,13 @@ src/
 │   └── modals/
 │       ├── AddCourseModal.jsx
 │       ├── EditCourseModal.jsx
-│       ├── AddTaskModal.jsx
-│       ├── EditTaskModal.jsx
-│       ├── AddReminderModal.jsx
-│       ├── EditReminderModal.jsx
-│       ├── AddGradeModal.jsx
-│       ├── EditGradeModal.jsx
-│       └── DeleteConfirmModal.jsx
+│       ├── AddTaskModal.jsx    # Course dropdown populated from live data
+│       ├── EditTaskModal.jsx   # Course dropdown populated from live data
+│       ├── AddReminderModal.jsx  # Task dropdown populated from live data
+│       ├── EditReminderModal.jsx # Task dropdown populated from live data
+│       ├── AddGradeModal.jsx   # Course dropdown populated from live data
+│       ├── EditGradeModal.jsx  # Course dropdown populated from live data
+│       └── DeleteConfirmModal.jsx  # Shared confirm dialog for all item types
 ├── mocks/
 │   └── loadMockCourses.js     # Fallback data when backend is unavailable
 ├── pages/
@@ -77,7 +77,7 @@ src/
 │   └── Dashboard.jsx          # Main page — owns all state and API calls
 └── styles/
     ├── index.css
-    ├── dashboard.css
+    ├── dashboard.css          # Dashboard layout + modal CSS
     └── App.css
 ```
 
@@ -89,15 +89,17 @@ The dashboard has four tabs: **Courses**, **Tasks**, **Reminders**, **Grades**.
 
 Each tab supports full CRUD:
 
-| Tab | Backend endpoint | Primary key |
-|---|---|---|
-| Courses | `/api/v1/courses` | `courseId` |
-| Tasks | `/api/v1/tasks` | `taskId` |
-| Reminders | `/api/v1/reminders` | `reminderId` |
-| Grades | `/api/v1/course-progress` | `progressId` |
+| Tab | Backend endpoint | Primary key | Dropdown dependencies |
+|---|---|---|---|
+| Courses | `/api/v1/courses` | `courseId` | — |
+| Tasks | `/api/v1/tasks` | `taskId` | Course name dropdown |
+| Reminders | `/api/v1/reminders` | `reminderId` | Task title dropdown |
+| Grades | `/api/v1/course-progress` | `progressId` | Course name dropdown |
 
 Clicking any item selects it and activates the **Edit** and **Delete** buttons in the left panel.  
 All write operations update the local state immediately without a full page reload.
+
+Add/Edit forms use live data dropdowns instead of raw ID inputs — courses are passed to Task and Grade modals, tasks are passed to Reminder modals.
 
 ---
 
