@@ -361,3 +361,147 @@
 .dashboard-page .btn-soft:hover {
   background: #f3f4f6;
 }
+
+/* ========================= MODAL ========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+
+.modal-card {
+  background: #ffffff;
+  border: 1px solid #e7e7e7;
+  border-radius: 18px;
+  padding: 28px 24px 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0 0 20px 0;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #374151;
+}
+
+.modal-input {
+  border: none;
+  border-bottom: 1.5px solid #d1d5db;
+  border-radius: 0;
+  padding: 8px 2px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  background: transparent;
+  color: #1e1e1e;
+  transition: border-color 0.15s ease;
+}
+
+.modal-input:focus {
+  border-bottom-color: #374151;
+}
+
+.modal-error {
+  color: #b42318;
+  font-size: 13px;
+  margin: 4px 0 0 0;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.modal-btn {
+  border-radius: 999px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #e7e7e7;
+}
+
+.modal-btn--cancel {
+  background: #ffffff;
+  color: #374151;
+}
+
+.modal-btn--cancel:hover {
+  background: #f3f4f6;
+}
+
+.modal-btn--save {
+  background: #dfeee0;
+  border-color: #c7dfc9;
+  color: #1e1e1e;
+}
+
+.modal-btn--save:hover {
+  background: #d3e8d5;
+}
+
+.modal-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.modal-card--narrow {
+  max-width: 340px;
+  text-align: center;
+}
+
+.modal-delete-label {
+  font-weight: 800;
+  margin: 0 0 6px 0;
+}
+
+.modal-delete-warning {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0 0 4px 0;
+}
+
+.modal-btn--delete {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b42318;
+}
+
+.modal-btn--delete:hover {
+  background: #fecaca;
+}
+
+.modal-field--row {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}

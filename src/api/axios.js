@@ -1,21 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 
-/**
- * Shared interceptor logic for API requests
- */
+const baseURL = import.meta.env.VITE_API_GATEWAY_URL || "http://localhost:8088";
+
 const attachToken = (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+  const url = config?.url || "";
+
+  //Do not attach token to public auth endpoints.
+  if (url.startsWith("/api/v1/auth/")) return config;
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 };
 
-/**
- * Single API Gateway client
- */
-export const api = axios.create({
-    baseURL: import.meta.env.VITE_API_GATEWAY_URL,
-});
+export const api = axios.create({ baseURL });
 
 api.interceptors.request.use(attachToken);
