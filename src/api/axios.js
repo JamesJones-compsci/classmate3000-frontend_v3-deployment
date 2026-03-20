@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_GATEWAY_URL || "http://localhost:8088";
+const baseURL = import.meta.env.VITE_API_GATEWAY_URL || "http://localhost:8091";
 
 const attachToken = (config) => {
   const url = config?.url || "";
