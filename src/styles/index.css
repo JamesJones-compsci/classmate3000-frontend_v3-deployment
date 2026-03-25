@@ -1,21 +1,19 @@
-/* =========================================================
-   index.css 
-   Covers:
-   1) Global base styles + typography + element defaults
-   2) App-wide layout primitives (app-shell, sidebar, main, tabs, panels)
-   3) Shared components (buttons, nav items, banners)
-   4) Auth screens design system (Login/Signup: auth-* classes)
-   5) Section shells used across pages (reminders-shell, section-shell)
-   ========================================================= */
+/* =============================================================
+   index.css — ClassMate
+   Purpose : Global base styles, typography defaults, and the
+             Login / Signup auth screen design system.
+             Do NOT add dashboard-specific styles here —
+             those belong in dashboard.css.
+   ============================================================= */
+
+/* ── Reset & base typography ─────────────────────────────── */
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color: #1e1e1e;
   background-color: #ffffff;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,6 +22,18 @@
 
 * {
   box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
 }
 
 a {
@@ -36,26 +46,7 @@ a:hover {
   color: #1d4ed8;
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-/* Layout override for full-width dashboard */
-#root {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
-h1 {
-  margin: 0;
-  font-size: 28px;
-  line-height: 1.2;
-}
-
+/* Global button reset — dashboard overrides these per-component. */
 button {
   border-radius: 10px;
   border: 1px solid #e5e7eb;
@@ -79,146 +70,12 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-.app-shell {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 100vh;
-}
+/* ── Auth screens (Login & Signup) ───────────────────────── */
+/*
+   All classes here are prefixed with "auth-" to avoid collisions
+   with dashboard styles. These are ONLY used in Login.jsx and Signup.jsx.
+*/
 
-.sidebar {
-  background-color: #f3f6ef;
-  border-right: 1px solid #e5e7eb;
-  padding: 16px;
-}
-
-.brand {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-
-.main {
-  background-color: #ffffff;
-  padding: 20px 24px;
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.nav-item {
-  width: 100%;
-  text-align: left;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.nav-item:hover {
-  background-color: #e9efe3;
-}
-
-.nav-item--active {
-  background-color: #dfeee0;
-  border-color: #c7dfc9;
-  font-weight: 700;
-}
-
-.nav-divider {
-  height: 1px;
-  background: #e5e7eb;
-  margin: 10px 0;
-}
-
-.nav-item--danger {
-  color: #b42318;
-}
-
-.top-tabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.tab {
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background-color: #f5f7fa;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.tab:hover {
-  background-color: #eef2f7;
-}
-
-.tab--active {
-  background-color: #dfeee0;
-  border-color: #c7dfc9;
-  font-weight: 700;
-}
-
-.banner {
-  border: 1px solid #e5e7eb;
-  background: #fafafa;
-  padding: 10px 12px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-.panel {
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 16px;
-  background: #ffffff;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.panel-title {
-  margin: 0;
-  font-size: 18px;
-}
-
-.muted {
-  color: #6b7280;
-  margin: 0;
-}
-
-.primary {
-  border-radius: 10px;
-  border: 1px solid #c7dfc9;
-  background: #dfeee0;
-  padding: 10px 12px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.primary:hover {
-  background: #d3e8d5;
-}
-
-.list {
-  margin: 0;
-  padding-left: 18px;
-}
-
-/* =========================
-   AUTH (Login / Signup)
-   ========================= */
 .auth-page {
   min-height: 100vh;
   display: grid;
@@ -273,8 +130,9 @@ button:focus-visible {
   width: 100%;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 12px 12px;
+  padding: 12px;
   font-size: 14px;
+  font-family: inherit;
   outline: none;
   background: #ffffff;
 }
@@ -282,6 +140,40 @@ button:focus-visible {
 .auth-input:focus {
   border-color: rgba(59, 130, 246, 0.6);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Applied when confirm password doesn't match. */
+.auth-input--error {
+  border-color: #ef4444;
+}
+
+/* Used on password fields that contain the show/hide icon button. */
+.auth-input--with-icon {
+  padding-right: 46px;
+}
+
+.auth-input-wrap {
+  position: relative;
+  display: grid;
+}
+
+/* Show/hide password toggle button inside the input. */
+.auth-icon-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.auth-icon-btn:hover {
+  color: #111827;
 }
 
 .auth-button {
@@ -302,17 +194,17 @@ button:focus-visible {
   cursor: not-allowed;
 }
 
-.auth-footer {
-  margin-top: 16px;
-  font-size: 14px;
-  color: #6b7280;
+/* Inline validation hint (e.g. "Passwords do not match"). */
+.auth-hint {
+  font-size: 12px;
+  margin-top: 6px;
 }
 
-.auth-link {
-  color: #2563eb;
-  font-weight: 700;
+.auth-hint--error {
+  color: #b42318;
 }
 
+/* Server-side or network error banner shown above the form. */
 .auth-error {
   border: 1px solid #fecaca;
   background: #fef2f2;
@@ -323,250 +215,13 @@ button:focus-visible {
   margin: 10px 0 0 0;
 }
 
-/* Auth: password eye icon inside input */
-.auth-input-wrap {
-  position: relative;
-  display: grid;
-}
-
-.auth-input--with-icon {
-  padding-right: 46px; /* space for the icon button */
-}
-
-.auth-icon-btn {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
+.auth-footer {
+  margin-top: 16px;
+  font-size: 14px;
   color: #6b7280;
 }
 
-.auth-icon-btn:hover {
-  color: #111827;
-}
-
-
-.auth-hint {
-  font-size: 12px;
-  margin-top: 6px;
-}
-
-.auth-hint--error {
-  color: #b42318;
-}
-
-.auth-input--error {
-  border-color: #ef4444;
-}
-
-/* ----------------------------------------------------------------
-   Deprecated (old password toggle layout)
-   Keep commented to avoid styling conflicts with the new icon system.
-------------------------------------------------------------------- */
-/*
-.input-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.input-row .auth-input {
-  flex: 1;
-}
-
-.toggle-btn {
-  border-radius: 12px;
-  border: 1px solid #c7dfc9;
-  background: #ffffff;
-  padding: 12px 14px;
+.auth-link {
+  color: #2563eb;
   font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.toggle-btn:hover {
-  background: #f3f4f6;
-}
-
-.password-error {
-  color: #b42318;
-  font-size: 13px;
-  margin-top: -6px;
-}
-*/
-
-/* =========================
-   REMINDERS
-   ========================= */
-.reminders-shell {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 16px;
-}
-
-.reminders-subpanel {
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  background: #ffffff;
-  overflow: hidden;
-}
-
-.pill-cta {
-  margin: 14px;
-  width: calc(100% - 28px);
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background: #f8efe2;
-  padding: 10px 12px;
-  font-weight: 800;
-}
-
-.subpanel-menu {
-  border-top: 1px solid #e5e7eb;
-}
-
-.subpanel-bottom {
-  margin-top: 18px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.subpanel-item {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  border: 0;
-  border-bottom: 1px solid #e5e7eb;
-  background: #ffffff;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.subpanel-item--soft {
-  background: #fbf3df;
-}
-
-.subpanel-item:hover {
-  background: #f3f4f6;
-}
-
-.subpanel-arrow {
-  opacity: 0.6;
-}
-
-.reminders-board {
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  background: #fbf3df;
-  padding: 16px;
-  position: relative;
-}
-
-.breadcrumb {
-  font-size: 14px;
-  color: #374151;
-  margin-bottom: 14px;
-}
-
-.reminder-list {
-  display: grid;
-  gap: 18px;
-  max-width: 760px;
-}
-
-.reminder-card {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
-  padding: 14px 16px;
-}
-
-.reminder-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  border: 3px solid #111827;
-}
-
-.reminder-icon--alert {
-  background: #111827;
-  color: #ffffff;
-}
-
-.reminder-icon--done {
-  background: #ffffff;
-  color: #111827;
-}
-
-.reminder-icon--open {
-  background: #ffffff;
-  color: transparent;
-}
-
-.reminder-title {
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.reminder-subtitle {
-  font-size: 14px;
-  color: #374151;
-  margin-top: 4px;
-}
-
-.pill-center {
-  margin: 22px auto 0 auto;
-  display: block;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background: #f8efe2;
-  padding: 10px 18px;
-  font-weight: 900;
-}
-
-.reminders-actions {
-  position: absolute;
-  right: 18px;
-  bottom: 16px;
-  display: flex;
-  gap: 12px;
-}
-
-.pill-action {
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background: #f8efe2;
-  padding: 10px 18px;
-  font-weight: 900;
-}
-
-/* =========================
-   GENERIC SECTION SHELL
-   ========================= */
-.section-shell {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.section-board {
-  background: #eef5e6;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 16px;
 }

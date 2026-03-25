@@ -1,30 +1,22 @@
+/* =============================================================
+   App.css — ClassMate
+   Purpose : Resets Vite's default scaffold styles so they don't
+             interfere with the ClassMate design system.
+             All real styling lives in index.css and dashboard.css.
+   ============================================================= */
 
-#root {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
+/* Hide Vite scaffold elements that are not used in ClassMate. */
 .logo,
 .card,
 .read-the-docs {
   display: none;
 }
 
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.leftpanel-slot {
-  margin-top: 8px;
-}
-
-.leftpanel {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* Ensure the root element fills the full viewport without extra spacing. */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }

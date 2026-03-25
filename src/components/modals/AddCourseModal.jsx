@@ -1,4 +1,11 @@
 // src/components/modals/AddCourseModal.jsx
+// Modal form for creating a new course.
+//
+// Fields sent to the backend match the finalized Course model (Penny, Feb 12 2026):
+//   code, title, instructor, gradeGoal, startWeek, meetings[]
+//
+// NOTE: 'schedule' and 'credits' are NOT backend fields — do not re-add them.
+// meetings[] is initialised as an empty array; the backend accepts this for new courses.
 
 import { useState } from "react";
 
@@ -7,8 +14,8 @@ export default function AddCourseModal({ onClose, onSave }) {
     title: "",
     code: "",
     instructor: "",
-    schedule: "",
-    credits: "",
+    gradeGoal: "",
+    startWeek: "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -19,6 +26,7 @@ export default function AddCourseModal({ onClose, onSave }) {
   };
 
   const handleSave = async () => {
+    // Title and code are the minimum required fields on the backend.
     if (!form.title.trim() || !form.code.trim()) {
       setError("Name and Course Code are required.");
       return;
@@ -31,9 +39,12 @@ export default function AddCourseModal({ onClose, onSave }) {
       await onSave({
         title: form.title.trim(),
         code: form.code.trim(),
-        instructor: form.instructor.trim(),
-        schedule: form.schedule.trim(),
-        credits: form.credits ? Number(form.credits) : null,
+        instructor: form.instructor.trim() || null,
+        gradeGoal: form.gradeGoal ? Number(form.gradeGoal) : null,
+        startWeek: form.startWeek || null,
+        // New courses start with no scheduled meetings.
+        // Meetings can be added in a future sprint via the Edit flow.
+        meetings: [],
       });
       onClose();
     } catch (err) {
@@ -80,30 +91,30 @@ export default function AddCourseModal({ onClose, onSave }) {
               type="text"
               value={form.instructor}
               onChange={handleChange("instructor")}
-              placeholder="e.g. Prof. Laily Ajeilu"
+              placeholder="e.g. Prof. Laily Ajellu"
             />
           </div>
 
           <div className="modal-field">
-            <label className="modal-label">SCHEDULE</label>
-            <input
-              className="modal-input"
-              type="text"
-              value={form.schedule}
-              onChange={handleChange("schedule")}
-              placeholder="e.g. MON 10am-12pm | ROOM: Zoom"
-            />
-          </div>
-
-          <div className="modal-field">
-            <label className="modal-label">CREDITS</label>
+            <label className="modal-label">GRADE GOAL (%)</label>
             <input
               className="modal-input"
               type="number"
-              value={form.credits}
-              onChange={handleChange("credits")}
-              placeholder="e.g. 3"
+              value={form.gradeGoal}
+              onChange={handleChange("gradeGoal")}
+              placeholder="e.g. 75"
               min={0}
+              max={100}
+            />
+          </div>
+
+          <div className="modal-field">
+            <label className="modal-label">START WEEK</label>
+            <input
+              className="modal-input"
+              type="date"
+              value={form.startWeek}
+              onChange={handleChange("startWeek")}
             />
           </div>
 

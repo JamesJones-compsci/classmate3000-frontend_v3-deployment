@@ -1,5 +1,30 @@
-/* /src/styles/dashboard.css
-   Dashboard-only styling (scoped with .dashboard-page)
+/* =============================================================
+   dashboard.css — ClassMate
+   Purpose : All styles scoped to the main Dashboard page.
+             Every rule is prefixed with .dashboard-page to prevent
+             leaking into the auth screens or any future pages.
+             index.css handles global base and auth styles.
+             App.css only resets Vite scaffold defaults.
+
+   Sections:
+     1. App shell (two-column grid layout)
+     2. Sidebar & brand
+     3. Left panel (CTA, action menu, bottom nav)
+     4. Top tabs (pill strip)
+     5. Main content area
+     6. Breadcrumb
+     7. Panel (white card container)
+     8. Course cards & metrics grid
+     9. Task & Reminder row cards
+    10. Grade cards
+    11. Selection state
+    12. Modal system (overlay, card, form, buttons)
+   ============================================================= */
+
+/* ── 1. App shell ────────────────────────────────────────── */
+/*
+   Two-column layout: fixed 260px sidebar + fluid main area.
+   The main area background changes per tab (set inline via TAB_THEME in Dashboard.jsx).
 */
 
 .dashboard-page.app-shell {
@@ -8,9 +33,8 @@
   min-height: 100vh;
 }
 
-/* =========================
-   SIDEBAR
-   ========================= */
+/* ── 2. Sidebar & brand ──────────────────────────────────── */
+
 .dashboard-page .sidebar {
   background: #f4f6ef;
   border-right: 1px solid #e2e6da;
@@ -18,105 +42,131 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .dashboard-page .brand {
   font-weight: 800;
   font-size: 18px;
-  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
 }
 
 .dashboard-page .leftpanel-slot {
-  margin-top: 8px;
+  flex: 1;
+  margin-top: 4px;
 }
 
 .dashboard-page .nav-divider {
   height: 1px;
   background: #e2e6da;
-  margin: 14px 0;
+  margin: 4px 0;
 }
 
+/* Logout button — sits at the bottom of the sidebar. */
 .dashboard-page .nav-item--danger {
   width: 100%;
   text-align: left;
   background: transparent;
-  border: 0;
-  padding: 10px 10px;
+  border: none;
+  padding: 10px;
   border-radius: 12px;
   color: #b42318;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s ease;
 }
 
-/* =========================
-   LEFT PANEL
-   ========================= */
+.dashboard-page .nav-item--danger:hover {
+  background: #fef2f2;
+}
+
+/* ── 3. Left panel ───────────────────────────────────────── */
+/*
+   Contains: primary CTA pill, action menu (All/Add/Edit/Delete),
+   and secondary items (Search, Theme, Settings, Profile).
+   Edit and Delete become enabled only when an item is selected
+   (opacity/cursor is toggled inline in LeftPanel.jsx).
+*/
+
 .dashboard-page .leftpanel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
+/* Primary CTA — e.g. "+Add Course". Always enabled. */
 .dashboard-page .pill-cta {
   width: 100%;
-  padding: 12px 14px;
+  padding: 11px 14px;
   border: 1px solid #e6dccb;
   background: #f6e7d1;
   border-radius: 999px;
   font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.dashboard-page .pill-cta:hover {
+  background: #f0d9bc;
 }
 
 .dashboard-page .subpanel-menu,
 .dashboard-page .subpanel-bottom {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
+/* Individual action row in the left panel. */
 .dashboard-page .subpanel-item {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 12px;
+  padding: 11px 12px;
   border-radius: 14px;
   border: 1px solid #e8e8e8;
   background: #ffffff;
   cursor: pointer;
   font-weight: 700;
-}
-
-.dashboard-page .subpanel-item--soft {
-  background: #f9f4e7;
-  border-color: #f1e7d2;
+  font-size: 13px;
+  transition: background 0.15s ease;
 }
 
 .dashboard-page .subpanel-item:hover {
   background: #f3f4f6;
 }
 
+/* Secondary items (Search, Theme, Settings, Profile) use a warm tint. */
+.dashboard-page .subpanel-item--soft {
+  background: #f9f4e7;
+  border-color: #f1e7d2;
+}
+
+.dashboard-page .subpanel-item--soft:hover {
+  background: #f0e9d5;
+}
+
 .dashboard-page .subpanel-arrow {
-  opacity: 0.6;
+  opacity: 0.5;
+  font-size: 12px;
 }
 
-/* =========================
-   MAIN AREA
-   ========================= */
-.dashboard-page .main {
-  padding: 14px 18px 24px;
-}
+/* ── 4. Top tabs ─────────────────────────────────────────── */
+/*
+   Pill-shaped tab strip at the top of the main content area.
+   Active tab uses a green tint matching the Figma design.
+*/
 
-.dashboard-page .content {
-  margin-top: 14px;
-}
-
-/* =========================
-   TOP TABS (pill)
-   ========================= */
 .dashboard-page .top-tabs {
   display: inline-flex;
-  gap: 10px;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 6px 8px;
   background: #ffffff;
   border-radius: 999px;
   border: 1px solid #e7e7e7;
@@ -124,12 +174,14 @@
 }
 
 .dashboard-page .tab {
-  border: 0;
+  border: none;
   background: #f3f3f3;
-  padding: 10px 18px;
+  padding: 9px 18px;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 700;
+  font-size: 13px;
+  transition: background 0.15s ease;
 }
 
 .dashboard-page .tab:hover {
@@ -138,11 +190,42 @@
 
 .dashboard-page .tab--active {
   background: #d9eed7;
+  color: #1e1e1e;
 }
 
-/* =========================
-   PANEL
-   ========================= */
+/* ── 5. Main content area ────────────────────────────────── */
+
+.dashboard-page .main {
+  padding: 16px 20px 32px;
+  min-height: 100vh;
+}
+
+.dashboard-page .content {
+  margin-top: 12px;
+}
+
+/* ── 6. Breadcrumb ───────────────────────────────────────── */
+/*
+   Shown in the Figma designs as "Home > Courses > All Courses".
+   Rendered inside the main content area above the panel.
+*/
+
+.dashboard-page .breadcrumb {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.dashboard-page .breadcrumb span {
+  color: #374151;
+}
+
+/* ── 7. Panel ────────────────────────────────────────────── */
+/*
+   White card container used for every tab's content area.
+*/
+
 .dashboard-page .panel {
   background: #ffffff;
   border: 1px solid #e7e7e7;
@@ -155,12 +238,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .dashboard-page .panel-title {
   margin: 0;
   font-size: 20px;
+  font-weight: 800;
 }
 
 .dashboard-page .muted {
@@ -168,132 +252,89 @@
   margin: 0;
 }
 
-/* =========================
-   COURSES / GRADES GRID
-   ========================= */
+/* ── 8. Course cards & metrics grid ─────────────────────── */
+/*
+   Two-column grid of course cards, each showing:
+   course code, course title, and a 2x2 metrics sub-grid
+   (UPCOMING, TO-DO, CURR. GRADE — all from real backend data).
+*/
+
 .dashboard-page .card-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 12px;
 }
 
-/* Grades grid override */
-.dashboard-page .grades-grid {
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
-}
-
-/* Course card */
 .dashboard-page .course-card {
   border: 1px solid #e7e7e7;
   border-radius: 16px;
-  padding: 14px;
+  padding: 16px;
   background: #ffffff;
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .dashboard-page .course-card:hover {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
   transform: translateY(-1px);
 }
 
 .dashboard-page .course-card__top {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
+/* Small all-caps course code label — e.g. "COMP3059". */
 .dashboard-page .course-code {
   font-weight: 900;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  opacity: 0.9;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  color: #6b7280;
+  text-transform: uppercase;
 }
 
 .dashboard-page .course-title {
   font-weight: 800;
+  font-size: 15px;
   margin-top: 4px;
+  color: #1e1e1e;
 }
 
+/* 2x2 grid of metric tiles inside each course card. */
 .dashboard-page .course-metrics {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
   margin-top: 10px;
 }
 
 .dashboard-page .metric {
   border: 1px solid #efefef;
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 10px;
   background: #fafafa;
 }
 
 .dashboard-page .metric__label {
-  font-size: 11px;
-  letter-spacing: 0.4px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
   color: #6b7280;
   font-weight: 800;
+  text-transform: uppercase;
 }
 
 .dashboard-page .metric__value {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 900;
-  margin-top: 6px;
+  margin-top: 4px;
+  color: #1e1e1e;
 }
 
-/* Grade card */
-.dashboard-page .grade-card {
-  border: 1px solid #e7e7e7;
-  border-radius: 16px;
-  padding: 14px;
-  background: #ffffff;
-}
+/* ── 9. Task & Reminder row cards ────────────────────────── */
+/*
+   Single-column stack of rows for Tasks and Reminders tabs.
+   Each row shows a status dot, title, and right-aligned metadata.
+*/
 
-.dashboard-page .grade-card__top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-
-.dashboard-page .grade-course {
-  font-weight: 900;
-}
-
-.dashboard-page .grade-type {
-  color: #6b7280;
-  font-weight: 700;
-  font-size: 12px;
-}
-
-.dashboard-page .grade-value {
-  font-size: 26px;
-  font-weight: 950;
-  margin-top: 8px;
-}
-
-.dashboard-page .grade-foot {
-  margin-top: 6px;
-  font-size: 12px;
-  color: #6b7280;
-}
-
-/* Add tile */
-.dashboard-page .ghost-add {
-  border: 1px dashed #d1d5db;
-  border-radius: 16px;
-  padding: 14px;
-  background: #ffffff;
-  cursor: pointer;
-  font-weight: 800;
-  color: #374151;
-}
-
-.dashboard-page .ghost-add:hover {
-  background: #f9fafb;
-}
-
-/* =========================
-   TASKS / REMINDERS LIST ROWS
-   ========================= */
 .dashboard-page .stack {
   display: flex;
   flex-direction: column;
@@ -305,10 +346,15 @@
   border: 1px solid #e7e7e7;
   background: #ffffff;
   border-radius: 14px;
-  padding: 12px;
+  padding: 13px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: background 0.12s ease;
+}
+
+.dashboard-page .row-card:hover {
+  background: #f9fafb;
 }
 
 .dashboard-page .row-card__left {
@@ -318,52 +364,115 @@
 }
 
 .dashboard-page .row-title {
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 .dashboard-page .row-meta {
-  max-width: 52%;
-  text-align: right;
-  color: #6b7280;
+  font-size: 13px;
   font-weight: 600;
+  color: #6b7280;
+  text-align: right;
+  max-width: 50%;
 }
 
-/* status dots */
+/* Square dot indicator for task status. */
 .dashboard-page .dot {
   width: 18px;
   height: 18px;
   border-radius: 6px;
   border: 2px solid #1f2937;
   background: transparent;
+  flex-shrink: 0;
 }
 
+/* Warm-tinted dot for Reminders tab rows. */
 .dashboard-page .dot--warm {
   border-color: #8a6a00;
 }
 
-/* footer actions */
-.dashboard-page .row-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 6px;
+/* ── 10. Grade cards ─────────────────────────────────────── */
+/*
+   Same two-column grid as courses.
+   Each card shows: course label, week-of label, grade percentage,
+   and the canMeetGoal flag from the CourseProgress model.
+*/
+
+.dashboard-page .grades-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.dashboard-page .btn-soft {
+.dashboard-page .grade-card {
   border: 1px solid #e7e7e7;
+  border-radius: 16px;
+  padding: 16px;
   background: #ffffff;
-  border-radius: 999px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-weight: 700;
+  transition: box-shadow 0.15s ease;
 }
 
-.dashboard-page .btn-soft:hover {
-  background: #f3f4f6;
+.dashboard-page .grade-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
-/* ========================= MODAL ========================= */
+.dashboard-page .grade-card__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
+.dashboard-page .grade-course {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.dashboard-page .grade-type {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Large grade percentage display — centrepiece of the grade card. */
+.dashboard-page .grade-value {
+  font-size: 30px;
+  font-weight: 900;
+  margin-top: 10px;
+  color: #1e1e1e;
+}
+
+.dashboard-page .grade-foot {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* ── 11. Selection state ─────────────────────────────────── */
+/*
+   Applied to any card/row when it is selected by the user.
+   Activates the Edit and Delete buttons in the left panel.
+   Uses a blue ring to match Figma's selection highlight.
+*/
+
+.dashboard-page .is-selected {
+  outline: 2px solid #5b8def;
+  outline-offset: 1px;
+  border-radius: 16px;
+}
+
+/* ── 12. Modal system ────────────────────────────────────── */
+/*
+   Shared modal classes used by ALL modal components:
+   AddCourseModal, EditCourseModal, AddTaskModal, EditTaskModal,
+   AddReminderModal, EditReminderModal, AddGradeModal,
+   EditGradeModal, and DeleteConfirmModal.
+
+   Modals are mounted at the root of Dashboard.jsx and rendered
+   on top of all content via z-index 100.
+*/
+
+/* Full-screen semi-transparent overlay. Clicking it closes the modal. */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -373,28 +482,37 @@
   z-index: 100;
 }
 
+/* White modal card container. */
 .modal-card {
   background: #ffffff;
   border: 1px solid #e7e7e7;
   border-radius: 18px;
-  padding: 28px 24px 20px;
+  padding: 28px 24px 22px;
   width: 100%;
   max-width: 420px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 
+/* Narrower variant used by DeleteConfirmModal. */
+.modal-card--narrow {
+  max-width: 340px;
+  text-align: center;
+}
+
 .modal-title {
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
   letter-spacing: 0.5px;
   margin: 0 0 20px 0;
+  text-transform: uppercase;
 }
 
+/* Form field stack inside the modal. */
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .modal-field {
@@ -403,13 +521,22 @@
   gap: 4px;
 }
 
+/* Inline row layout used for checkbox fields (e.g. Bonus, Already Sent). */
+.modal-field--row {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
 .modal-label {
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.6px;
   color: #374151;
+  text-transform: uppercase;
 }
 
+/* Borderless input — only a bottom border to match Figma's minimal style. */
 .modal-input {
   border: none;
   border-bottom: 1.5px solid #d1d5db;
@@ -421,19 +548,22 @@
   background: transparent;
   color: #1e1e1e;
   transition: border-color 0.15s ease;
+  width: 100%;
 }
 
 .modal-input:focus {
   border-bottom-color: #374151;
 }
 
+/* Inline error message shown when validation fails. */
 .modal-error {
   color: #b42318;
   font-size: 13px;
-  margin: 4px 0 0 0;
+  margin: 2px 0 0 0;
   font-weight: 600;
 }
 
+/* Action buttons row — right-aligned Cancel + Save/Delete. */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -448,25 +578,7 @@
   font-size: 14px;
   cursor: pointer;
   border: 1px solid #e7e7e7;
-}
-
-.modal-btn--cancel {
-  background: #ffffff;
-  color: #374151;
-}
-
-.modal-btn--cancel:hover {
-  background: #f3f4f6;
-}
-
-.modal-btn--save {
-  background: #dfeee0;
-  border-color: #c7dfc9;
-  color: #1e1e1e;
-}
-
-.modal-btn--save:hover {
-  background: #d3e8d5;
+  transition: background 0.15s ease;
 }
 
 .modal-btn:disabled {
@@ -474,34 +586,45 @@
   cursor: not-allowed;
 }
 
-.modal-card--narrow {
-  max-width: 340px;
-  text-align: center;
+.modal-btn--cancel {
+  background: #ffffff;
+  color: #374151;
 }
 
-.modal-delete-label {
-  font-weight: 800;
-  margin: 0 0 6px 0;
+.modal-btn--cancel:hover:not(:disabled) {
+  background: #f3f4f6;
 }
 
-.modal-delete-warning {
-  color: #6b7280;
-  font-size: 13px;
-  margin: 0 0 4px 0;
+/* Save button — green tint matching the Figma primary action colour. */
+.modal-btn--save {
+  background: #dfeee0;
+  border-color: #c7dfc9;
+  color: #1e1e1e;
 }
 
+.modal-btn--save:hover:not(:disabled) {
+  background: #d3e8d5;
+}
+
+/* Delete confirm button — red tint for destructive action. */
 .modal-btn--delete {
   background: #fee2e2;
   border-color: #fecaca;
   color: #b42318;
 }
 
-.modal-btn--delete:hover {
+.modal-btn--delete:hover:not(:disabled) {
   background: #fecaca;
 }
 
-.modal-field--row {
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+/* Item label shown in DeleteConfirmModal above the warning text. */
+.modal-delete-label {
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+
+.modal-delete-warning {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0 0 6px 0;
 }
