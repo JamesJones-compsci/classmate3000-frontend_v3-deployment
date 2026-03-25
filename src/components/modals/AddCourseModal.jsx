@@ -1,50 +1,70 @@
 // src/components/modals/AddCourseModal.jsx
 // Modal form for creating a new course.
 //
-// Fields sent to the backend match the finalized Course model (Penny, Feb 12 2026):
-//   code, title, instructor, gradeGoal, startWeek, meetings[]
-//
-// NOTE: 'schedule' and 'credits' are NOT backend fields — do not re-add them.
-// meetings[] is initialised as an empty array; the backend accepts this for new courses.
+// Backend CourseRequestDTO validation (all fields required):
+//   code (@NotBlank, max 10 chars), title (@NotBlank), instructor (@NotBlank),
+//   gradeGoal (@NotNull Integer), startWeek (@NotNull LocalDate),
+//   meetings (@NotNull, min 1) — each meeting: dayOfWeek (1-7), startTime, endTime (LocalTime)
 
 import { useState } from "react";
 
+const DAYS = [
+  { label: "Monday",    value: 1 },
+  { label: "Tuesday",   value: 2 },
+  { label: "Wednesday", value: 3 },
+  { label: "Thursday",  value: 4 },
+  { label: "Friday",    value: 5 },
+  { label: "Saturday",  value: 6 },
+  { label: "Sunday",    value: 7 },
+];
+
 export default function AddCourseModal({ onClose, onSave }) {
   const [form, setForm] = useState({
-    title: "",
-    code: "",
+    title:      "",
+    code:       "",
     instructor: "",
-    gradeGoal: "",
-    startWeek: "",
+    gradeGoal:  "",
+    startWeek:  "",
+    dayOfWeek:  "1",
+    startTime:  "",
+    endTime:    "",
   });
 
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
+  const [error,  setError]  = useState(null);
 
   const handleChange = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
   const handleSave = async () => {
-    // Title and code are the minimum required fields on the backend.
-    if (!form.title.trim() || !form.code.trim()) {
-      setError("Name and Course Code are required.");
-      return;
-    }
+    if (!form.title.trim())      return setError("Course name is required.");
+    if (!form.code.trim())       return setError("Course code is required.");
+    if (!form.instructor.trim()) return setError("Instructor is required.");
+    if (!form.gradeGoal)         return setError("Grade goal is required.");
+    if (!form.startWeek)         return setError("Start week is required.");
+    if (!form.startTime || !form.endTime) return setError("Class start and end time are required.");
 
     setSaving(true);
     setError(null);
 
     try {
       await onSave({
-        title: form.title.trim(),
-        code: form.code.trim(),
-        instructor: form.instructor.trim() || null,
-        gradeGoal: form.gradeGoal ? Number(form.gradeGoal) : null,
-        startWeek: form.startWeek || null,
-        // New courses start with no scheduled meetings.
-        // Meetings can be added in a future sprint via the Edit flow.
-        meetings: [],
+        title:      form.title.trim(),
+        code:       form.code.trim(),
+        instructor: form.instructor.trim(),
+        gradeGoal:  Number(form.gradeGoal),
+        startWeek:  form.startWeek,
+        // Backend requires List<MeetingDTO> with at least one entry.
+        // dayOfWeek: 1 = Monday, 7 = Sunday (ISO standard).
+        // startTime / endTime must include seconds: "HH:mm:ss".
+        meetings: [
+          {
+            dayOfWeek: Number(form.dayOfWeek),
+            startTime: `${form.startTime}:00`,
+            endTime:   `${form.endTime}:00`,
+          },
+        ],
       });
       onClose();
     } catch (err) {
@@ -64,58 +84,54 @@ export default function AddCourseModal({ onClose, onSave }) {
 
           <div className="modal-field">
             <label className="modal-label">NAME</label>
-            <input
-              className="modal-input"
-              type="text"
-              value={form.title}
-              onChange={handleChange("title")}
-              placeholder="e.g. Capstone I"
-            />
+            <input className="modal-input" type="text" value={form.title}
+              onChange={handleChange("title")} placeholder="e.g. Capstone I" />
           </div>
 
           <div className="modal-field">
             <label className="modal-label">COURSE CODE</label>
-            <input
-              className="modal-input"
-              type="text"
-              value={form.code}
-              onChange={handleChange("code")}
-              placeholder="e.g. COMP3059"
-            />
+            <input className="modal-input" type="text" value={form.code}
+              onChange={handleChange("code")} placeholder="e.g. COMP3059" />
           </div>
 
           <div className="modal-field">
             <label className="modal-label">INSTRUCTOR</label>
-            <input
-              className="modal-input"
-              type="text"
-              value={form.instructor}
-              onChange={handleChange("instructor")}
-              placeholder="e.g. Prof. Laily Ajellu"
-            />
+            <input className="modal-input" type="text" value={form.instructor}
+              onChange={handleChange("instructor")} placeholder="e.g. Prof. Laily Ajellu" />
+          </div>
+
+          <div className="modal-field">
+            <label className="modal-label">CLASS DAY</label>
+            <select className="modal-input" value={form.dayOfWeek}
+              onChange={handleChange("dayOfWeek")}>
+              {DAYS.map((d) => (
+                <option key={d.value} value={d.value}>{d.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="modal-field">
+            <label className="modal-label">START TIME</label>
+            <input className="modal-input" type="time" value={form.startTime}
+              onChange={handleChange("startTime")} />
+          </div>
+
+          <div className="modal-field">
+            <label className="modal-label">END TIME</label>
+            <input className="modal-input" type="time" value={form.endTime}
+              onChange={handleChange("endTime")} />
           </div>
 
           <div className="modal-field">
             <label className="modal-label">GRADE GOAL (%)</label>
-            <input
-              className="modal-input"
-              type="number"
-              value={form.gradeGoal}
-              onChange={handleChange("gradeGoal")}
-              placeholder="e.g. 75"
-              min={0}
-              max={100}
-            />
+            <input className="modal-input" type="number" value={form.gradeGoal}
+              onChange={handleChange("gradeGoal")} placeholder="e.g. 75" min={0} max={100} />
           </div>
 
           <div className="modal-field">
             <label className="modal-label">START WEEK</label>
-            <input
-              className="modal-input"
-              type="date"
-              value={form.startWeek}
-              onChange={handleChange("startWeek")}
-            />
+            <input className="modal-input" type="date" value={form.startWeek}
+              onChange={handleChange("startWeek")} />
           </div>
 
           {error && <p className="modal-error">{error}</p>}
@@ -123,20 +139,10 @@ export default function AddCourseModal({ onClose, onSave }) {
         </div>
 
         <div className="modal-actions">
-          <button
-            type="button"
-            className="modal-btn modal-btn--cancel"
-            onClick={onClose}
-            disabled={saving}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="modal-btn modal-btn--save"
-            onClick={handleSave}
-            disabled={saving}
-          >
+          <button type="button" className="modal-btn modal-btn--cancel"
+            onClick={onClose} disabled={saving}>Cancel</button>
+          <button type="button" className="modal-btn modal-btn--save"
+            onClick={handleSave} disabled={saving}>
             {saving ? "Saving…" : "Save"}
           </button>
         </div>
