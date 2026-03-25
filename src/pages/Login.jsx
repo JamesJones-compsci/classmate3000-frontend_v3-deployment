@@ -1,16 +1,22 @@
+// src/pages/Login.jsx
+// Login screen for ClassMate.
+// On successful login, the JWT token returned by the User Service is passed
+// to AuthContext.login(), which stores it in sessionStorage and updates global auth state.
+// The user is then redirected to /dashboard.
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
 import { useAuth } from "../auth/AuthContext";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail]           = useState("");
+  const [password, setPassword]     = useState("");
+  const [error, setError]           = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  const { login }  = useAuth();
+  const navigate   = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,12 +24,38 @@ export default function Login() {
     setIsSubmitting(true);
 
     try {
-      const res = await api.post("/api/v1/auth/login", { email, password });
+      const res = await api.post("/api/v1/auth/login", {
+        email: email.trim(),
+        password,
+      });
+
+      // Pass the JWT token to AuthContext — stored in sessionStorage.
       login(res.data.token);
       navigate("/dashboard");
+
     } catch (err) {
-      console.error("Login failed:", err);
-      setError("Login failed. Please check your credentials and try again.");
+      // Log full error details to the console for debugging during development.
+      console.error("Login failed", {
+        status: err?.response?.status,
+        data:   err?.response?.data,
+        url:    err?.config?.url,
+      });
+
+      // Show a specific message based on the HTTP status code.
+      let message = "Something went wrong. Please try again.";
+
+      if (err?.response?.status === 401) {
+        message = "Incorrect email or password. Please try again.";
+      } else if (err?.response?.status === 404) {
+        message = "No account found with that email address.";
+      } else if (err?.response?.status >= 500) {
+        message = "The server is having a problem right now. Please try again later.";
+      } else if (err?.request && !err?.response) {
+        // Request was made but no response received — backend is likely down.
+        message = "Could not reach the server. Please make sure the backend is running.";
+      }
+
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -39,13 +71,12 @@ export default function Login() {
           Sign in to manage courses, tasks, grades, and reminders.
         </p>
 
-        {error ? <div className="auth-error">{error}</div> : null}
+        {error && <div className="auth-error">{error}</div>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
+
           <div className="auth-row">
-            <label className="auth-label" htmlFor="email">
-              Email
-            </label>
+            <label className="auth-label" htmlFor="email">Email</label>
             <input
               id="email"
               className="auth-input"
@@ -59,9 +90,7 @@ export default function Login() {
           </div>
 
           <div className="auth-row">
-            <label className="auth-label" htmlFor="password">
-              Password
-            </label>
+            <label className="auth-label" htmlFor="password">Password</label>
             <input
               id="password"
               className="auth-input"
@@ -74,16 +103,20 @@ export default function Login() {
             />
           </div>
 
-          <button className="auth-button" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Signing in..." : "Login"}
+          <button
+            className="auth-button"
+            type="submit"
+            disabled={isSubmitting || !email.trim() || !password}
+          >
+            {isSubmitting ? "Signing in…" : "Login"}
           </button>
+
         </form>
 
         <div className="auth-footer">
-          <span>Don&apos;t have an account?</span>{" "}
-          <Link to="/signup" className="auth-link">
-            Sign up here
-          </Link>
+          Don&apos;t have an account?{" "}
+          {/* Use Link instead of <a> to avoid a full page reload. */}
+          <Link to="/signup" className="auth-link">Sign up here</Link>
         </div>
       </div>
     </div>

@@ -1,8 +1,20 @@
+// src/pages/Signup.jsx
+// Registration screen for ClassMate.
+// Sends firstName, lastName, email, and password to the User Service via the API Gateway.
+// On success, the returned JWT token is stored in sessionStorage via AuthContext.login()
+// and the user is redirected to /dashboard.
+//
+// Client-side validation:
+//   - All fields required
+//   - Password minimum 6 characters
+//   - Passwords must match before submit is enabled
+
 import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
 import { useAuth } from "../auth/AuthContext";
-import { useNavigate } from "react-router-dom";
 
+// Toggle icon for the show/hide password button.
 function EyeIcon({ open }) {
   return open ? (
     <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -21,25 +33,35 @@ function EyeIcon({ open }) {
   );
 }
 
-export default function Signup() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+// Minimum password length enforced on both client and ideally also on the backend.
+const MIN_PASSWORD_LENGTH = 6;
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function Signup() {
+  const [firstName,       setFirstName]       = useState("");
+  const [lastName,        setLastName]        = useState("");
+  const [email,           setEmail]           = useState("");
+  const [password,        setPassword]        = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword,    setShowPassword]    = useState(false);
+  const [error,           setError]           = useState("");
+  const [isSubmitting,    setIsSubmitting]    = useState(false);
 
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
 
+  // True only when confirmPassword is filled and does not match password.
   const passwordMismatch = useMemo(() => {
     if (!confirmPassword) return false;
     return password !== confirmPassword;
   }, [password, confirmPassword]);
 
+  // True when password is filled but shorter than the minimum length.
+  const passwordTooShort = useMemo(() => {
+    if (!password) return false;
+    return password.length < MIN_PASSWORD_LENGTH;
+  }, [password]);
+
+  // Submit button is disabled until all fields pass client-side validation.
   const canSubmit = useMemo(() => {
     return (
       firstName.trim() &&
@@ -48,9 +70,10 @@ export default function Signup() {
       password &&
       confirmPassword &&
       !passwordMismatch &&
+      !passwordTooShort &&
       !isSubmitting
     );
-  }, [firstName, lastName, email, password, confirmPassword, passwordMismatch, isSubmitting]);
+  }, [firstName, lastName, email, password, confirmPassword, passwordMismatch, passwordTooShort, isSubmitting]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,35 +84,41 @@ export default function Signup() {
       return;
     }
 
+    if (passwordTooShort) {
+      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const res = await api.post("/api/v1/auth/register", {
         firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
+        lastName:  lastName.trim(),
+        email:     email.trim(),
         password,
       });
 
+      // Store token and redirect to dashboard on successful registration.
       login(res.data.token);
       navigate("/dashboard");
+
     } catch (err) {
+      // Log full error context to the console for debugging.
       console.error("Signup request failed", {
         status: err?.response?.status,
-        data: err?.response?.data,
-        url: err?.config?.url,
+        data:   err?.response?.data,
+        url:    err?.config?.url,
         method: err?.config?.method,
-        message: err?.message,
       });
 
+      // Map HTTP status codes to user-facing messages.
       let message = "Something went wrong during sign up. Please try again.";
 
       if (err?.response?.status === 409) {
         message = "This email is already in use. Please try a different email.";
       } else if (err?.response?.status === 400) {
-        message =
-          err?.response?.data?.message ||
-          "Please check your input and try again.";
+        message = err?.response?.data?.message || "Please check your input and try again.";
       } else if (err?.response?.status === 401) {
         message = "Authentication failed. Please try again.";
       } else if (err?.response?.status === 403) {
@@ -124,6 +153,7 @@ export default function Signup() {
         {error && <div className="auth-error">{error}</div>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
+
           <div className="auth-row">
             <label className="auth-label" htmlFor="firstName">First Name</label>
             <input
@@ -171,11 +201,11 @@ export default function Signup() {
             <div className="auth-input-wrap">
               <input
                 id="password"
-                className={`auth-input auth-input--with-icon ${passwordMismatch ? "auth-input--error" : ""}`}
+                className={`auth-input auth-input--with-icon ${passwordMismatch || passwordTooShort ? "auth-input--error" : ""}`}
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
+                placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
                 autoComplete="new-password"
                 required
               />
@@ -188,6 +218,11 @@ export default function Signup() {
                 <EyeIcon open={showPassword} />
               </button>
             </div>
+            {passwordTooShort && (
+              <div className="auth-hint auth-hint--error">
+                Password must be at least {MIN_PASSWORD_LENGTH} characters.
+              </div>
+            )}
           </div>
 
           <div className="auth-row">
@@ -212,20 +247,21 @@ export default function Signup() {
                 <EyeIcon open={showPassword} />
               </button>
             </div>
-
             {passwordMismatch && (
               <div className="auth-hint auth-hint--error">Passwords do not match.</div>
             )}
           </div>
 
           <button className="auth-button" type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "Signing up..." : "Sign Up"}
+            {isSubmitting ? "Signing up…" : "Sign Up"}
           </button>
 
           <div className="auth-footer">
             Already have an account?{" "}
-            <a className="auth-link" href="/login">Log in</a>
+            {/* Use Link instead of <a> to avoid a full page reload. */}
+            <Link to="/login" className="auth-link">Log in</Link>
           </div>
+
         </form>
       </div>
     </div>
