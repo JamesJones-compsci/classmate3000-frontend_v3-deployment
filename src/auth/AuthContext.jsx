@@ -1,41 +1,40 @@
 // src/auth/AuthContext.jsx
-// Global authentication context for the ClassMate frontend.
-// Provides login, logout, and user state to all child components via React Context.
-//
-// Token storage strategy:
-//   - sessionStorage is used instead of localStorage for improved XSS protection.
-//   - Tokens are cleared automatically when the browser tab is closed.
-//   - Keycloak integration is planned for a future release (v2).
+// Global authentication context for ClassMate.
+// Stores JWT token, firstName, lastName, and email in sessionStorage.
+// sessionStorage is cleared automatically when the browser tab is closed.
 
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // user shape: { token: string } | null
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // On mount, restore session from sessionStorage if a token already exists.
-    // This handles the case where the user refreshes the page mid-session.
-    const token = sessionStorage.getItem("token");
-    setUser(token ? { token } : null);
+    const token     = sessionStorage.getItem("token");
+    const firstName = sessionStorage.getItem("firstName") ?? "";
+    const lastName  = sessionStorage.getItem("lastName")  ?? "";
+    const email     = sessionStorage.getItem("email")     ?? "";
+    setUser(token ? { token, firstName, lastName, email } : null);
   }, []);
 
-  // Called after a successful login API response.
-  // Persists the token to sessionStorage and updates global user state.
-  const login = (token) => {
+  const login = (token, firstName = "", lastName = "", email = "") => {
     if (!token) {
-      console.warn("login() called without a token — check the auth API response.");
+      console.warn("login() called without a token.");
       return;
     }
-    sessionStorage.setItem("token", token);
-    setUser({ token });
+    sessionStorage.setItem("token",     token);
+    sessionStorage.setItem("firstName", firstName);
+    sessionStorage.setItem("lastName",  lastName);
+    sessionStorage.setItem("email",     email);
+    setUser({ token, firstName, lastName, email });
   };
 
-  // Clears session state and redirects to login are handled by the caller (Dashboard).
   const logout = () => {
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("firstName");
+    sessionStorage.removeItem("lastName");
+    sessionStorage.removeItem("email");
     setUser(null);
   };
 
@@ -46,6 +45,4 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Convenience hook — use this in any component that needs auth state.
-// Example: const { user, login, logout } = useAuth();
 export const useAuth = () => useContext(AuthContext);

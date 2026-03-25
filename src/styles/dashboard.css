@@ -1,31 +1,30 @@
 /* =============================================================
    dashboard.css — ClassMate
-   Purpose : All styles scoped to the main Dashboard page.
-             Every rule is prefixed with .dashboard-page to prevent
-             leaking into the auth screens or any future pages.
-             index.css handles global base and auth styles.
-             App.css only resets Vite scaffold defaults.
+   Purpose : All styles scoped to the Dashboard page.
+             Scoped with .dashboard-page to prevent leaking.
+             index.css → global base + auth styles.
+             App.css → resets Vite scaffold only.
 
    Sections:
-     1. App shell (two-column grid layout)
-     2. Sidebar & brand
-     3. Left panel (CTA, action menu, bottom nav)
-     4. Top tabs (pill strip)
-     5. Main content area
-     6. Breadcrumb
-     7. Panel (white card container)
-     8. Course cards & metrics grid
-     9. Task & Reminder row cards
-    10. Grade cards
-    11. Selection state
-    12. Modal system (overlay, card, form, buttons)
+     1.  App shell
+     2.  Sidebar
+     3.  Sidebar top bar (brand + initials + bell)
+     4.  Left panel (action menu + secondary nav)
+     5.  Top tabs (raised card style)
+     6.  Main area
+     7.  Panel (header + breadcrumb + body)
+     8.  Course cards
+     9.  Task & Reminder rows
+    10.  Grade cards
+    11.  Selection state
+    12.  Task filter strip
+    13.  Panel action bar (Edit / Delete)
+    14.  Modal system
+    15.  Sidebar panels (Search / Theme / Profile)
+    16.  Dark mode
    ============================================================= */
 
 /* ── 1. App shell ────────────────────────────────────────── */
-/*
-   Two-column layout: fixed 260px sidebar + fluid main area.
-   The main area background changes per tab (set inline via TAB_THEME in Dashboard.jsx).
-*/
 
 .dashboard-page.app-shell {
   display: grid;
@@ -33,218 +32,303 @@
   min-height: 100vh;
 }
 
-/* ── 2. Sidebar & brand ──────────────────────────────────── */
+/* ── 2. Sidebar ──────────────────────────────────────────── */
 
 .dashboard-page .sidebar {
   background: #f4f6ef;
   border-right: 1px solid #e2e6da;
-  padding: 18px 14px;
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
 }
 
-.dashboard-page .brand {
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.3px;
-  margin-bottom: 4px;
-}
-
-.dashboard-page .leftpanel-slot {
-  flex: 1;
-  margin-top: 4px;
-}
-
 .dashboard-page .nav-divider {
   height: 1px;
   background: #e2e6da;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
-/* Logout button — sits at the bottom of the sidebar. */
 .dashboard-page .nav-item--danger {
   width: 100%;
   text-align: left;
   background: transparent;
   border: none;
-  padding: 10px;
-  border-radius: 12px;
+  padding: 10px 8px;
+  border-radius: 0;
   color: #b42318;
   font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s;
 }
 
 .dashboard-page .nav-item--danger:hover {
   background: #fef2f2;
 }
 
-/* ── 3. Left panel ───────────────────────────────────────── */
-/*
-   Contains: primary CTA pill, action menu (All/Add/Edit/Delete),
-   and secondary items (Search, Theme, Settings, Profile).
-   Edit and Delete become enabled only when an item is selected
-   (opacity/cursor is toggled inline in LeftPanel.jsx).
-*/
+/* ── 3. Sidebar top bar ──────────────────────────────────── */
+
+.dashboard-page .sidebar-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dashboard-page .brand {
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+  color: #1e1e1e;
+}
+
+.dashboard-page .sidebar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dashboard-page .sidebar-icon-btn {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  border: 1px solid #d4d9cc;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #374151;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.dashboard-page .sidebar-icon-btn:hover {
+  background: #f0f2ec;
+}
+
+.dashboard-page .bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #b42318;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  border-radius: 0;
+  padding: 1px 3px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.dashboard-page .user-initials {
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  background: #d9eed7;
+  border: 1px solid #b8d9b4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #1e5c1a;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* ── 4. Left panel ───────────────────────────────────────── */
+
+.dashboard-page .leftpanel-slot {
+  flex: 1;
+  margin-top: 2px;
+  overflow-y: auto;
+}
 
 .dashboard-page .leftpanel {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
-/* Primary CTA — e.g. "+Add Course". Always enabled. */
-.dashboard-page .pill-cta {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1px solid #e6dccb;
-  background: #f6e7d1;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.dashboard-page .pill-cta:hover {
-  background: #f0d9bc;
+.dashboard-page .leftpanel-divider {
+  height: 1px;
+  background: #d4d9cc;
+  margin: 8px 0;
 }
 
 .dashboard-page .subpanel-menu,
 .dashboard-page .subpanel-bottom {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
 }
 
-/* Individual action row in the left panel. */
 .dashboard-page .subpanel-item {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 12px;
-  border-radius: 14px;
-  border: 1px solid #e8e8e8;
-  background: #ffffff;
+  padding: 9px 10px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #eef0ea;
+  background: transparent;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
-  transition: background 0.15s ease;
+  transition: background 0.12s;
+  color: #1e1e1e;
 }
 
 .dashboard-page .subpanel-item:hover {
-  background: #f3f4f6;
+  background: #eaede4;
 }
 
-/* Secondary items (Search, Theme, Settings, Profile) use a warm tint. */
 .dashboard-page .subpanel-item--soft {
-  background: #f9f4e7;
-  border-color: #f1e7d2;
-}
-
-.dashboard-page .subpanel-item--soft:hover {
-  background: #f0e9d5;
+  color: #374151;
 }
 
 .dashboard-page .subpanel-arrow {
-  opacity: 0.5;
-  font-size: 12px;
+  opacity: 0.45;
+  font-size: 14px;
 }
 
-/* ── 4. Top tabs ─────────────────────────────────────────── */
+.dashboard-page .subpanel-item__inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-page .subpanel-icon {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+/* ── 5. Top tabs (raised card style) ────────────────────── */
 /*
-   Pill-shaped tab strip at the top of the main content area.
-   Active tab uses a green tint matching the Figma design.
+   Tabs sit on a muted bar. Active tab is white and raised by 2px,
+   connecting seamlessly to the panel below via margin-bottom: -1px.
+   Each active tab has a per-tab coloured 3px top accent border.
 */
 
 .dashboard-page .top-tabs {
   display: inline-flex;
-  gap: 8px;
-  padding: 6px 8px;
-  background: #ffffff;
-  border-radius: 999px;
-  border: 1px solid #e7e7e7;
-  margin-bottom: 14px;
+  background: #c8cfc2;
+  padding: 6px 6px 0;
+  gap: 2px;
+  margin-bottom: -1px;
+  border: none;
+  border-radius: 0;
+  align-items: flex-end;
+  position: relative;
+  z-index: 2;
 }
 
 .dashboard-page .tab {
   border: none;
-  background: #f3f3f3;
-  padding: 9px 18px;
-  border-radius: 999px;
+  border-top: 3px solid transparent;
+  background: #b0b8a8;
+  padding: 8px 20px 9px;
+  border-radius: 0;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
-  transition: background 0.15s ease;
+  color: #4a5240;
+  transition: background 0.12s ease, color 0.12s ease;
+  position: relative;
+  bottom: 0;
 }
 
 .dashboard-page .tab:hover {
-  background: #e9efe3;
+  background: #bdc5b5;
+  color: #2a3020;
+}
+
+.dashboard-page .tab:active {
+  transform: scale(0.98);
 }
 
 .dashboard-page .tab--active {
-  background: #d9eed7;
+  background: #ffffff;
   color: #1e1e1e;
+  font-weight: 700;
+  padding-bottom: 11px;
+  bottom: -2px;
+  z-index: 1;
 }
 
-/* ── 5. Main content area ────────────────────────────────── */
+.dashboard-page .tab--active[data-tab="Courses"]   { border-top-color: #5a9e5a; }
+.dashboard-page .tab--active[data-tab="Tasks"]     { border-top-color: #5a8ed4; }
+.dashboard-page .tab--active[data-tab="Reminders"] { border-top-color: #c4a020; }
+.dashboard-page .tab--active[data-tab="Grades"]    { border-top-color: #9a60c8; }
+
+/* ── 6. Main area ────────────────────────────────────────── */
 
 .dashboard-page .main {
-  padding: 16px 20px 32px;
+  padding: 24px 20px 40px;
   min-height: 100vh;
 }
 
 .dashboard-page .content {
-  margin-top: 12px;
-}
-
-/* ── 6. Breadcrumb ───────────────────────────────────────── */
-/*
-   Shown in the Figma designs as "Home > Courses > All Courses".
-   Rendered inside the main content area above the panel.
-*/
-
-.dashboard-page .breadcrumb {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-.dashboard-page .breadcrumb span {
-  color: #374151;
+  margin-top: 0;
 }
 
 /* ── 7. Panel ────────────────────────────────────────────── */
 /*
-   White card container used for every tab's content area.
+   Panel uses zero top padding — the panel-header handles spacing.
+   panel-breadcrumb sits above panel-title inside the header.
+   panel-body wraps all tab content with consistent padding.
 */
 
 .dashboard-page .panel {
-  background: #ffffff;
-  border: 1px solid #e7e7e7;
-  border-radius: 18px;
-  padding: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 6px 6px;
+  padding: 0;
+  position: relative;
+  padding-bottom: 60px;
 }
 
 .dashboard-page .panel-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Inline breadcrumb — sits above the panel title */
+.dashboard-page .panel-breadcrumb {
+  font-size: 11px;
+  color: #b0b4ac;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.dashboard-page .panel-breadcrumb span {
+  color: #6b7280;
 }
 
 .dashboard-page .panel-title {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
+  color: #1e1e1e;
+}
+
+/* Content wrapper inside the panel */
+.dashboard-page .panel-body {
+  padding: 14px 16px;
 }
 
 .dashboard-page .muted {
@@ -252,248 +336,411 @@
   margin: 0;
 }
 
-/* ── 8. Course cards & metrics grid ─────────────────────── */
-/*
-   Two-column grid of course cards, each showing:
-   course code, course title, and a 2x2 metrics sub-grid
-   (UPCOMING, TO-DO, CURR. GRADE — all from real backend data).
-*/
+/* ── 8. Course cards ─────────────────────────────────────── */
 
 .dashboard-page .card-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 12px;
+  gap: 12px;
 }
 
 .dashboard-page .course-card {
-  border: 1px solid #e7e7e7;
-  border-radius: 16px;
-  padding: 16px;
+  border: 1px solid #dde0d8;
+  border-radius: 0;
+  padding: 14px;
   background: #ffffff;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s;
 }
 
 .dashboard-page .course-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-  transform: translateY(-1px);
+  border-color: #a8c0a3;
 }
 
 .dashboard-page .course-card__top {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-/* Small all-caps course code label — e.g. "COMP3059". */
 .dashboard-page .course-code {
   font-weight: 900;
-  font-size: 11px;
-  letter-spacing: 0.6px;
-  color: #6b7280;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  color: #1e1e1e;
   text-transform: uppercase;
 }
 
-.dashboard-page .course-title {
-  font-weight: 800;
-  font-size: 15px;
-  margin-top: 4px;
-  color: #1e1e1e;
+.dashboard-page .course-schedule {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 3px;
+  font-weight: 500;
+  line-height: 1.6;
 }
 
-/* 2x2 grid of metric tiles inside each course card. */
 .dashboard-page .course-metrics {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-top: 10px;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #e4e7e0;
 }
 
 .dashboard-page .metric {
-  border: 1px solid #efefef;
-  border-radius: 12px;
-  padding: 10px;
+  padding: 10px 12px;
   background: #fafafa;
+  border: none;
+  border-radius: 0;
+}
+
+.dashboard-page .metric + .metric {
+  border-left: 1px solid #e4e7e0;
 }
 
 .dashboard-page .metric__label {
-  font-size: 10px;
-  letter-spacing: 0.5px;
+  font-size: 9px;
+  letter-spacing: 0.6px;
   color: #6b7280;
   font-weight: 800;
   text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.dashboard-page .upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dashboard-page .upcoming-item {
+  font-size: 11px;
+  color: #374151;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.dashboard-page .upcoming-item--overdue {
+  color: #b42318;
+  font-weight: 700;
+}
+
+.dashboard-page .metric--progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .dashboard-page .metric__value {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 900;
-  margin-top: 4px;
+  color: #1e1e1e;
+  margin-top: 2px;
+}
+
+.dashboard-page .progress-grade-label {
+  font-size: 9px;
+  letter-spacing: 0.6px;
+  color: #6b7280;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.dashboard-page .progress-grade-value {
+  font-size: 16px;
+  font-weight: 900;
   color: #1e1e1e;
 }
 
-/* ── 9. Task & Reminder row cards ────────────────────────── */
-/*
-   Single-column stack of rows for Tasks and Reminders tabs.
-   Each row shows a status dot, title, and right-aligned metadata.
-*/
+/* ── 9. Task & Reminder rows ─────────────────────────────── */
 
 .dashboard-page .stack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 12px;
+  gap: 8px;
 }
 
 .dashboard-page .row-card {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #e4e7e0;
   background: #ffffff;
-  border-radius: 14px;
-  padding: 13px 14px;
+  border-radius: 0;
+  padding: 12px 14px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: background 0.12s ease;
+  align-items: flex-start;
+  gap: 12px;
+  transition: background 0.12s;
+  cursor: pointer;
 }
 
 .dashboard-page .row-card:hover {
-  background: #f9fafb;
+  background: #f7f9f5;
 }
 
-.dashboard-page .row-card__left {
+.dashboard-page .row-status {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dashboard-page .status-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background: transparent;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+}
+
+.dashboard-page .status-icon--alert {
+  background: #1f2937;
+  border-color: #1f2937;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.dashboard-page .status-icon--done {
+  border-color: #374151;
+  color: #374151;
+}
+
+.dashboard-page .status-icon--pending {
+  border-color: #d1d5db;
+}
+
+.dashboard-page .row-card__body {
+  flex: 1;
+  min-width: 0;
 }
 
 .dashboard-page .row-title {
   font-weight: 700;
   font-size: 14px;
+  color: #1e1e1e;
+  line-height: 1.4;
 }
 
-.dashboard-page .row-meta {
-  font-size: 13px;
-  font-weight: 600;
+.dashboard-page .row-subtitle {
+  font-size: 12px;
   color: #6b7280;
-  text-align: right;
-  max-width: 50%;
+  margin-top: 2px;
+  font-weight: 500;
 }
 
-/* Square dot indicator for task status. */
-.dashboard-page .dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
-  border: 2px solid #1f2937;
-  background: transparent;
-  flex-shrink: 0;
+.dashboard-page .row-card--warm {
+  background: #fffdf5;
 }
 
-/* Warm-tinted dot for Reminders tab rows. */
-.dashboard-page .dot--warm {
-  border-color: #8a6a00;
+.dashboard-page .row-card--warm:hover {
+  background: #fff8e6;
+}
+
+.dashboard-page .row-card--overdue {
+  border-left: 3px solid #fca5a5;
 }
 
 /* ── 10. Grade cards ─────────────────────────────────────── */
-/*
-   Same two-column grid as courses.
-   Each card shows: course label, week-of label, grade percentage,
-   and the canMeetGoal flag from the CourseProgress model.
-*/
 
 .dashboard-page .grades-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .dashboard-page .grade-card {
-  border: 1px solid #e7e7e7;
-  border-radius: 16px;
-  padding: 16px;
+  border: 1px solid #dde0d8;
+  border-radius: 0;
   background: #ffffff;
-  transition: box-shadow 0.15s ease;
+  overflow: hidden;
+  transition: border-color 0.15s;
 }
 
 .dashboard-page .grade-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+  border-color: #b0b0d0;
 }
 
-.dashboard-page .grade-card__top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dashboard-page .grade-course {
-  font-weight: 800;
-  font-size: 14px;
-}
-
-.dashboard-page .grade-type {
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-}
-
-/* Large grade percentage display — centrepiece of the grade card. */
-.dashboard-page .grade-value {
-  font-size: 30px;
+.dashboard-page .grade-card__header {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e4e7e0;
   font-weight: 900;
-  margin-top: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
   color: #1e1e1e;
 }
 
-.dashboard-page .grade-foot {
-  margin-top: 6px;
-  font-size: 12px;
+.dashboard-page .grade-card__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.dashboard-page .grade-details {
+  padding: 10px 12px;
+  border-right: 1px solid #e4e7e0;
+}
+
+.dashboard-page .grade-details-label {
+  font-size: 9px;
+  letter-spacing: 0.6px;
   color: #6b7280;
-  font-weight: 600;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.dashboard-page .grade-detail-item {
+  font-size: 11px;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.dashboard-page .grade-progress {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dashboard-page .grade-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-page .grade-stat-label {
+  font-size: 9px;
+  letter-spacing: 0.6px;
+  color: #6b7280;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.dashboard-page .grade-stat-value {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1e1e1e;
+}
+
+.dashboard-page .grade-stat-value--lost {
+  color: #b42318;
 }
 
 /* ── 11. Selection state ─────────────────────────────────── */
-/*
-   Applied to any card/row when it is selected by the user.
-   Activates the Edit and Delete buttons in the left panel.
-   Uses a blue ring to match Figma's selection highlight.
-*/
 
 .dashboard-page .is-selected {
   outline: 2px solid #5b8def;
-  outline-offset: 1px;
-  border-radius: 16px;
+  outline-offset: -1px;
 }
 
-/* ── 12. Modal system ────────────────────────────────────── */
-/*
-   Shared modal classes used by ALL modal components:
-   AddCourseModal, EditCourseModal, AddTaskModal, EditTaskModal,
-   AddReminderModal, EditReminderModal, AddGradeModal,
-   EditGradeModal, and DeleteConfirmModal.
+/* ── 12. Task filter strip ───────────────────────────────── */
 
-   Modals are mounted at the root of Dashboard.jsx and rendered
-   on top of all content via z-index 100.
-*/
+.dashboard-page .filter-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+  align-items: center;
+}
 
-/* Full-screen semi-transparent overlay. Clicking it closes the modal. */
+.dashboard-page .filter-pill {
+  border: 1px solid #dde0d8;
+  background: #f3f4f0;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s;
+  color: #374151;
+}
+
+.dashboard-page .filter-pill:hover {
+  background: #e5e9e0;
+}
+
+.dashboard-page .filter-pill--active {
+  background: #b8cff5;
+  border-color: #8fb0ef;
+  color: #1e1e1e;
+}
+
+.dashboard-page .filter-select {
+  border: 1px solid #dde0d8;
+  background: #f3f4f0;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
+  color: #374151;
+}
+
+.dashboard-page .filter-select:focus {
+  border-color: #8fb0ef;
+}
+
+/* ── 13. Panel action bar (Edit / Delete) ────────────────── */
+
+.dashboard-page .panel-actions {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.dashboard-page .panel-action-btn {
+  border: 1px solid #e0e4db;
+  background: #ffffff;
+  border-radius: 0;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s;
+  color: #374151;
+}
+
+.dashboard-page .panel-action-btn:hover {
+  background: #f3f4f0;
+}
+
+.dashboard-page .panel-action-btn--delete {
+  color: #b42318;
+  border-color: #fca5a5;
+}
+
+.dashboard-page .panel-action-btn--delete:hover {
+  background: #fef2f2;
+}
+
+.dashboard-page .panel-action-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── 14. Modal system ────────────────────────────────────── */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.32);
   display: grid;
   place-items: center;
   z-index: 100;
 }
 
-/* White modal card container. */
 .modal-card {
   background: #ffffff;
-  border: 1px solid #e7e7e7;
-  border-radius: 18px;
+  border: 1px solid #e0e4db;
+  border-radius: 0;
   padding: 28px 24px 22px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
 }
 
-/* Narrower variant used by DeleteConfirmModal. */
 .modal-card--narrow {
   max-width: 340px;
   text-align: center;
@@ -501,14 +748,14 @@
 
 .modal-title {
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 900;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   margin: 0 0 20px 0;
   text-transform: uppercase;
+  color: #1e1e1e;
 }
 
-/* Form field stack inside the modal. */
 .modal-form {
   display: flex;
   flex-direction: column;
@@ -521,7 +768,6 @@
   gap: 4px;
 }
 
-/* Inline row layout used for checkbox fields (e.g. Bonus, Already Sent). */
 .modal-field--row {
   flex-direction: row;
   align-items: center;
@@ -529,25 +775,24 @@
 }
 
 .modal-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.6px;
-  color: #374151;
+  letter-spacing: 0.8px;
+  color: #9ca3af;
   text-transform: uppercase;
 }
 
-/* Borderless input — only a bottom border to match Figma's minimal style. */
 .modal-input {
   border: none;
   border-bottom: 1.5px solid #d1d5db;
   border-radius: 0;
-  padding: 8px 2px;
+  padding: 8px 0;
   font-size: 14px;
   font-family: inherit;
   outline: none;
   background: transparent;
   color: #1e1e1e;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s;
   width: 100%;
 }
 
@@ -555,34 +800,32 @@
   border-bottom-color: #374151;
 }
 
-/* Inline error message shown when validation fails. */
 .modal-error {
   color: #b42318;
-  font-size: 13px;
+  font-size: 12px;
   margin: 2px 0 0 0;
   font-weight: 600;
 }
 
-/* Action buttons row — right-aligned Cancel + Save/Delete. */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   margin-top: 22px;
 }
 
 .modal-btn {
-  border-radius: 999px;
-  padding: 10px 24px;
+  border-radius: 0;
+  padding: 10px 22px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
-  border: 1px solid #e7e7e7;
-  transition: background 0.15s ease;
+  border: 1px solid #e0e4db;
+  transition: background 0.12s;
 }
 
 .modal-btn:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -592,10 +835,9 @@
 }
 
 .modal-btn--cancel:hover:not(:disabled) {
-  background: #f3f4f6;
+  background: #f3f4f0;
 }
 
-/* Save button — green tint matching the Figma primary action colour. */
 .modal-btn--save {
   background: #dfeee0;
   border-color: #c7dfc9;
@@ -603,13 +845,12 @@
 }
 
 .modal-btn--save:hover:not(:disabled) {
-  background: #d3e8d5;
+  background: #cce3ce;
 }
 
-/* Delete confirm button — red tint for destructive action. */
 .modal-btn--delete {
   background: #fee2e2;
-  border-color: #fecaca;
+  border-color: #fca5a5;
   color: #b42318;
 }
 
@@ -617,10 +858,10 @@
   background: #fecaca;
 }
 
-/* Item label shown in DeleteConfirmModal above the warning text. */
 .modal-delete-label {
   font-weight: 800;
   margin: 0 0 8px 0;
+  font-size: 15px;
 }
 
 .modal-delete-warning {
@@ -628,3 +869,262 @@
   font-size: 13px;
   margin: 0 0 6px 0;
 }
+
+/* ── 15. Sidebar panels (Search / Theme / Profile) ───────── */
+
+.sidebar-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: transparent;
+}
+
+.sidebar-panel {
+  position: fixed;
+  left: 260px;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e0e4db;
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  z-index: 51;
+  animation: slideIn 0.15s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-12px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+.sidebar-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #e0e4db;
+}
+
+.sidebar-panel__title {
+  font-weight: 800;
+  font-size: 14px;
+  color: #1e1e1e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-panel__close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: #6b7280;
+  padding: 4px 8px;
+  border-radius: 0;
+}
+
+.sidebar-panel__close:hover {
+  color: #1e1e1e;
+  background: #f3f4f0;
+}
+
+.sidebar-panel__body {
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-panel__label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.search-input {
+  width: 100%;
+  border: 1px solid #e0e4db;
+  border-radius: 0;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  margin-bottom: 14px;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: #374151;
+  background: #ffffff;
+}
+
+.search-empty {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+
+.search-group {
+  margin-bottom: 14px;
+}
+
+.search-group__label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.search-result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border: none;
+  border-bottom: 1px solid #f0f2ec;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+
+.search-result:hover {
+  background: #f3f4f0;
+}
+
+.search-result__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.search-result__meta {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.theme-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.theme-toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #e5e7eb;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  padding: 0;
+}
+
+.theme-toggle--on {
+  background: #2e4057;
+  border-color: #2e4057;
+}
+
+.theme-toggle__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.2s;
+  display: block;
+}
+
+.theme-toggle--on .theme-toggle__knob {
+  transform: translateX(20px);
+}
+
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 0;
+  background: #d9eed7;
+  border: 1px solid #b8d9b4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e5c1a;
+  margin-bottom: 12px;
+}
+
+.profile-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e1e1e;
+  margin: 0 0 4px 0;
+}
+
+.profile-email {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── 16. Dark mode ───────────────────────────────────────── */
+
+.dark-mode .dashboard-page .sidebar              { background: #1a1f1a; border-color: #2a2f2a; }
+.dark-mode .dashboard-page .brand               { color: #f0f4ee; }
+.dark-mode .dashboard-page .subpanel-item        { background: #222722; border-color: #2a2f2a; color: #e0e4db; }
+.dark-mode .dashboard-page .subpanel-item:hover  { background: #2a2f2a; }
+.dark-mode .dashboard-page .subpanel-item--soft  { background: #1e2320; }
+.dark-mode .dashboard-page .main                { background: #16181a !important; }
+.dark-mode .dashboard-page .panel               { background: rgba(30, 32, 34, 0.92); border-color: #2a2d30; }
+.dark-mode .dashboard-page .panel-title         { color: #f0f4ee; }
+.dark-mode .dashboard-page .panel-breadcrumb    { color: #4a4f48; }
+.dark-mode .dashboard-page .panel-breadcrumb span { color: #7a8578; }
+.dark-mode .dashboard-page .panel-header        { border-color: rgba(255,255,255,0.06); }
+.dark-mode .dashboard-page .course-card         { background: #242628; border-color: #2e3033; }
+.dark-mode .dashboard-page .course-code         { color: #c0c8bc; }
+.dark-mode .dashboard-page .course-schedule     { color: #7a8578; }
+.dark-mode .dashboard-page .metric              { background: #1a1c1e; border-color: #2e3033; }
+.dark-mode .dashboard-page .metric__label       { color: #7a8578; }
+.dark-mode .dashboard-page .metric__value       { color: #e8ede6; }
+.dark-mode .dashboard-page .row-card            { background: #1e2022; border-color: #2a2d30; }
+.dark-mode .dashboard-page .row-card:hover      { background: #242628; }
+.dark-mode .dashboard-page .row-title           { color: #e8ede6; }
+.dark-mode .dashboard-page .row-subtitle        { color: #7a8578; }
+.dark-mode .dashboard-page .grade-card          { background: #1e2022; border-color: #2a2d30; }
+.dark-mode .dashboard-page .grade-card__header  { color: #e8ede6; border-color: #2a2d30; }
+.dark-mode .dashboard-page .grade-stat-value    { color: #e8ede6; }
+.dark-mode .dashboard-page .grade-details-label { color: #7a8578; }
+.dark-mode .dashboard-page .grade-detail-item   { color: #b0b8ac; }
+.dark-mode .dashboard-page .muted               { color: #7a8578; }
+.dark-mode .dashboard-page .filter-pill         { background: #2a2d30; border-color: #3a3d40; color: #c0c8bc; }
+.dark-mode .dashboard-page .filter-select       { background: #2a2d30; border-color: #3a3d40; color: #c0c8bc; }
+.dark-mode .dashboard-page .panel-action-btn    { background: #2a2d30; border-color: #3a3d40; color: #c0c8bc; }
+.dark-mode .dashboard-page .top-tabs            { background: #2a2d28; }
+.dark-mode .dashboard-page .tab                 { background: #222520; color: #6a7060; border-top: 3px solid transparent; }
+.dark-mode .dashboard-page .tab:hover           { background: #2e3228; color: #a0a898; }
+.dark-mode .dashboard-page .tab--active         { background: #1e2022; color: #e8ede6; }
+.dark-mode .sidebar-panel                       { background: #1e2022; border-color: #2a2d30; }
+.dark-mode .sidebar-panel__title                { color: #e8ede6; }
+.dark-mode .sidebar-panel__header               { border-color: #2a2d30; }
+.dark-mode .search-input                        { background: #2a2d30; border-color: #3a3d40; color: #e8ede6; }
+.dark-mode .search-result                       { border-color: #2a2d30; }
+.dark-mode .search-result:hover                 { background: #2a2d30; }
+.dark-mode .search-result__title                { color: #e8ede6; }
+.dark-mode .profile-name                        { color: #e8ede6; }
+.dark-mode .profile-email                       { color: #7a8578; }
+.dark-mode .theme-toggle-row                    { color: #c0c8bc; }

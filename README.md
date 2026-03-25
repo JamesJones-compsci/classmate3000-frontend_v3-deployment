@@ -1,48 +1,54 @@
 # ClassMate — Frontend
 
-React + Vite frontend for the ClassMate student dashboard application.  
-Connects to the ClassMate microservices backend via API Gateway.
+React + Vite frontend. Connects to the ClassMate microservices backend via API Gateway on port `8091`.
+
+---
 
 ## Stack
 
-- React 18
-- Vite
+- React 18 + Vite
 - React Router v6
-- Axios
-- Plain CSS (no UI framework)
+- Axios (JWT interceptor)
+- Plain CSS — no UI framework
 
-## Getting Started
+---
 
-### Prerequisites
-
-- Node.js 18+
-- ClassMate backend running locally (see [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3))
-
-### Setup
+## Quick Start
 ```bash
 npm install
+npm run dev
 ```
 
-Create a `.env` file in the project root:
+Create `.env` in project root:
 ```env
 VITE_API_GATEWAY_URL=http://localhost:8091
 ```
 
-### Run
-```bash
-npm run dev
-```
+App → `http://localhost:5173`
 
-App runs at `http://localhost:5173`.
+> Backend must be running first. See [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3)
 
 ---
 
-## Auth
+## Auth Flow
+```
+User fills Login/Signup
+        ↓
+POST /api/v1/auth/login  or  /register
+        ↓
+Backend returns JWT token
+        ↓
+Token stored in sessionStorage (clears on tab close)
+        ↓
+Axios interceptor attaches token to every request
+        ↓
+API Gateway validates token → routes to service
+```
 
-JWT-based authentication. Login and register endpoints are public.  
-All other requests require a valid Bearer token, which is automatically attached by the Axios interceptor in `src/api/axios.js`.
-
-Token is stored in `localStorage` under the key `token`.
+- Public routes: `/login`, `/signup`
+- All other routes: protected via `ProtectedRoute.jsx`
+- Token location: `sessionStorage` key `"token"`
+- ⚠️ Do NOT change to `localStorage` — security requirement
 
 ---
 
@@ -50,60 +56,103 @@ Token is stored in `localStorage` under the key `token`.
 ```
 src/
 ├── api/
-│   └── axios.js              # Axios instance + JWT interceptor
+│   └── axios.js                 # Axios instance. Attaches Bearer token. Default port: 8091
+│
 ├── auth/
-│   ├── AuthContext.jsx        # Global auth state (login, logout, user)
-│   └── ProtectedRoute.jsx     # Redirects to /login if no token
+│   ├── AuthContext.jsx           # login(), logout(), user state (token + firstName + lastName)
+│   └── ProtectedRoute.jsx        # Redirects to /login if no token in sessionStorage
+│
 ├── components/
-│   ├── Sidebar.jsx            # Left sidebar wrapper
-│   ├── LeftPanel.jsx          # Tab-aware action menu (Add, Edit, Delete)
-│   ├── Navbar.jsx
-│   ├── AppShell.jsx
+│   ├── Sidebar.jsx               # Brand, user initials, bell icon, LeftPanel, Logout
+│   ├── LeftPanel.jsx             # Tab-aware action menu: Add / Edit / Delete / All
+│   ├── Navbar.jsx                # Top tab navigation
+│   ├── AppShell.jsx              # Layout wrapper
 │   └── modals/
-│       ├── AddCourseModal.jsx
-│       ├── EditCourseModal.jsx
-│       ├── AddTaskModal.jsx    # Course dropdown populated from live data
-│       ├── EditTaskModal.jsx   # Course dropdown populated from live data
-│       ├── AddReminderModal.jsx  # Task dropdown populated from live data
-│       ├── EditReminderModal.jsx # Task dropdown populated from live data
-│       ├── AddGradeModal.jsx   # Course dropdown populated from live data
-│       ├── EditGradeModal.jsx  # Course dropdown populated from live data
-│       └── DeleteConfirmModal.jsx  # Shared confirm dialog for all item types
+│       ├── AddCourseModal.jsx    # Requires: code, title, instructor, gradeGoal, startWeek, meetings[]
+│       ├── EditCourseModal.jsx   # Pre-populates meetings[0] from backend
+│       ├── AddTaskModal.jsx      # Course dropdown (live)
+│       ├── EditTaskModal.jsx     # Course dropdown (live)
+│       ├── AddReminderModal.jsx  # Task dropdown (live)
+│       ├── EditReminderModal.jsx # Task dropdown (live)
+│       ├── AddGradeModal.jsx     # Course dropdown (live), weekOf auto-set to Monday
+│       ├── EditGradeModal.jsx    # Course dropdown (live)
+│       └── DeleteConfirmModal.jsx # Shared confirm dialog — works for all item types
+│
 ├── mocks/
-│   └── loadMockCourses.js     # Fallback data when backend is unavailable
+│   └── loadMockCourses.js        # Shown on Courses tab if backend is unreachable
+│
 ├── pages/
-│   ├── Login.jsx
-│   ├── Signup.jsx
-│   └── Dashboard.jsx          # Main page — owns all state and API calls
+│   ├── Login.jsx                 # Email + password. Status-based error messages.
+│   ├── Signup.jsx                # firstName, lastName, email, password (min 6 chars)
+│   └── Dashboard.jsx             # Owns ALL state and API calls. Everything flows from here.
+│
 └── styles/
-    ├── index.css
-    ├── dashboard.css          # Dashboard layout + modal CSS
-    └── App.css
+    ├── App.css                   # Resets Vite scaffold defaults only
+    ├── index.css                 # Global base styles + Login/Signup auth styles
+    └── dashboard.css             # Dashboard layout, cards, modals, filter strip, sidebar
 ```
 
 ---
 
-## Dashboard
+## Dashboard Tabs
 
-The dashboard has four tabs: **Courses**, **Tasks**, **Reminders**, **Grades**.
-
-Each tab supports full CRUD:
-
-| Tab | Backend endpoint | Primary key | Dropdown dependencies |
+| Tab | Endpoint | Key | Dropdowns |
 |---|---|---|---|
 | Courses | `/api/v1/courses` | `courseId` | — |
-| Tasks | `/api/v1/tasks` | `taskId` | Course name dropdown |
-| Reminders | `/api/v1/reminders` | `reminderId` | Task title dropdown |
-| Grades | `/api/v1/course-progress` | `progressId` | Course name dropdown |
+| Tasks | `/api/v1/tasks` | `taskId` | Course |
+| Reminders | `/api/v1/reminders` | `reminderId` | Task |
+| Grades | `/api/v1/course-progress` | `progressId` | Course |
 
-Clicking any item selects it and activates the **Edit** and **Delete** buttons in the left panel.  
-All write operations update the local state immediately without a full page reload.
+**How selection works:**
+1. Click any card/row → item is selected (blue outline)
+2. Edit + Delete buttons activate in the left panel
+3. Click Edit → modal pre-filled with existing data
+4. Click Delete → confirm dialog → item removed
 
-Add/Edit forms use live data dropdowns instead of raw ID inputs — courses are passed to Task and Grade modals, tasks are passed to Reminder modals.
+**Tasks tab extras:**
+- Sorted by due date (nearest first)
+- Filter strip: `All` · `Overdue` · `Due Today` · `This Week` · `By Course ▾`
+- Overdue tasks → red left border
+
+**Sidebar:**
+- Bell icon → badge shows overdue + due-today count → click navigates to Tasks tab
+- User initials circle → derived from firstName + lastName stored in sessionStorage
+
+---
+
+## Course Model (backend required fields)
+```json
+{
+  "code": "COMP3059",
+  "title": "Capstone I",
+  "instructor": "Prof. Laily Ajellu",
+  "gradeGoal": 75,
+  "startWeek": "2026-01-06",
+  "meetings": [
+    { "dayOfWeek": 2, "startTime": "10:00:00", "endTime": "12:00:00" }
+  ]
+}
+```
+
+> `dayOfWeek`: 1 = Monday, 7 = Sunday (ISO standard)
+> All fields are required — backend returns 400 if any are missing
+
+---
+
+## Known Issues / Open Items
+
+| Issue | Status |
+|---|---|
+| Keycloak integration | Deferred to v2 — current auth uses JJWT |
+| Integration tests outdated after model overhaul | In progress |
+| API Gateway occasional routing instability | Being debugged |
+| courseId int/Long mismatch across services | Frontend coerces to Number as workaround |
 
 ---
 
 ## Backend
 
-See [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3) for setup instructions.  
-The frontend expects the API Gateway on port `8091`.
+Repo: [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3)
+```bash
+docker compose up -d
+```
