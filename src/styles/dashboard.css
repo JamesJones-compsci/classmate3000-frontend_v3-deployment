@@ -214,15 +214,11 @@
   flex-shrink: 0;
 }
 
-/* ── 5. Top tabs (raised card style) ────────────────────── */
-/*
-   Tabs sit on a muted bar. Active tab is white and raised by 2px,
-   connecting seamlessly to the panel below via margin-bottom: -1px.
-   Each active tab has a per-tab coloured 3px top accent border.
-*/
+/* ── 5. Top tabs — full width ────────────────────────────── */
 
 .dashboard-page .top-tabs {
-  display: inline-flex;
+  display: flex;          /* full width */
+  width: 100%;
   background: #c8cfc2;
   padding: 6px 6px 0;
   gap: 2px;
@@ -232,18 +228,22 @@
   align-items: flex-end;
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
 }
 
+/* Tabs fill available space equally */
 .dashboard-page .tab {
+  flex: 1;
   border: none;
   border-top: 3px solid transparent;
   background: #b0b8a8;
-  padding: 8px 20px 9px;
+  padding: 10px 20px 11px;
   border-radius: 0;
   cursor: pointer;
   font-weight: 600;
   font-size: 13px;
   color: #4a5240;
+  text-align: center;
   transition: background 0.12s ease, color 0.12s ease;
   position: relative;
   bottom: 0;
@@ -262,7 +262,7 @@
   background: #ffffff;
   color: #1e1e1e;
   font-weight: 700;
-  padding-bottom: 11px;
+  padding-bottom: 13px;
   bottom: -2px;
   z-index: 1;
 }
@@ -275,28 +275,32 @@
 /* ── 6. Main area ────────────────────────────────────────── */
 
 .dashboard-page .main {
-  padding: 24px 20px 40px;
+  padding: 20px 20px 40px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f4f6ef;
 }
 
 .dashboard-page .content {
   margin-top: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── 7. Panel ────────────────────────────────────────────── */
-/*
-   Panel uses zero top padding — the panel-header handles spacing.
-   panel-breadcrumb sits above panel-title inside the header.
-   panel-body wraps all tab content with consistent padding.
-*/
 
 .dashboard-page .panel {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 0 0 6px 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
   padding: 0;
   position: relative;
   padding-bottom: 60px;
+  flex: 1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .dashboard-page .panel-header {
@@ -304,10 +308,9 @@
   flex-direction: column;
   gap: 2px;
   padding: 14px 16px 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid #f0f1ec;
 }
 
-/* Inline breadcrumb — sits above the panel title */
 .dashboard-page .panel-breadcrumb {
   font-size: 11px;
   color: #b0b4ac;
@@ -326,7 +329,6 @@
   color: #1e1e1e;
 }
 
-/* Content wrapper inside the panel */
 .dashboard-page .panel-body {
   padding: 14px 16px;
 }
@@ -336,24 +338,32 @@
   margin: 0;
 }
 
+/* Per-tab left accent on panel — matches active tab top border colour */
+.dashboard-page .panel[data-panel="Courses"]   { border-left: 3px solid #5a9e5a; }
+.dashboard-page .panel[data-panel="Tasks"]     { border-left: 3px solid #5a8ed4; }
+.dashboard-page .panel[data-panel="Reminders"] { border-left: 3px solid #c4a020; }
+.dashboard-page .panel[data-panel="Grades"]    { border-left: 3px solid #9a60c8; }
+
 /* ── 8. Course cards ─────────────────────────────────────── */
 
 .dashboard-page .card-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .dashboard-page .course-card {
-  border: 1px solid #dde0d8;
-  border-radius: 0;
-  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
   background: #ffffff;
-  transition: border-color 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.15s, border-color 0.15s;
 }
 
 .dashboard-page .course-card:hover {
-  border-color: #a8c0a3;
+  border-color: #c8d8c4;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .dashboard-page .course-card__top {
@@ -379,18 +389,20 @@
 .dashboard-page .course-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border: 1px solid #e4e7e0;
+  border: 1px solid #f0f1ec;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .dashboard-page .metric {
   padding: 10px 12px;
-  background: #fafafa;
+  background: #fafaf8;
   border: none;
   border-radius: 0;
 }
 
 .dashboard-page .metric + .metric {
-  border-left: 1px solid #e4e7e0;
+  border-left: 1px solid #f0f1ec;
 }
 
 .dashboard-page .metric__label {
@@ -460,19 +472,21 @@
 }
 
 .dashboard-page .row-card {
-  border: 1px solid #e4e7e0;
+  border: 1px solid #e5e7eb;
   background: #ffffff;
-  border-radius: 0;
+  border-radius: 10px;
   padding: 12px 14px;
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  transition: background 0.12s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.12s, border-color 0.12s;
   cursor: pointer;
 }
 
 .dashboard-page .row-card:hover {
-  background: #f7f9f5;
+  border-color: #c8d8c4;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
 }
 
 .dashboard-page .row-status {
@@ -528,11 +542,11 @@
 }
 
 .dashboard-page .row-card--warm {
-  background: #fffdf5;
+  background: #fffdf8;
 }
 
 .dashboard-page .row-card--warm:hover {
-  background: #fff8e6;
+  border-color: #e8d890;
 }
 
 .dashboard-page .row-card--overdue {
@@ -546,20 +560,22 @@
 }
 
 .dashboard-page .grade-card {
-  border: 1px solid #dde0d8;
-  border-radius: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   background: #ffffff;
   overflow: hidden;
-  transition: border-color 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.15s, border-color 0.15s;
 }
 
 .dashboard-page .grade-card:hover {
-  border-color: #b0b0d0;
+  border-color: #c8c0e0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .dashboard-page .grade-card__header {
   padding: 10px 12px;
-  border-bottom: 1px solid #e4e7e0;
+  border-bottom: 1px solid #f0f1ec;
   font-weight: 900;
   font-size: 13px;
   text-transform: uppercase;
@@ -574,7 +590,7 @@
 
 .dashboard-page .grade-details {
   padding: 10px 12px;
-  border-right: 1px solid #e4e7e0;
+  border-right: 1px solid #f0f1ec;
 }
 
 .dashboard-page .grade-details-label {
@@ -623,7 +639,6 @@
 .dashboard-page .grade-stat-value--lost {
   color: #b42318;
 }
-
 /* ── 11. Selection state ─────────────────────────────────── */
 
 .dashboard-page .is-selected {
@@ -1090,22 +1105,22 @@
 .dark-mode .dashboard-page .subpanel-item:hover  { background: #2a2f2a; }
 .dark-mode .dashboard-page .subpanel-item--soft  { background: #1e2320; }
 .dark-mode .dashboard-page .main                { background: #16181a !important; }
-.dark-mode .dashboard-page .panel               { background: rgba(30, 32, 34, 0.92); border-color: #2a2d30; }
+.dark-mode .dashboard-page .panel               { background: rgba(30, 32, 34, 0.92); border-color: #2a2d30; box-shadow: none; }
 .dark-mode .dashboard-page .panel-title         { color: #f0f4ee; }
 .dark-mode .dashboard-page .panel-breadcrumb    { color: #4a4f48; }
 .dark-mode .dashboard-page .panel-breadcrumb span { color: #7a8578; }
 .dark-mode .dashboard-page .panel-header        { border-color: rgba(255,255,255,0.06); }
-.dark-mode .dashboard-page .course-card         { background: #242628; border-color: #2e3033; }
+.dark-mode .dashboard-page .course-card { background: #242628; border-color: #2e3033; box-shadow: none; }
 .dark-mode .dashboard-page .course-code         { color: #c0c8bc; }
 .dark-mode .dashboard-page .course-schedule     { color: #7a8578; }
 .dark-mode .dashboard-page .metric              { background: #1a1c1e; border-color: #2e3033; }
 .dark-mode .dashboard-page .metric__label       { color: #7a8578; }
 .dark-mode .dashboard-page .metric__value       { color: #e8ede6; }
-.dark-mode .dashboard-page .row-card            { background: #1e2022; border-color: #2a2d30; }
+.dark-mode .dashboard-page .row-card { background: #1e2022; border-color: #2a2d30; box-shadow: none; }
 .dark-mode .dashboard-page .row-card:hover      { background: #242628; }
 .dark-mode .dashboard-page .row-title           { color: #e8ede6; }
 .dark-mode .dashboard-page .row-subtitle        { color: #7a8578; }
-.dark-mode .dashboard-page .grade-card          { background: #1e2022; border-color: #2a2d30; }
+.dark-mode .dashboard-page .grade-card { background: #1e2022; border-color: #2a2d30; box-shadow: none; }
 .dark-mode .dashboard-page .grade-card__header  { color: #e8ede6; border-color: #2a2d30; }
 .dark-mode .dashboard-page .grade-stat-value    { color: #e8ede6; }
 .dark-mode .dashboard-page .grade-details-label { color: #7a8578; }

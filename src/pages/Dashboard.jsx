@@ -356,7 +356,7 @@ export default function Dashboard() {
 
     if (loading) {
       return (
-        <div className="panel">
+        <div className="panel" data-panel={activeTab}>
           <div className="panel-header">
             <div className="panel-breadcrumb">Home &gt; <span>{activeTab}</span></div>
             <h2 className="panel-title">{activeTab}</h2>
@@ -370,7 +370,7 @@ export default function Dashboard() {
 
     if (error) {
       return (
-        <div className="panel">
+        <div className="panel" data-panel={activeTab}>
           <div className="panel-header">
             <div className="panel-breadcrumb">Home &gt; <span>{activeTab}</span></div>
             <h2 className="panel-title">{activeTab}</h2>
@@ -385,7 +385,7 @@ export default function Dashboard() {
     // ── Courses ──
     if (activeTab === "Courses") {
       return (
-        <div className="panel">
+        <div className="panel" data-panel="Courses">
           <div className="panel-header">
             <div className="panel-breadcrumb">Home &gt; <span>Courses</span> &gt; <span>All Courses</span></div>
             <h2 className="panel-title">Courses</h2>
@@ -503,7 +503,7 @@ export default function Dashboard() {
       });
 
       return (
-        <div className="panel">
+        <div className="panel" data-panel="Tasks">
           <div className="panel-header">
             <div className="panel-breadcrumb">Home &gt; <span>Tasks</span> &gt; <span>All Tasks</span></div>
             <h2 className="panel-title">Tasks</h2>
@@ -575,7 +575,7 @@ export default function Dashboard() {
     // ── Reminders ──
     if (activeTab === "Reminders") {
       return (
-        <div className="panel">
+        <div className="panel" data-panel="Reminders">
           <div className="panel-header">
             <div className="panel-breadcrumb">Home &gt; <span>Reminders</span> &gt; <span>All Reminders</span></div>
             <h2 className="panel-title">Reminders</h2>
@@ -628,7 +628,7 @@ export default function Dashboard() {
     // ── Grades ──
     if (activeTab === "Grades") {
       return (
-        <div className="panel">
+        <div className="panel" data-panel="Grades">
           <div className="panel-header">
             <div className="panel-breadcrumb">Home &gt; <span>Grades</span> &gt; <span>All Grades</span></div>
             <h2 className="panel-title">Grades</h2>
@@ -760,7 +760,7 @@ export default function Dashboard() {
         onPanelOpen={setSidebarPanel}
       />
 
-      <main className="main" style={{ background: TAB_THEME[activeTab]?.bg ?? "#fff" }}>
+      <main className="main" style={{ background: TAB_THEME[activeTab]?.bg ?? "#f4f6ef" }}>
         <div className="top-tabs">
           {TABS.map((t) => (
             <button key={t} type="button" data-tab={t}
