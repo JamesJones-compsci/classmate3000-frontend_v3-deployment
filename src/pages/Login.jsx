@@ -7,6 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
 import { useAuth } from "../auth/AuthContext";
 
+// Penny - imports needed to circumvent login
+import { USE_MOCK_AUTH } from "../config/env";
+import { getMockUser } from "../mocks/auth.mock";
+
+console.log("Login page USE_MOCK_AUTH =", USE_MOCK_AUTH);
+
+
 export default function Login() {
   const [email,        setEmail]        = useState("");
   const [password,     setPassword]     = useState("");
@@ -18,6 +25,23 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Penny - added to circumvent login during front end refactor
+    if (USE_MOCK_AUTH) {
+        const mockUser = getMockUser(email.trim() || "dev@classmate.local");
+        login(
+          mockUser.token,
+          mockUser.firstName,
+          mockUser.lastName,
+          mockUser.email
+        );
+      navigate("/dashboard");
+      return;
+    }
+    // Penny - login circumvention end
+
+
+
     setError("");
     setIsSubmitting(true);
 
