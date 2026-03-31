@@ -10,7 +10,7 @@
 
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../api/axios";
+import { apiClient } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
 function EyeIcon({ open }) {
@@ -71,7 +71,7 @@ export default function Signup() {
     setIsSubmitting(true);
 
     try {
-      const res = await api.post("/api/v1/auth/register", {
+      const res = await apiClient.post("/api/v1/auth/register", {
         firstName: firstName.trim(),
         lastName:  lastName.trim(),
         email:     email.trim(),

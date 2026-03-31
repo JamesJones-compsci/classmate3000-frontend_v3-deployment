@@ -15,7 +15,7 @@
 //   - darkMode is persisted in sessionStorage and applied as a class on document.documentElement.
 
 import { useEffect, useState } from "react";
-import { api } from "../api/axios";
+import { apiClient } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { loadMockCourses } from "../mocks/loadMockCourses";
@@ -190,7 +190,7 @@ export default function Dashboard() {
     };
     const fetchTasks = async () => {
       try {
-        const res = await api.get("/api/v1/tasks");
+        const res = await apiClient.get("/api/v1/tasks"); // TODO: -> Client
         if (isMounted) { setTasks(Array.isArray(res.data) ? res.data : []); setTabError("Tasks", null); }
       } catch (err) {
         if (handle401(err)) return;
@@ -199,7 +199,7 @@ export default function Dashboard() {
     };
     const fetchProgress = async () => {
       try {
-        const res = await api.get("/api/v1/course-progress");
+        const res = await apiClient.get("/api/v1/course-progress");
         if (isMounted) { setProgressSnapshots(Array.isArray(res.data) ? res.data : []); setTabError("Grades", null); }
       } catch (err) {
         if (handle401(err)) return;
@@ -208,7 +208,7 @@ export default function Dashboard() {
     };
     const fetchReminders = async () => {
       try {
-        const res = await api.get("/api/v1/reminders");
+        const res = await apiClient.get("/api/v1/reminders");
         if (isMounted) { setReminders(Array.isArray(res.data) ? res.data : []); setTabError("Reminders", null); }
       } catch (err) {
         if (handle401(err)) return;
@@ -223,27 +223,27 @@ export default function Dashboard() {
 
   // ─── Course CRUD ──────────────────────────────────────────────────────────────
 
-  const createCourse = async (d) => { const res = await api.post("/api/v1/courses", d); setCourses((p) => [...p, res.data]); };
+  const createCourse = async (d) => { const res = await apiClient.post("/api/v1/courses", d); setCourses((p) => [...p, res.data]); };
   const updateCourse = async (id, d) => { const res = await api.put(`/api/v1/courses/${id}`, d); setCourses((p) => p.map((c) => (c.courseId === id ? res.data : c))); setSelectedItem(null); };
-  const deleteCourse = async (id) => { await api.delete(`/api/v1/courses/${id}`); setCourses((p) => p.filter((c) => c.courseId !== id)); setSelectedItem(null); };
+  const deleteCourse = async (id) => { await apiClient.delete(`/api/v1/courses/${id}`); setCourses((p) => p.filter((c) => c.courseId !== id)); setSelectedItem(null); };
 
   // ─── Task CRUD ────────────────────────────────────────────────────────────────
 
-  const createTask = async (d) => { const res = await api.post("/api/v1/tasks", d); setTasks((p) => [...p, res.data]); };
+  const createTask = async (d) => { const res = await apiClient.post("/api/v1/tasks", d); setTasks((p) => [...p, res.data]); };
   const updateTask = async (id, d) => { const res = await api.put(`/api/v1/tasks/${id}`, d); setTasks((p) => p.map((t) => (t.taskId === id ? res.data : t))); setSelectedItem(null); };
-  const deleteTask = async (id) => { await api.delete(`/api/v1/tasks/${id}`); setTasks((p) => p.filter((t) => t.taskId !== id)); setSelectedItem(null); };
+  const deleteTask = async (id) => { await apiClient.delete(`/api/v1/tasks/${id}`); setTasks((p) => p.filter((t) => t.taskId !== id)); setSelectedItem(null); };
 
   // ─── Reminder CRUD ────────────────────────────────────────────────────────────
 
-  const createReminder = async (d) => { const res = await api.post("/api/v1/reminders", d); setReminders((p) => [...p, res.data]); };
+  const createReminder = async (d) => { const res = await apiClient.post("/api/v1/reminders", d); setReminders((p) => [...p, res.data]); };
   const updateReminder = async (id, d) => { const res = await api.put(`/api/v1/reminders/${id}`, d); setReminders((p) => p.map((r) => (r.reminderId === id ? res.data : r))); setSelectedItem(null); };
-  const deleteReminder = async (id) => { await api.delete(`/api/v1/reminders/${id}`); setReminders((p) => p.filter((r) => r.reminderId !== id)); setSelectedItem(null); };
+  const deleteReminder = async (id) => { await apiClient.delete(`/api/v1/reminders/${id}`); setReminders((p) => p.filter((r) => r.reminderId !== id)); setSelectedItem(null); };
 
   // ─── Grade CRUD ───────────────────────────────────────────────────────────────
 
-  const createGrade = async (d) => { const res = await api.post("/api/v1/course-progress", d); setProgressSnapshots((p) => [...p, res.data]); };
+  const createGrade = async (d) => { const res = await apiClient.post("/api/v1/course-progress", d); setProgressSnapshots((p) => [...p, res.data]); };
   const updateGrade = async (id, d) => { const res = await api.put(`/api/v1/course-progress/${id}`, d); setProgressSnapshots((p) => p.map((s) => (s.progressId === id ? res.data : s))); setSelectedItem(null); };
-  const deleteGrade = async (id) => { await api.delete(`/api/v1/course-progress/${id}`); setProgressSnapshots((p) => p.filter((s) => s.progressId !== id)); setSelectedItem(null); };
+  const deleteGrade = async (id) => { await apiClient.delete(`/api/v1/course-progress/${id}`); setProgressSnapshots((p) => p.filter((s) => s.progressId !== id)); setSelectedItem(null); };
 
   // ─── Handlers ─────────────────────────────────────────────────────────────────
 

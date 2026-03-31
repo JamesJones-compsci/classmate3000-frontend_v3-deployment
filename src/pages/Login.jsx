@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../api/axios";
+import { apiClient } from "../api/client"; // Penny - Refactor as part of centralizing api endpoints
 import { useAuth } from "../auth/AuthContext";
 
 // Penny - imports needed to circumvent login
@@ -46,7 +46,7 @@ export default function Login() {
     setIsSubmitting(true);
 
     try {
-      const res = await api.post("/api/v1/auth/login", {
+      const res = await apiClient.post("/api/v1/auth/login", { // TODO: Changed from api.post t apiClient.post - was this right?
         email: email.trim(),
         password,
       });
