@@ -3,6 +3,7 @@ import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
 import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import Button from "../../../components/ui/Button";
 import { useCourses } from "../hooks/useCourses";
 import CourseCard from "../components/CourseCard";
 import CourseForm from "../components/CourseForm";
@@ -21,29 +22,23 @@ export default function CoursesPage() {
       <SectionHeader title="Courses" breadcrumb="Home > Courses > All Courses" />
 
       <div className={styles.toolbar}>
-        <button className={styles.primaryBtn} onClick={() => setShowCreate(true)}>
+        <Button variant="courses" onClick={() => setShowCreate(true)}>
           Add Course
-        </button>
-        <button
-          className={styles.secondaryBtn}
-          disabled={!selectedCourse}
-          onClick={() => setShowEdit(true)}
-        >
+        </Button>
+        <Button variant="secondary" disabled={!selectedCourse} onClick={() => setShowEdit(true)}>
           Edit
-        </button>
-        <button
-          className={styles.deleteBtn}
-          disabled={!selectedCourse}
-          onClick={() => setShowDelete(true)}
-        >
+        </Button>
+        <Button variant="danger" disabled={!selectedCourse} onClick={() => setShowDelete(true)}>
           Delete
-        </button>
+        </Button>
       </div>
 
       <div className={styles.body}>
-        {loading && <EmptyState message="Loading courses..." />}
-        {!loading && error && <EmptyState message={error} />}
-        {!loading && !error && courses.length === 0 && <EmptyState message="No courses yet." />}
+        {loading && <EmptyState title="Loading" message="Loading courses..." />}
+        {!loading && error && <EmptyState title="Error" message={error} />}
+        {!loading && !error && courses.length === 0 && (
+          <EmptyState title="No courses yet" message="Create your first course to get started." />
+        )}
 
         {!loading && !error && courses.length > 0 && (
           <div className={styles.grid}>

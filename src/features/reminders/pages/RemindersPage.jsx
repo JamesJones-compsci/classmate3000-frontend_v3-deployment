@@ -3,6 +3,7 @@ import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
 import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import Button from "../../../components/ui/Button";
 import { useReminders } from "../hooks/useReminders";
 import { useTasks } from "../../tasks/hooks/useTasks";
 import ReminderRow from "../components/ReminderRow";
@@ -23,30 +24,22 @@ export default function RemindersPage() {
       <SectionHeader title="Reminders" breadcrumb="Home > Reminders > All Reminders" />
 
       <div className={styles.toolbar}>
-        <button className={styles.primaryBtn} onClick={() => setShowCreate(true)}>
+        <Button variant="reminders" onClick={() => setShowCreate(true)}>
           Add Reminder
-        </button>
-        <button
-          className={styles.secondaryBtn}
-          disabled={!selectedReminder}
-          onClick={() => setShowEdit(true)}
-        >
+        </Button>
+        <Button variant="secondary" disabled={!selectedReminder} onClick={() => setShowEdit(true)}>
           Edit
-        </button>
-        <button
-          className={styles.deleteBtn}
-          disabled={!selectedReminder}
-          onClick={() => setShowDelete(true)}
-        >
+        </Button>
+        <Button variant="danger" disabled={!selectedReminder} onClick={() => setShowDelete(true)}>
           Delete
-        </button>
+        </Button>
       </div>
 
       <div className={styles.body}>
-        {loading && <EmptyState message="Loading reminders..." />}
-        {!loading && error && <EmptyState message={error} />}
+        {loading && <EmptyState title="Loading" message="Loading reminders..." />}
+        {!loading && error && <EmptyState title="Error" message={error} />}
         {!loading && !error && reminders.length === 0 && (
-          <EmptyState message="No reminders yet." />
+          <EmptyState title="No reminders yet" message="Create your first reminder to get started." />
         )}
 
         {!loading && !error && reminders.length > 0 && (

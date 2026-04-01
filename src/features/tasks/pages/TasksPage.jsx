@@ -3,6 +3,7 @@ import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
 import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import Button from "../../../components/ui/Button";
 import { useTasks } from "../hooks/useTasks";
 import { useCourses } from "../../courses/hooks/useCourses";
 import TaskRow from "../components/TaskRow";
@@ -34,9 +35,7 @@ export default function TasksPage() {
 
   const filteredTasks = sortedTasks.filter((task) => {
     if (filter === "all") return true;
-    if (filter === "overdue") {
-      return task.dueDate && new Date(task.dueDate) < today && !task.isCompleted;
-    }
+    if (filter === "overdue") return task.dueDate && new Date(task.dueDate) < today && !task.isCompleted;
     if (filter === "today") {
       if (!task.dueDate) return false;
       const date = new Date(task.dueDate);
@@ -55,32 +54,24 @@ export default function TasksPage() {
       <SectionHeader title="Tasks" breadcrumb="Home > Tasks > All Tasks" />
 
       <div className={styles.toolbar}>
-        <button className={styles.primaryBtn} onClick={() => setShowCreate(true)}>
+        <Button variant="tasks" onClick={() => setShowCreate(true)}>
           Add Task
-        </button>
-        <button
-          className={styles.secondaryBtn}
-          disabled={!selectedTask}
-          onClick={() => setShowEdit(true)}
-        >
+        </Button>
+        <Button variant="secondary" disabled={!selectedTask} onClick={() => setShowEdit(true)}>
           Edit
-        </button>
-        <button
-          className={styles.deleteBtn}
-          disabled={!selectedTask}
-          onClick={() => setShowDelete(true)}
-        >
+        </Button>
+        <Button variant="danger" disabled={!selectedTask} onClick={() => setShowDelete(true)}>
           Delete
-        </button>
+        </Button>
       </div>
 
       <div className={styles.body}>
         <TaskFilterBar filter={filter} onFilterChange={setFilter} />
 
-        {loading && <EmptyState message="Loading tasks..." />}
-        {!loading && error && <EmptyState message={error} />}
+        {loading && <EmptyState title="Loading" message="Loading tasks..." />}
+        {!loading && error && <EmptyState title="Error" message={error} />}
         {!loading && !error && filteredTasks.length === 0 && (
-          <EmptyState message="No tasks match this filter." />
+          <EmptyState title="No tasks" message="No tasks match this filter." />
         )}
 
         {!loading && !error && filteredTasks.length > 0 && (

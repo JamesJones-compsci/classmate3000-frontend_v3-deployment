@@ -1,24 +1,115 @@
 .chartBox {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   padding: 16px;
   background: var(--color-surface-soft);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
 .title {
   font-size: 14px;
   font-weight: 800;
-  margin-bottom: 12px;
 }
 
-.list {
+.legend {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
-.row {
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.legendSwatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.svgWrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.svg {
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+  display: block;
+}
+
+.gridLine {
+  stroke: #e5e7eb;
+  stroke-width: 1;
+}
+
+.axisLabel {
+  font-size: 10px;
+  fill: #9ca3af;
+}
+
+.line {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.xLabels {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.xLabel {
+  font-size: 11px;
+  color: var(--color-muted);
+  text-align: center;
+  flex: 1;
+}
+
+.empty {
+  margin: 0;
+  color: var(--color-muted);
   font-size: 13px;
+}
+
+.series1 {
+  stroke: #5a8ed4;
+  fill: #5a8ed4;
+  background: #5a8ed4;
+}
+
+.series2 {
+  stroke: #9a60c8;
+  fill: #9a60c8;
+  background: #9a60c8;
+}
+
+.series3 {
+  stroke: #5a9e5a;
+  fill: #5a9e5a;
+  background: #5a9e5a;
+}
+
+.series4 {
+  stroke: #c4a020;
+  fill: #c4a020;
+  background: #c4a020;
 }

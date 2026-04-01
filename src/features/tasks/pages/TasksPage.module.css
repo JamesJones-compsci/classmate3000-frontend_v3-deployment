@@ -28,34 +28,3 @@
   outline-offset: 2px;
   border-radius: 10px;
 }
-
-.primaryBtn,
-.secondaryBtn,
-.deleteBtn {
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.primaryBtn {
-  background: #e9f3ff;
-  border: 1px solid #cde0fb;
-}
-
-.secondaryBtn {
-  background: #fff;
-  border: 1px solid var(--color-border);
-}
-
-.deleteBtn {
-  background: #fff;
-  border: 1px solid #f2b3b3;
-  color: var(--color-danger);
-}
-
-.secondaryBtn:disabled,
-.deleteBtn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}

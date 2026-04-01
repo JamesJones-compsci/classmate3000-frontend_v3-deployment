@@ -3,6 +3,7 @@ import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
 import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import Button from "../../../components/ui/Button";
 import { useProgress } from "../hooks/useProgress";
 import { useCourses } from "../../courses/hooks/useCourses";
 import ProgressCard from "../components/ProgressCard";
@@ -22,9 +23,7 @@ export default function ProgressPage() {
 
   const filteredEntries = useMemo(() => {
     if (!selectedCourseId) return progressEntries;
-    return progressEntries.filter(
-      (entry) => Number(entry.courseId) === Number(selectedCourseId)
-    );
+    return progressEntries.filter((entry) => Number(entry.courseId) === Number(selectedCourseId));
   }, [progressEntries, selectedCourseId]);
 
   return (
@@ -32,23 +31,15 @@ export default function ProgressPage() {
       <SectionHeader title="Progress" breadcrumb="Home > Progress > Weekly Progress" />
 
       <div className={styles.toolbar}>
-        <button className={styles.primaryBtn} onClick={() => setShowCreate(true)}>
+        <Button variant="progress" onClick={() => setShowCreate(true)}>
           Add Progress
-        </button>
-        <button
-          className={styles.secondaryBtn}
-          disabled={!selectedEntry}
-          onClick={() => setShowEdit(true)}
-        >
+        </Button>
+        <Button variant="secondary" disabled={!selectedEntry} onClick={() => setShowEdit(true)}>
           Edit
-        </button>
-        <button
-          className={styles.deleteBtn}
-          disabled={!selectedEntry}
-          onClick={() => setShowDelete(true)}
-        >
+        </Button>
+        <Button variant="danger" disabled={!selectedEntry} onClick={() => setShowDelete(true)}>
           Delete
-        </button>
+        </Button>
 
         <select
           className={styles.filterSelect}
@@ -65,10 +56,10 @@ export default function ProgressPage() {
       </div>
 
       <div className={styles.body}>
-        {loading && <EmptyState message="Loading progress..." />}
-        {!loading && error && <EmptyState message={error} />}
+        {loading && <EmptyState title="Loading" message="Loading progress..." />}
+        {!loading && error && <EmptyState title="Error" message={error} />}
         {!loading && !error && filteredEntries.length === 0 && (
-          <EmptyState message="No progress entries yet." />
+          <EmptyState title="No progress yet" message="Add a weekly progress entry to get started." />
         )}
 
         {!loading && !error && filteredEntries.length > 0 && (
