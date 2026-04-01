@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.breadcrumb {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
