@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 /* Global + App-level styles */
 import "./styles/index.css";
 import "./styles/App.css";
+import "./styles/globals.css"; // Penny - Add import for globals style
 
 /* Dashboard-only (scoped) styles */
 import "./styles/dashboard.css";

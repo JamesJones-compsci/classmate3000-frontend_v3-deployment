@@ -1,0 +1,28 @@
+:root {
+  --color-bg: #f6f7f4;
+  --color-surface: #ffffff;
+  --color-surface-soft: #fafaf8;
+  --color-border: #e5e7eb;
+  --color-border-soft: #f0f1ec;
+  --color-text: #1e1e1e;
+  --color-muted: #6b7280;
+  --color-danger: #b42318;
+
+  --color-courses: #5a9e5a;
+  --color-tasks: #5a8ed4;
+  --color-reminders: #c4a020;
+  --color-progress: #9a60c8;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
