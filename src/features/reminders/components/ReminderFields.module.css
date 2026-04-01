@@ -1,0 +1,20 @@
+.input {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  width: 100%;
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}

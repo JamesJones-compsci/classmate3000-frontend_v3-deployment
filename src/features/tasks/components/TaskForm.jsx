@@ -1,7 +1,6 @@
 import { useState } from "react";
-import styles from "./TaskForm.module.css";
-
-const TASK_TYPES = ["ASSIGNMENT", "STUDY", "LAB", "EXAM", "PROJECT", "OTHER"];
+import FormShell from "../../../components/ui/FormShell";
+import TaskFields from "./TaskFields";
 
 function toDateInput(isoString) {
   if (!isoString) return "";
@@ -28,13 +27,6 @@ export default function TaskForm({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  function handleChange(field) {
-    return (e) => {
-      const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-      setForm((prev) => ({ ...prev, [field]: value }));
-    };
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -55,89 +47,22 @@ export default function TaskForm({
         isCompleted: form.isCompleted,
       });
     } catch {
-      setError(
-        mode === "edit"
-          ? "Failed to update task. Please try again."
-          : "Failed to save task. Please try again."
-      );
+      setError(mode === "edit" ? "Failed to update task." : "Failed to save task.");
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.field}>
-        <label className={styles.label}>Course</label>
-        <select className={styles.input} value={form.courseId} onChange={handleChange("courseId")}>
-          <option value="">Select a course...</option>
-          {courses.map((course) => (
-            <option key={course.courseId} value={course.courseId}>
-              {course.code} — {course.title}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className={styles.field}>
-        <label className={styles.label}>Task Name</label>
-        <input className={styles.input} value={form.title} onChange={handleChange("title")} />
-      </div>
-
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label className={styles.label}>Type</label>
-          <select className={styles.input} value={form.type} onChange={handleChange("type")}>
-            {TASK_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Due Date</label>
-          <input className={styles.input} type="date" value={form.dueDate} onChange={handleChange("dueDate")} />
-        </div>
-      </div>
-
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label className={styles.label}>Weight (%)</label>
-          <input
-            className={styles.input}
-            type="number"
-            min="0"
-            max="100"
-            value={form.weight}
-            onChange={handleChange("weight")}
-          />
-        </div>
-
-        <label className={styles.checkboxRow}>
-          <input type="checkbox" checked={form.bonus} onChange={handleChange("bonus")} />
-          Bonus
-        </label>
-      </div>
-
-      {mode === "edit" ? (
-        <label className={styles.checkboxRow}>
-          <input type="checkbox" checked={form.isCompleted} onChange={handleChange("isCompleted")} />
-          Completed
-        </label>
-      ) : null}
-
-      {error ? <p className={styles.error}>{error}</p> : null}
-
-      <div className={styles.actions}>
-        <button type="button" className={styles.secondaryBtn} onClick={onCancel} disabled={saving}>
-          Cancel
-        </button>
-        <button type="submit" className={styles.primaryBtn} disabled={saving}>
-          {saving ? "Saving..." : mode === "edit" ? "Update" : "Save"}
-        </button>
-      </div>
-    </form>
+    <FormShell
+      onSubmit={handleSubmit}
+      onCancel={onCancel}
+      saving={saving}
+      error={error}
+      submitLabel={mode === "edit" ? "Update" : "Save"}
+      submitVariant="tasks"
+    >
+      <TaskFields form={form} setForm={setForm} courses={courses} mode={mode} />
+    </FormShell>
   );
 }

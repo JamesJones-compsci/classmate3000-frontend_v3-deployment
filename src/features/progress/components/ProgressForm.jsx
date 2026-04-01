@@ -1,5 +1,6 @@
 import { useState } from "react";
-import styles from "./ProgressForm.module.css";
+import FormShell from "../../../components/ui/FormShell";
+import ProgressFields from "./ProgressFields";
 
 export default function ProgressForm({
   mode = "create",
@@ -15,12 +16,6 @@ export default function ProgressForm({
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-
-  function handleChange(field) {
-    return (e) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
-    };
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -46,52 +41,22 @@ export default function ProgressForm({
         computedAt: new Date().toISOString(),
       });
     } catch {
-      setError(
-        mode === "edit"
-          ? "Failed to update progress. Please try again."
-          : "Failed to save progress. Please try again."
-      );
+      setError(mode === "edit" ? "Failed to update progress." : "Failed to save progress.");
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.field}>
-        <label className={styles.label}>Course</label>
-        <select className={styles.input} value={form.courseId} onChange={handleChange("courseId")}>
-          <option value="">Select a course...</option>
-          {courses.map((course) => (
-            <option key={course.courseId} value={course.courseId}>
-              {course.code} — {course.title}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className={styles.field}>
-        <label className={styles.label}>Current Grade (%)</label>
-        <input
-          className={styles.input}
-          type="number"
-          min="0"
-          max="100"
-          value={form.currentGradePercent}
-          onChange={handleChange("currentGradePercent")}
-        />
-      </div>
-
-      {error ? <p className={styles.error}>{error}</p> : null}
-
-      <div className={styles.actions}>
-        <button type="button" className={styles.secondaryBtn} onClick={onCancel} disabled={saving}>
-          Cancel
-        </button>
-        <button type="submit" className={styles.primaryBtn} disabled={saving}>
-          {saving ? "Saving..." : mode === "edit" ? "Update" : "Save"}
-        </button>
-      </div>
-    </form>
+    <FormShell
+      onSubmit={handleSubmit}
+      onCancel={onCancel}
+      saving={saving}
+      error={error}
+      submitLabel={mode === "edit" ? "Update" : "Save"}
+      submitVariant="progress"
+    >
+      <ProgressFields form={form} setForm={setForm} courses={courses} />
+    </FormShell>
   );
 }
