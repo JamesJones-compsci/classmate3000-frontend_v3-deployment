@@ -23,6 +23,17 @@
   gap: 14px;
 }
 
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e6e8ee;
+  font-size: 0.9rem;
+  color: #667085;
+}
+
 .selectable {
   cursor: pointer;
   border-radius: 12px;

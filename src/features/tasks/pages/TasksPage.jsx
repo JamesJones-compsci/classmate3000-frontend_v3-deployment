@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
-import ConfirmDialog from "../../../components/ui/ConfirmDialog";
 import Button from "../../../components/ui/Button";
 import { useTasks } from "../hooks/useTasks";
 import { useCourses } from "../../courses/hooks/useCourses";
@@ -12,58 +12,63 @@ import TaskForm from "../components/TaskForm";
 import styles from "./TasksPage.module.css";
 
 export default function TasksPage() {
-  const { tasks, loading, error, addTask, editTask, removeTask } = useTasks();
+  const navigate = useNavigate();
+  const { tasks, loading, error, addTask } = useTasks();
   const { courses } = useCourses();
 
   const [filter, setFilter] = useState("all");
-  const [selectedTask, setSelectedTask] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const week = new Date(today);
   week.setDate(today.getDate() + 7);
 
-  const sortedTasks = [...tasks].sort((a, b) => {
-    if (!a.dueDate && !b.dueDate) return 0;
-    if (!a.dueDate) return 1;
-    if (!b.dueDate) return -1;
-    return new Date(a.dueDate) - new Date(b.dueDate);
-  });
+  const filteredTasks = useMemo(() => {
+    const sortedTasks = [...tasks].sort((a, b) => {
+      if (!a.dueDate && !b.dueDate) return 0;
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return new Date(a.dueDate) - new Date(b.dueDate);
+    });
 
-  const filteredTasks = sortedTasks.filter((task) => {
-    if (filter === "all") return true;
-    if (filter === "overdue") return task.dueDate && new Date(task.dueDate) < today && !task.isCompleted;
-    if (filter === "today") {
-      if (!task.dueDate) return false;
-      const date = new Date(task.dueDate);
-      return date >= today && date < new Date(today.getTime() + 86400000);
-    }
-    if (filter === "week") {
-      if (!task.dueDate) return false;
-      const date = new Date(task.dueDate);
-      return date >= today && date < week;
-    }
-    return true;
-  });
+    return sortedTasks.filter((task) => {
+      if (filter === "all") return true;
+
+      if (filter === "overdue") {
+        return task.dueDate && new Date(task.dueDate) < today && !task.isCompleted;
+      }
+
+      if (filter === "today") {
+        if (!task.dueDate) return false;
+        const date = new Date(task.dueDate);
+        return date >= today && date < new Date(today.getTime() + 86400000);
+      }
+
+      if (filter === "week") {
+        if (!task.dueDate) return false;
+        const date = new Date(task.dueDate);
+        return date >= today && date < week;
+      }
+
+      return true;
+    });
+  }, [tasks, filter, today, week]);
 
   return (
     <div className={styles.page}>
-      <SectionHeader title="Tasks" breadcrumb="Home > Tasks > All Tasks" />
-
-      <div className={styles.toolbar}>
-        <Button variant="tasks" onClick={() => setShowCreate(true)}>
-          Add Task
-        </Button>
-        <Button variant="secondary" disabled={!selectedTask} onClick={() => setShowEdit(true)}>
-          Edit
-        </Button>
-        <Button variant="danger" disabled={!selectedTask} onClick={() => setShowDelete(true)}>
-          Delete
-        </Button>
-      </div>
+      <SectionHeader
+        title="Tasks"
+        breadcrumbs={[
+          { label: "Home", to: "/dashboard/courses" },
+          { label: "Tasks" },
+        ]}
+        actions={
+          <Button variant="tasks" onClick={() => setShowCreate(true)}>
+            Add Task
+          </Button>
+        }
+      />
 
       <div className={styles.body}>
         <TaskFilterBar filter={filter} onFilterChange={setFilter} />
@@ -79,8 +84,15 @@ export default function TasksPage() {
             {filteredTasks.map((task) => (
               <div
                 key={task.taskId}
-                className={selectedTask?.taskId === task.taskId ? styles.selected : ""}
-                onClick={() => setSelectedTask(task)}
+                className={styles.selectable}
+                onClick={() => navigate(`/dashboard/tasks/${task.taskId}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    navigate(`/dashboard/tasks/${task.taskId}`);
+                  }
+                }}
               >
                 <TaskRow task={task} />
               </div>
@@ -96,39 +108,14 @@ export default function TasksPage() {
             courses={courses}
             onCancel={() => setShowCreate(false)}
             onSubmit={async (payload) => {
-              await addTask(payload);
+              const created = await addTask(payload);
               setShowCreate(false);
+              if (created?.taskId != null) {
+                navigate(`/dashboard/tasks/${created.taskId}`);
+              }
             }}
           />
         </Modal>
-      )}
-
-      {showEdit && selectedTask && (
-        <Modal title="Edit Task" onClose={() => setShowEdit(false)}>
-          <TaskForm
-            mode="edit"
-            initialValues={selectedTask}
-            courses={courses}
-            onCancel={() => setShowEdit(false)}
-            onSubmit={async (payload) => {
-              await editTask(selectedTask.taskId, payload);
-              setShowEdit(false);
-            }}
-          />
-        </Modal>
-      )}
-
-      {showDelete && selectedTask && (
-        <ConfirmDialog
-          title="Delete task?"
-          message={selectedTask.title}
-          onClose={() => setShowDelete(false)}
-          onConfirm={async () => {
-            await removeTask(selectedTask.taskId);
-            setSelectedTask(null);
-            setShowDelete(false);
-          }}
-        />
       )}
     </div>
   );
