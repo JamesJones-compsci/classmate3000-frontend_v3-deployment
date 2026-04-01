@@ -1,0 +1,109 @@
+.button {
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sm {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.md {
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.lg {
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.primary {
+  background: #ffffff;
+  color: var(--color-text);
+}
+
+.primary:hover:not(:disabled) {
+  background: #f5f6f3;
+}
+
+.secondary {
+  background: #f8f9f6;
+  color: #374151;
+}
+
+.secondary:hover:not(:disabled) {
+  background: #eef1ea;
+}
+
+.courses {
+  background: #dfeee0;
+  border-color: #c7dfc9;
+  color: #1e1e1e;
+}
+
+.courses:hover:not(:disabled) {
+  background: #d3e8d5;
+}
+
+.tasks {
+  background: #e9f3ff;
+  border-color: #cde0fb;
+  color: #1e1e1e;
+}
+
+.tasks:hover:not(:disabled) {
+  background: #dcecff;
+}
+
+.reminders {
+  background: #fff8e6;
+  border-color: #eadca8;
+  color: #1e1e1e;
+}
+
+.reminders:hover:not(:disabled) {
+  background: #fff2d1;
+}
+
+.progress {
+  background: #f3eaff;
+  border-color: #dfcdfd;
+  color: #1e1e1e;
+}
+
+.progress:hover:not(:disabled) {
+  background: #eadcff;
+}
+
+.danger {
+  background: #fff;
+  border-color: #f2b3b3;
+  color: var(--color-danger);
+}
+
+.danger:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: #374151;
+}
+
+.ghost:hover:not(:disabled) {
+  background: #f3f4f0;
+}
