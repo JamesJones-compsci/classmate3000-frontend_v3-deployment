@@ -12,9 +12,14 @@ function getInitials(firstName = "", lastName = "") {
 
 export default function Sidebar({
   currentSection,
-  onNavigate,
-  onLogout,
   user,
+  activeFilter,
+  onAction,
+  onFilterChange,
+  onOpenProfile,
+  darkMode,
+  onToggleDarkMode,
+  onLogout,
 }) {
   const initials = getInitials(user?.firstName, user?.lastName);
 
@@ -22,23 +27,23 @@ export default function Sidebar({
     <aside className={styles.sidebar}>
       <div className={styles.topbar}>
         <div className={styles.brand}>ClassMate™</div>
-        <button
-          type="button"
-          className={styles.userBadge}
-          title={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim()}
-          onClick={() => onNavigate("/dashboard/courses")}
-        >
+        <div className={styles.userBadge} title={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim()}>
           {initials}
-        </button>
+        </div>
       </div>
 
-      <LeftPanel currentSection={currentSection} onNavigate={onNavigate} />
-
-      <div className={styles.divider} />
-
-      <button type="button" className={styles.logout} onClick={onLogout}>
-        Logout
-      </button>
+      <div className={styles.leftpanelSlot}>
+        <LeftPanel
+          currentSection={currentSection}
+          activeFilter={activeFilter}
+          onAction={onAction}
+          onFilterChange={onFilterChange}
+          onOpenProfile={onOpenProfile}
+          darkMode={darkMode}
+          onToggleDarkMode={onToggleDarkMode}
+          onLogout={onLogout}
+        />
+      </div>
     </aside>
   );
 }

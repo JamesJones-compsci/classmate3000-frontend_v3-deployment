@@ -34,32 +34,10 @@
   font-weight: 800;
   display: grid;
   place-items: center;
-  cursor: pointer;
-  padding: 0;
 }
 
-.userBadge:hover {
-  background: #cfe7cd;
-}
-
-.divider {
-  height: 1px;
-  background: #e2e6da;
-  margin-top: auto;
-}
-
-.logout {
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: none;
-  padding: 10px 8px;
-  color: #b42318;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.logout:hover {
-  background: #fef2f2;
+.leftpanelSlot {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }

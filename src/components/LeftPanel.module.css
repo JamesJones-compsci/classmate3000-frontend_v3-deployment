@@ -1,7 +1,8 @@
-.leftpanel {
+.panel {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: 0;
 }
 
 .sectionTitle {
@@ -13,7 +14,7 @@
   color: #6b7280;
 }
 
-.menu {
+.group {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -30,10 +31,18 @@
   background: transparent;
   text-align: left;
   cursor: pointer;
+  color: #1e1e1e;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.item:hover {
+.item:hover:not(:disabled) {
   background: #eaede4;
+}
+
+.item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .active {
@@ -42,26 +51,18 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
-.itemText {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.itemLabel {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1e1e1e;
-}
-
-.itemDescription {
-  font-size: 11px;
-  color: #6b7280;
+.danger {
+  color: #b42318;
 }
 
 .arrow {
   font-size: 15px;
   color: #9ca3af;
   flex-shrink: 0;
+}
+
+.divider {
+  height: 1px;
+  background: #e2e6da;
+  margin: 6px 0;
 }
