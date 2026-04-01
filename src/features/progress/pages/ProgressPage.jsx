@@ -35,7 +35,13 @@ export default function ProgressPage() {
 
   return (
     <div className={styles.page}>
-      <SectionHeader title="Progress" breadcrumb="Home > Progress" />
+      <SectionHeader
+        title="Progress"
+        breadcrumbs={[
+          { label: "Home", to: "/dashboard/courses" },
+          { label: "Progress" },
+        ]}
+      />
 
       <div className={styles.body}>
         {loading && <EmptyState title="Loading" message="Loading progress..." />}

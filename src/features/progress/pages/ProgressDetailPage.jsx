@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
@@ -14,6 +14,7 @@ import styles from "./ProgressDetailPage.module.css";
 
 export default function ProgressDetailPage() {
   const { courseId } = useParams();
+  const navigate = useNavigate();
   const { courses } = useCourses();
   const { course, entries, loading, error, addProgress, editProgress, removeProgress } =
     useCourseProgress(courseId);
@@ -39,7 +40,16 @@ export default function ProgressDetailPage() {
     <div className={styles.page}>
       <SectionHeader
         title={course ? `${course.code} — ${course.title}` : "Progress Details"}
-        breadcrumb="Home > Progress > Course Details"
+        breadcrumbs={[
+          { label: "Home", to: "/dashboard/courses" },
+          { label: "Progress", to: "/dashboard/progress" },
+          { label: course ? `${course.code} — ${course.title}` : "Course Details" },
+        ]}
+        actions={
+          <Button variant="ghost" onClick={() => navigate("/dashboard/progress")}>
+            Back to all progress
+          </Button>
+        }
       />
 
       <div className={styles.toolbar}>
@@ -79,8 +89,12 @@ export default function ProgressDetailPage() {
 
         {!loading && !error && course && selectedEntry && (
           <>
-            <ProgressDetailsCard course={course} entry={selectedEntry} weekIndex={selectedWeekIndex} />
-            <ProgressBarChart entries={chartEntries} />
+            <ProgressDetailsCard
+              course={course}
+              entry={selectedEntry}
+              weekIndex={selectedWeekIndex}
+            />
+            <ProgressBarChart course={course} entries={chartEntries} />
           </>
         )}
       </div>

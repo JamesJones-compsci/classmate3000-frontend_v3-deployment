@@ -14,10 +14,38 @@
 }
 
 .breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
   font-size: 11px;
   color: #b0b4ac;
   font-weight: 500;
   letter-spacing: 0.2px;
+}
+
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crumbLink {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.crumbLink:hover {
+  color: #1e1e1e;
+  text-decoration: underline;
+}
+
+.crumbCurrent {
+  color: #6b7280;
+}
+
+.separator {
+  color: #b0b4ac;
 }
 
 .title {
