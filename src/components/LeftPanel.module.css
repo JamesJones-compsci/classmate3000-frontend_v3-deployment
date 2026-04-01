@@ -1,0 +1,23 @@
+.leftpanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #eef0ea;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
