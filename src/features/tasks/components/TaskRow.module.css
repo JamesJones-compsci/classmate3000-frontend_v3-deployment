@@ -1,0 +1,15 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.meta {
+  color: var(--color-muted);
+  font-size: 12px;
+}

@@ -1,0 +1,21 @@
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.pill {
+  border: 1px solid #dde0d8;
+  background: #f3f4f0;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.active {
+  background: #b8cff5;
+  border-color: #8fb0ef;
+}

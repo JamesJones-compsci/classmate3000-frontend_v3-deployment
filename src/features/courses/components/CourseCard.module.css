@@ -1,0 +1,14 @@
+.card {
+  padding: 16px;
+}
+
+.code {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.meta {
+  margin-top: 6px;
+  color: var(--color-muted);
+  font-size: 13px;
+}
