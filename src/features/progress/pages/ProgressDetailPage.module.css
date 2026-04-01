@@ -1,0 +1,31 @@
+.page {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-progress);
+  border-radius: 0 0 12px 12px;
+  box-shadow: var(--shadow-md);
+  flex: 1;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filterSelect {
+  margin-left: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+}

@@ -9,6 +9,7 @@ export function useProgress() {
   async function loadProgress() {
     setLoading(true);
     setError(null);
+
     try {
       const data = await progressService.getProgress();
       setProgressEntries(data);
@@ -27,16 +28,19 @@ export function useProgress() {
 
   async function editProgress(id, payload) {
     const updated = await progressService.updateProgress(id, payload);
+
     setProgressEntries((prev) =>
       prev.map((entry) =>
         Number(entry.progressId) === Number(id) ? updated : entry
       )
     );
+
     return updated;
   }
 
   async function removeProgress(id) {
     await progressService.deleteProgress(id);
+
     setProgressEntries((prev) =>
       prev.filter((entry) => Number(entry.progressId) !== Number(id))
     );

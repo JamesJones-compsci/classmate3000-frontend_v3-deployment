@@ -7,6 +7,7 @@ import CoursesPage from "../features/courses/pages/CoursesPage";
 import TasksPage from "../features/tasks/pages/TasksPage";
 import RemindersPage from "../features/reminders/pages/RemindersPage";
 import ProgressPage from "../features/progress/pages/ProgressPage";
+import ProgressDetailPage from "../features/progress/pages/ProgressDetailPage";
 
 export default function AppRouter() {
   return (
@@ -29,6 +30,7 @@ export default function AppRouter() {
           <Route path="tasks" element={<TasksPage />} />
           <Route path="reminders" element={<RemindersPage />} />
           <Route path="progress" element={<ProgressPage />} />
+          <Route path="progress/:courseId" element={<ProgressDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

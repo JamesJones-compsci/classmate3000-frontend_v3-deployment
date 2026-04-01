@@ -1,127 +1,66 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
-import Modal from "../../../components/ui/Modal";
-import ConfirmDialog from "../../../components/ui/ConfirmDialog";
-import Button from "../../../components/ui/Button";
-import { useProgress } from "../hooks/useProgress";
 import { useCourses } from "../../courses/hooks/useCourses";
-import ProgressCard from "../components/ProgressCard";
-import ProgressChart from "../components/ProgressChart";
-import ProgressForm from "../components/ProgressForm";
+import { useProgress } from "../hooks/useProgress";
+import ProgressSummaryCard from "../components/ProgressSummaryCard";
 import styles from "./ProgressPage.module.css";
 
 export default function ProgressPage() {
-  const { progressEntries, loading, error, addProgress, editProgress, removeProgress } = useProgress();
-  const { courses } = useCourses();
+  const navigate = useNavigate();
+  const { courses, loading: coursesLoading, error: coursesError } = useCourses();
+  const { progressEntries, loading: progressLoading, error: progressError } = useProgress();
 
-  const [selectedEntry, setSelectedEntry] = useState(null);
-  const [selectedCourseId, setSelectedCourseId] = useState("");
-  const [showCreate, setShowCreate] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
+  const loading = coursesLoading || progressLoading;
+  const error = coursesError || progressError;
 
-  const filteredEntries = useMemo(() => {
-    if (!selectedCourseId) return progressEntries;
-    return progressEntries.filter((entry) => Number(entry.courseId) === Number(selectedCourseId));
-  }, [progressEntries, selectedCourseId]);
+  const courseCards = useMemo(() => {
+    return courses
+      .map((course) => {
+        const entries = progressEntries
+          .filter((entry) => Number(entry.courseId) === Number(course.courseId))
+          .sort((a, b) => new Date(a.weekOf) - new Date(b.weekOf));
+
+        const latest = entries[entries.length - 1] ?? null;
+
+        return {
+          course,
+          latest,
+          count: entries.length,
+        };
+      })
+      .filter((item) => item.latest);
+  }, [courses, progressEntries]);
 
   return (
     <div className={styles.page}>
-      <SectionHeader title="Progress" breadcrumb="Home > Progress > Weekly Progress" />
-
-      <div className={styles.toolbar}>
-        <Button variant="progress" onClick={() => setShowCreate(true)}>
-          Add Progress
-        </Button>
-        <Button variant="secondary" disabled={!selectedEntry} onClick={() => setShowEdit(true)}>
-          Edit
-        </Button>
-        <Button variant="danger" disabled={!selectedEntry} onClick={() => setShowDelete(true)}>
-          Delete
-        </Button>
-
-        <select
-          className={styles.filterSelect}
-          value={selectedCourseId}
-          onChange={(e) => setSelectedCourseId(e.target.value)}
-        >
-          <option value="">All Courses</option>
-          {courses.map((course) => (
-            <option key={course.courseId} value={course.courseId}>
-              {course.code} — {course.title}
-            </option>
-          ))}
-        </select>
-      </div>
+      <SectionHeader title="Progress" breadcrumb="Home > Progress" />
 
       <div className={styles.body}>
         {loading && <EmptyState title="Loading" message="Loading progress..." />}
         {!loading && error && <EmptyState title="Error" message={error} />}
-        {!loading && !error && filteredEntries.length === 0 && (
-          <EmptyState title="No progress yet" message="Add a weekly progress entry to get started." />
+        {!loading && !error && courseCards.length === 0 && (
+          <EmptyState
+            title="No progress yet"
+            message="Add progress entries first. Then each course will appear here."
+          />
         )}
 
-        {!loading && !error && filteredEntries.length > 0 && (
-          <>
-            <ProgressChart entries={filteredEntries} />
-
-            <div className={styles.grid}>
-              {filteredEntries.map((entry) => (
-                <div
-                  key={entry.progressId}
-                  className={selectedEntry?.progressId === entry.progressId ? styles.selected : ""}
-                  onClick={() => setSelectedEntry(entry)}
-                >
-                  <ProgressCard entry={entry} />
-                </div>
-              ))}
-            </div>
-          </>
+        {!loading && !error && courseCards.length > 0 && (
+          <div className={styles.grid}>
+            {courseCards.map(({ course, latest, count }) => (
+              <ProgressSummaryCard
+                key={course.courseId}
+                course={course}
+                entry={latest}
+                snapshotCount={count}
+                onClick={() => navigate(`/dashboard/progress/${course.courseId}`)}
+              />
+            ))}
+          </div>
         )}
       </div>
-
-      {showCreate && (
-        <Modal title="Add Progress" onClose={() => setShowCreate(false)}>
-          <ProgressForm
-            mode="create"
-            courses={courses}
-            onCancel={() => setShowCreate(false)}
-            onSubmit={async (payload) => {
-              await addProgress(payload);
-              setShowCreate(false);
-            }}
-          />
-        </Modal>
-      )}
-
-      {showEdit && selectedEntry && (
-        <Modal title="Edit Progress" onClose={() => setShowEdit(false)}>
-          <ProgressForm
-            mode="edit"
-            initialValues={selectedEntry}
-            courses={courses}
-            onCancel={() => setShowEdit(false)}
-            onSubmit={async (payload) => {
-              await editProgress(selectedEntry.progressId, payload);
-              setShowEdit(false);
-            }}
-          />
-        </Modal>
-      )}
-
-      {showDelete && selectedEntry && (
-        <ConfirmDialog
-          title="Delete progress entry?"
-          message={`Week of ${selectedEntry.weekOf}`}
-          onClose={() => setShowDelete(false)}
-          onConfirm={async () => {
-            await removeProgress(selectedEntry.progressId);
-            setSelectedEntry(null);
-            setShowDelete(false);
-          }}
-        />
-      )}
     </div>
   );
 }
