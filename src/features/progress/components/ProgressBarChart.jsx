@@ -1,6 +1,6 @@
 import styles from "./ProgressBarChart.module.css";
 
-export default function ProgressBarChart({ entries }) {
+export default function ProgressBarChart({ course, entries }) {
   const sorted = [...entries].sort((a, b) => new Date(a.weekOf) - new Date(b.weekOf));
 
   const data = sorted.map((entry, index) => ({
@@ -24,7 +24,14 @@ export default function ProgressBarChart({ entries }) {
   return (
     <div className={styles.chartBox}>
       <div className={styles.header}>
-        <div className={styles.title}>Progress by Week</div>
+        <div>
+          <div className={styles.title}>Progress by Week</div>
+          {course ? (
+            <div className={styles.subtitle}>
+              {course.code} — {course.title}
+            </div>
+          ) : null}
+        </div>
 
         <div className={styles.legend}>
           <div className={styles.legendItem}>
