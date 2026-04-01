@@ -1,0 +1,31 @@
+.message {
+  margin-top: 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.cancelBtn,
+.deleteBtn {
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.cancelBtn {
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.deleteBtn {
+  border: 1px solid #f2b3b3;
+  background: #fff;
+  color: var(--color-danger);
+}
