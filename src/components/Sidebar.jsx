@@ -4,6 +4,7 @@ import styles from "./Sidebar.module.css";
 function getInitials(firstName = "", lastName = "") {
   const f = firstName.trim().charAt(0).toUpperCase();
   const l = lastName.trim().charAt(0).toUpperCase();
+
   if (f && l) return `${f}${l}`;
   if (f) return f;
   return "?";
@@ -21,7 +22,14 @@ export default function Sidebar({
     <aside className={styles.sidebar}>
       <div className={styles.topbar}>
         <div className={styles.brand}>ClassMate™</div>
-        <div className={styles.initials}>{initials}</div>
+        <button
+          type="button"
+          className={styles.userBadge}
+          title={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim()}
+          onClick={() => onNavigate("/dashboard/courses")}
+        >
+          {initials}
+        </button>
       </div>
 
       <LeftPanel currentSection={currentSection} onNavigate={onNavigate} />

@@ -1,50 +1,58 @@
 import styles from "./LeftPanel.module.css";
 
-export default function LeftPanel({
-  currentSection,
-  onNavigate,
-}) {
-  const labels = {
-    courses: {
-      all: "All Courses",
-      add: "Add a Course",
-      edit: "Edit a Course",
-      del: "Delete a Course",
-      path: "/dashboard/courses",
-    },
-    tasks: {
-      all: "All Tasks",
-      add: "Add a Task",
-      edit: "Edit a Task",
-      del: "Delete a Task",
-      path: "/dashboard/tasks",
-    },
-    reminders: {
-      all: "All Reminders",
-      add: "Add a Reminder",
-      edit: "Edit a Reminder",
-      del: "Delete a Reminder",
-      path: "/dashboard/reminders",
-    },
-    progress: {
-      all: "All Progress",
-      add: "Add Progress",
-      edit: "Edit Progress",
-      del: "Delete Progress",
-      path: "/dashboard/progress",
-    },
-  };
+const navItems = [
+  {
+    key: "courses",
+    label: "Courses",
+    description: "Manage courses",
+    path: "/dashboard/courses",
+  },
+  {
+    key: "tasks",
+    label: "Tasks",
+    description: "Assignments and deadlines",
+    path: "/dashboard/tasks",
+  },
+  {
+    key: "reminders",
+    label: "Reminders",
+    description: "Scheduled reminders",
+    path: "/dashboard/reminders",
+  },
+  {
+    key: "progress",
+    label: "Progress",
+    description: "Weekly course progress",
+    path: "/dashboard/progress",
+  },
+];
 
-  const t = labels[currentSection] ?? labels.courses;
-
+export default function LeftPanel({ currentSection, onNavigate }) {
   return (
-    <div className={styles.leftpanel}>
+    <nav className={styles.leftpanel} aria-label="Sidebar navigation">
+      <div className={styles.sectionTitle}>Workspace</div>
+
       <div className={styles.menu}>
-        <button type="button" className={styles.item} onClick={() => onNavigate(t.path)}>
-          <span>{t.all}</span>
-          <span>›</span>
-        </button>
+        {navItems.map((item) => {
+          const isActive = currentSection === item.key;
+
+          return (
+            <button
+              key={item.key}
+              type="button"
+              className={`${styles.item} ${isActive ? styles.active : ""}`}
+              onClick={() => onNavigate(item.path)}
+            >
+              <span className={styles.itemText}>
+                <span className={styles.itemLabel}>{item.label}</span>
+                <span className={styles.itemDescription}>{item.description}</span>
+              </span>
+
+              <span className={styles.arrow}>›</span>
+            </button>
+          );
+        })}
       </div>
-    </div>
+    </nav>
   );
 }

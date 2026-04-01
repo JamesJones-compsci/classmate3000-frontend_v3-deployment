@@ -1,23 +1,67 @@
 .leftpanel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+.sectionTitle {
+  padding: 8px 10px 4px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #6b7280;
 }
 
 .menu {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .item {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding: 10px;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
-  border-bottom: 1px solid #eef0ea;
+  text-align: left;
   cursor: pointer;
-  font-weight: 600;
+}
+
+.item:hover {
+  background: #eaede4;
+}
+
+.active {
+  background: #ffffff;
+  border-color: #dbe2d3;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.itemText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.itemLabel {
   font-size: 13px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.itemDescription {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.arrow {
+  font-size: 15px;
+  color: #9ca3af;
+  flex-shrink: 0;
 }
