@@ -8,10 +8,10 @@
 .sectionTitle {
   padding: 8px 10px 2px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   color: #666666;
-  letter-spacing: 0;
-  text-transform: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .group {
@@ -20,13 +20,14 @@
   gap: 8px;
 }
 
-.item {
+.item,
+.toggleItem {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 14px 14px;
+  padding: 12px 12px;
   border: 1px solid transparent;
   border-radius: 0;
   background: transparent;
@@ -34,22 +35,27 @@
   cursor: pointer;
   color: var(--color-text);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 300;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.item:hover:not(:disabled) {
+.item:hover:not(:disabled),
+.toggleItem:hover:not(:disabled) {
   background: var(--section-surface);
 }
 
 .item:focus,
 .item:focus-visible,
-.item:active {
+.item:active,
+.toggleItem:focus,
+.toggleItem:focus-visible,
+.toggleItem:active {
   outline: none;
   box-shadow: none;
 }
 
-.item:disabled {
+.item:disabled,
+.toggleItem:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
@@ -60,12 +66,26 @@
   color: var(--section-text);
 }
 
-.danger {
-  color: var(--color-text);
+.itemLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.itemLabel {
+  font-weight: 300;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: currentColor;
 }
 
 .arrow {
-  font-size: 16px;
+  font-size: 14px;
   color: #8a8a8a;
   flex-shrink: 0;
 }
@@ -74,4 +94,33 @@
   height: 1px;
   background: var(--color-outline);
   margin: 4px 0;
+}
+
+.toggle {
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: #d9d9d9;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.toggleOn {
+  background: var(--section-accent);
+}
+
+.toggleKnob {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.15s ease;
+}
+
+.toggleOn .toggleKnob {
+  transform: translateX(16px);
 }

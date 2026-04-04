@@ -16,9 +16,9 @@
 }
 
 .brand {
-  font-weight: 800;
+  font-weight: 300;
   font-size: 22px;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.2px;
   color: var(--color-text);
 }
 
@@ -30,7 +30,7 @@
   background: #ffffff;
   color: var(--color-text);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 400;
   display: grid;
   place-items: center;
   flex-shrink: 0;
