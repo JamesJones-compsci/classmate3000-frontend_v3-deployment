@@ -107,6 +107,8 @@ export default function LeftPanel({
 
   return (
     <div className={styles.panel}>
+      <div className={styles.divider} />
+
       <div className={styles.sectionTitle}>{section.title}</div>
 
       <div className={styles.group}>
@@ -166,6 +168,8 @@ export default function LeftPanel({
           <span className={styles.arrow}>›</span>
         </button>
       </div>
+
+      <div className={styles.divider} />
     </div>
   );
 }
