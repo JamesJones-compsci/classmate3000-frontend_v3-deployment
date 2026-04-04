@@ -7,8 +7,8 @@ export default function Modal({
   size = "md",
   narrow = false,
 }) {
-  const cardClass = [
-    styles.card,
+  const shellClass = [
+    styles.shell,
     styles[size],
     narrow ? styles.narrow : "",
   ]
@@ -17,9 +17,11 @@ export default function Modal({
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={cardClass} onClick={(e) => e.stopPropagation()}>
-        {title ? <h2 className={styles.title}>{title}</h2> : null}
-        {children}
+      <div className={shellClass} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.inner}>
+          {title ? <h2 className={styles.title}>{title}</h2> : null}
+          <div className={styles.content}>{children}</div>
+        </div>
       </div>
     </div>
   );

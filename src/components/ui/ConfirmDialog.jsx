@@ -1,5 +1,6 @@
 import Modal from "./Modal";
 import Button from "./Button";
+import styles from "./ConfirmDialog.module.css";
 
 export default function ConfirmDialog({
   title = "Are you sure?",
@@ -9,9 +10,9 @@ export default function ConfirmDialog({
 }) {
   return (
     <Modal title={title} onClose={onClose} narrow>
-      <p style={{ marginTop: 0, color: "#6b7280", textAlign: "center" }}>{message}</p>
+      <p className={styles.message}>{message}</p>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}>
+      <div className={styles.actions}>
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>

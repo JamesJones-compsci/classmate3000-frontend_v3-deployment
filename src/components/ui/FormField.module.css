@@ -6,16 +6,18 @@
 
 .label {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--color-muted);
 }
 
 .hint {
   font-size: 12px;
   color: var(--color-muted);
+  font-weight: 300;
 }
 
 .error {
   font-size: 12px;
   color: var(--color-danger);
+  font-weight: 300;
 }
