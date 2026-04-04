@@ -30,6 +30,22 @@
   --progress-accent: #e1d8ea;
   --progress-text: #000000;
 
+  /* Type scale */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 30px;
+
+  --line-height-tight: 1.05;
+  --line-height-normal: 1.45;
+
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
