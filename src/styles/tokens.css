@@ -1,17 +1,34 @@
 :root {
-  --color-bg: #f6f7f4;
-  --color-surface: #ffffff;
-  --color-surface-soft: #fafaf8;
-  --color-border: #e5e7eb;
-  --color-border-soft: #f0f1ec;
-  --color-text: #1e1e1e;
-  --color-muted: #6b7280;
+  --color-site-bg: #ffffff;
+  --color-card: #ffffff;
+  --color-text: #000000;
+  --color-muted: #666666;
+  --color-outline: #d9d9d9;
   --color-danger: #b42318;
 
-  --color-courses: #5a9e5a;
-  --color-tasks: #5a8ed4;
-  --color-reminders: #c4a020;
-  --color-progress: #9a60c8;
+  /* Courses */
+  --courses-bg: #eff6e5;
+  --courses-surface: #e1ead4;
+  --courses-accent: #e1ead4;
+  --courses-text: #000000;
+
+  /* Tasks */
+  --tasks-bg: #ddebf8;
+  --tasks-surface: #d1e2f1;
+  --tasks-accent: #d1e2f1;
+  --tasks-text: #000000;
+
+  /* Reminders */
+  --reminders-bg: #fff6df;
+  --reminders-surface: #fff3d4;
+  --reminders-accent: #fff3d4;
+  --reminders-text: #000000;
+
+  /* Progress */
+  --progress-bg: #f1e9f9;
+  --progress-surface: #e1d8ea;
+  --progress-accent: #e1d8ea;
+  --progress-text: #000000;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -19,10 +36,9 @@
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+  --space-7: 32px;
 
   --radius-sm: 8px;
   --radius-md: 12px;
-
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --radius-lg: 18px;
 }

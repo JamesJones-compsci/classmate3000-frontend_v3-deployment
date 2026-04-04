@@ -9,12 +9,14 @@ const tabs = [
 
 export default function Navbar({ currentSection, onNavigate }) {
   return (
-    <div className={styles.topTabs}>
+    <div className={`${styles.topTabs} ${styles[`theme-${currentSection}`]}`}>
       {tabs.map((tab) => (
         <button
           key={tab.key}
           type="button"
-          className={`${styles.tab} ${currentSection === tab.key ? styles.active : ""}`}
+          className={`${styles.tab} ${styles[tab.key]} ${
+            currentSection === tab.key ? styles.active : ""
+          }`}
           onClick={() => onNavigate(tab.path)}
         >
           {tab.label}

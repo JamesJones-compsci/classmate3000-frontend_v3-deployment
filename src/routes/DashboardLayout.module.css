@@ -1,19 +1,54 @@
 .appShell {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 250px 1fr;
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--color-site-bg);
+}
+
+.theme-courses {
+  --section-bg: var(--courses-bg);
+  --section-surface: var(--courses-surface);
+  --section-accent: var(--courses-accent);
+  --section-text: var(--courses-text);
+}
+
+.theme-tasks {
+  --section-bg: var(--tasks-bg);
+  --section-surface: var(--tasks-surface);
+  --section-accent: var(--tasks-accent);
+  --section-text: var(--tasks-text);
+}
+
+.theme-reminders {
+  --section-bg: var(--reminders-bg);
+  --section-surface: var(--reminders-surface);
+  --section-accent: var(--reminders-accent);
+  --section-text: var(--reminders-text);
+}
+
+.theme-progress {
+  --section-bg: var(--progress-bg);
+  --section-surface: var(--progress-surface);
+  --section-accent: var(--progress-accent);
+  --section-text: var(--progress-text);
 }
 
 .main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 20px 24px 0;
+  background: var(--color-site-bg);
 }
 
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: var(--section-bg);
+  border: 1px solid var(--color-outline);
+  border-top: none;
+  border-radius: 0;
+  padding: 24px;
+  min-height: 0;
 }

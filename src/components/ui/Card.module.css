@@ -1,27 +1,25 @@
 .card {
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-outline);
+  border-radius: 16px;
+  background: var(--color-card);
+  box-shadow: none;
 }
 
 .clickable {
   cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .clickable:hover {
-  border-color: #c8d8c4;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-color: #cfcfcf;
 }
 
 .clickable:active {
-  transform: scale(0.995);
+  transform: none;
 }
 
 .selected {
-  outline: 2px solid #5b8def;
-  outline-offset: 2px;
+  outline: none;
 }
 
 .default {
@@ -29,11 +27,11 @@
 }
 
 .soft {
-  background: var(--color-surface-soft);
+  background: #ffffff;
 }
 
 .warm {
-  background: #fffdf8;
+  background: #ffffff;
 }
 
 .flat {

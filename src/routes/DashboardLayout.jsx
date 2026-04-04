@@ -17,7 +17,9 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
-  const [darkMode, setDarkMode] = useState(() => sessionStorage.getItem("theme") === "dark");
+  const [darkMode, setDarkMode] = useState(
+    () => sessionStorage.getItem("theme") === "dark"
+  );
   const [activeFilter, setActiveFilter] = useState("all");
 
   const currentSection = useMemo(
@@ -55,7 +57,7 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className={styles.appShell}>
+    <div className={`${styles.appShell} ${styles[`theme-${currentSection}`]}`}>
       <Sidebar
         currentSection={currentSection}
         user={user}

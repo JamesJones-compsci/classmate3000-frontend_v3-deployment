@@ -1,25 +1,87 @@
 .topTabs {
   display: flex;
   width: 100%;
-  background: #c8cfc2;
-  padding: 6px 6px 0;
-  gap: 2px;
+  padding: 0 8px 0;
+  gap: 4px;
   margin-bottom: 0;
+  background: transparent;
+  align-items: end;
 }
 
 .tab {
   flex: 1;
-  border: none;
-  background: #b0b8a8;
-  padding: 10px 16px 12px;
+  border: 1px solid var(--color-outline);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+ padding: 10px 8px 9px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-  color: #4a5240;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1;
+  transition: background 0.15s ease, color 0.15s ease, font-weight 0.15s ease;
+  position: relative;
+  top: 1px;
+  text-align: center;
+  box-shadow: none;
+  outline: none;
+}
+
+.tab:focus,
+.tab:focus-visible,
+.tab:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.courses {
+  background: var(--courses-bg);
+  color: var(--courses-text);
+}
+
+.courses:hover {
+  background: var(--courses-accent);
+  color: var(--courses-text);
+  font-weight: 400;
+}
+
+.tasks {
+  background: var(--tasks-bg);
+  color: var(--tasks-text);
+}
+
+.tasks:hover {
+  background: var(--tasks-accent);
+  color: var(--tasks-text);
+  font-weight: 400;
+}
+
+.reminders {
+  background: var(--reminders-bg);
+  color: var(--reminders-text);
+}
+
+.reminders:hover {
+  background: var(--reminders-accent);
+  color: var(--reminders-text);
+  font-weight: 400;
+}
+
+.progress {
+  background: var(--progress-bg);
+  color: var(--progress-text);
+}
+
+.progress:hover {
+  background: var(--progress-accent);
+  color: var(--progress-text);
+  font-weight: 400;
 }
 
 .active {
-  background: #ffffff;
-  color: var(--color-text);
-  font-weight: 800;
+  background: var(--section-bg);
+  color: var(--section-text);
+  border-color: var(--color-outline);
+  border-bottom: none;
+  font-weight: 400;
+  z-index: 2;
 }
