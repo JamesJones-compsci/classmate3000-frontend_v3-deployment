@@ -25,6 +25,7 @@ function getReminderStatus(reminder) {
   if (!reminder) return "—";
   if (typeof reminder.sent === "boolean") return reminder.sent ? "Sent" : "Pending";
   if (typeof reminder.isSent === "boolean") return reminder.isSent ? "Sent" : "Pending";
+  if (typeof reminder.wasSent === "boolean") return reminder.wasSent ? "Sent" : "Pending";
   if (reminder.status) return reminder.status;
   return "Pending";
 }
@@ -57,13 +58,10 @@ export default function ReminderDetailPage() {
         breadcrumbs={[
           { label: "Home", to: "/dashboard/courses" },
           { label: "Reminders", to: "/dashboard/reminders" },
-          { label: reminder ? "Reminder Details" : "Reminder Details" },
+          { label: "Reminder Details" },
         ]}
         actions={
           <div className={styles.actions}>
-            <Button variant="ghost" onClick={() => navigate("/dashboard/reminders")}>
-              Back to reminders
-            </Button>
             <Button variant="secondary" disabled={!reminder} onClick={() => setShowEdit(true)}>
               Edit
             </Button>
@@ -120,6 +118,12 @@ export default function ReminderDetailPage() {
                   </>
                 )}
               </section>
+            </div>
+
+            <div className={styles.bottomAction}>
+              <Button variant="ghost" onClick={() => navigate("/dashboard/reminders")}>
+                Back to reminders
+              </Button>
             </div>
           </>
         )}
