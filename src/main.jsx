@@ -6,9 +6,6 @@ import "./styles/index.css";
 import "./styles/App.css";
 import "./styles/globals.css"; // Penny - Add import for globals style
 
-/* Dashboard-only (scoped) styles */
-import "./styles/dashboard.css";
-
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(

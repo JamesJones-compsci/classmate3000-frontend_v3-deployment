@@ -56,9 +56,6 @@ export default function TaskDetailPage() {
         ]}
         actions={
           <div className={styles.actions}>
-            <Button variant="ghost" onClick={() => navigate("/dashboard/tasks")}>
-              Back to tasks
-            </Button>
             <Button variant="secondary" disabled={!task} onClick={() => setShowEdit(true)}>
               Edit
             </Button>
@@ -139,6 +136,12 @@ export default function TaskDetailPage() {
                   </div>
                 )}
               </section>
+            </div>
+
+            <div className={styles.bottomAction}>
+              <Button variant="ghost" onClick={() => navigate("/dashboard/tasks")}>
+                Back to tasks
+              </Button>
             </div>
           </>
         )}

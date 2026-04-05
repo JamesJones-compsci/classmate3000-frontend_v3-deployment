@@ -1,21 +1,35 @@
 .bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: var(--gap-xs);
+  margin-bottom: var(--space-4);
 }
 
 .pill {
-  border: 1px solid #dde0d8;
-  background: #f3f4f0;
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 700;
+  border: var(--border-default);
+  background: var(--color-card);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-light);
   cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.pill:hover {
+  background: var(--tasks-surface);
+  box-shadow: var(--shadow-hover-sm);
+}
+
+.pill:active {
+  transform: scale(var(--scale-press));
 }
 
 .active {
-  background: #b8cff5;
-  border-color: #8fb0ef;
+  background: var(--tasks-accent);
+  border-color: var(--color-outline);
 }

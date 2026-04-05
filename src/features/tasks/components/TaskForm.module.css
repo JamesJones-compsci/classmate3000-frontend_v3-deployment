@@ -1,70 +1,71 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--gap-lg);
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--gap-lg);
   align-items: end;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--gap-xs);
 }
 
 .label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
 }
 
 .input {
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: #fff;
+  border: var(--input-border);
+  border-radius: var(--input-radius);
+  padding: var(--input-padding);
+  background: var(--input-bg);
+  font-size: var(--input-font-size);
 }
 
 .checkboxRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  gap: var(--gap-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
 }
 
 .error {
   margin: 0;
   color: var(--color-danger);
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 8px;
+  gap: var(--gap-sm);
+  margin-top: var(--space-2);
 }
 
 .secondaryBtn,
 .primaryBtn {
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 10px 14px;
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--button-padding-md);
   cursor: pointer;
-  font-weight: 700;
+  font-weight: var(--font-weight-light);
 }
 
 .secondaryBtn {
-  background: #fff;
+  background: var(--color-card);
 }
 
 .primaryBtn {
-  background: #e9f3ff;
-  border-color: #cde0fb;
+  background: var(--tasks-accent);
+  border-color: var(--color-outline);
 }

@@ -1,19 +1,20 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--gap-3xl);
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--gap-2xl);
 }
 
 .actions {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--gap-md);
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .topRow {
@@ -23,15 +24,15 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 1rem;
+  gap: var(--gap-xl);
 }
 
 .panel {
   grid-column: span 6;
-  background: #fff;
-  border: 1px solid #e6e8ee;
-  border-radius: 14px;
-  padding: 1rem;
+  background: var(--color-card);
+  border: var(--border-default);
+  border-radius: var(--panel-radius);
+  padding: var(--panel-padding);
 }
 
 .fullWidth {
@@ -39,20 +40,22 @@
 }
 
 .panelTitle {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-light);
 }
 
 .infoList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--gap-sm);
+  font-weight: var(--font-weight-light);
 }
 
 .linkList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--gap-sm);
 }
 
 .linkRow {
@@ -60,28 +63,45 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border: 1px solid #e6e8ee;
-  border-radius: 10px;
-  background: #fff;
-  padding: 0.75rem 1rem;
+  border: var(--border-default);
+  border-radius: var(--link-row-radius);
+  background: var(--color-card);
+  padding: var(--space-4) var(--space-5);
   text-align: left;
   cursor: pointer;
+  font-weight: var(--font-weight-light);
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .linkRow:hover {
-  background: #f8f9fc;
+  background: var(--section-surface);
+  box-shadow: var(--shadow-hover-sm);
+}
+
+.linkRow:active {
+  transform: scale(var(--scale-press));
 }
 
 .muted {
-  color: #667085;
+  color: var(--color-text-muted);
   margin: 0;
+  font-weight: var(--font-weight-light);
 }
 
 .sectionAction {
-  margin-top: 1rem;
+  margin-top: var(--space-5);
 }
 
-@media (max-width: 900px) {
+.bottomAction {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--space-1);
+}
+
+@media (max-width: var(--breakpoint-tablet)) {
   .panel {
     grid-column: 1 / -1;
   }

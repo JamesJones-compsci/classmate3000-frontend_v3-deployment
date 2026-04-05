@@ -106,6 +106,7 @@
   --border-default: 1px solid var(--color-outline);
   --border-soft: 1px solid var(--color-outline-soft);
   --border-danger: 1px solid var(--color-danger-border);
+  --border-overdue-accent: 3px solid var(--color-danger);
 
   /* =========================
      LAYOUT

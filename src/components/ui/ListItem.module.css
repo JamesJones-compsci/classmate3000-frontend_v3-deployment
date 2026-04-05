@@ -3,19 +3,26 @@
   background: var(--color-card);
   border-radius: var(--link-row-radius);
   padding: var(--space-4) var(--space-5);
-  box-shadow: none;
+  box-shadow: var(--shadow-none);
 }
 
 .clickable {
   cursor: pointer;
   transition:
-    border-color 0.15s ease,
-    background 0.15s ease;
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .clickable:hover {
   border-color: var(--color-outline);
   background: var(--section-surface);
+  box-shadow: var(--shadow-hover-sm);
+}
+
+.clickable:active {
+  transform: scale(var(--scale-press));
 }
 
 .selected {
@@ -28,5 +35,5 @@
 }
 
 .overdue {
-  border-left: 3px solid var(--color-danger);
+border-left: var(--border-overdue-accent);
 }

@@ -1,16 +1,25 @@
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--gap-lg);
   align-items: end;
 }
 
 .input {
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: #fff;
+  border: var(--input-border);
+  border-radius: var(--input-radius);
+  padding: var(--input-padding);
+  background: var(--input-bg);
   width: 100%;
+  font-size: var(--input-font-size);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+}
+
+.input:focus,
+.input:focus-visible {
+  outline: none;
+  border-color: var(--color-outline);
 }
 
 .checkboxField {
@@ -21,7 +30,7 @@
 .checkboxRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  gap: var(--gap-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
 }
