@@ -18,9 +18,9 @@
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   color: #666666;
-  font-weight: 500;
+  font-weight: var(--font-weight-light);
 }
 
 .crumb {
@@ -48,9 +48,9 @@
 
 .title {
   margin: 0;
-  font-size: 30px;
+  font-size: var(--font-size-2xl);
   line-height: 1.1;
-  font-weight: 700;
+  font-weight: var(--font-weight-light);
   color: var(--color-text);
 }
 
@@ -58,4 +58,5 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
 }

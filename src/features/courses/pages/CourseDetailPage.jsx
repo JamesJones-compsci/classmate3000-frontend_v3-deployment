@@ -68,9 +68,6 @@ export default function CourseDetailPage() {
         ]}
         actions={
           <div className={styles.actions}>
-            <Button variant="ghost" onClick={() => navigate("/dashboard/courses")}>
-              Back to courses
-            </Button>
             <Button variant="secondary" disabled={!course} onClick={() => setShowEdit(true)}>
               Edit
             </Button>
@@ -161,6 +158,12 @@ export default function CourseDetailPage() {
                   </div>
                 )}
               </section>
+            </div>
+
+            <div className={styles.bottomAction}>
+              <Button variant="ghost" onClick={() => navigate("/dashboard/courses")}>
+                Back to All Courses
+              </Button>
             </div>
           </>
         )}
