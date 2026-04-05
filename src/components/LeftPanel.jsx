@@ -33,9 +33,10 @@ const sectionConfig = {
   progress: {
     title: "PROGRESS",
     actions: [
-      { key: "all", label: "All Courses", type: "filter" },
-      { key: "latest", label: "Latest Week", type: "filter" },
-      { key: "add", label: "Add Progress", type: "action" },
+      { key: "all", label: "All Progress", type: "filter" },
+      { key: "meetingGoal", label: "Meeting Goal", type: "filter" },
+      { key: "atRisk", label: "At Risk", type: "filter" },
+      { key: "cannotMeetGoal", label: "Cannot Meet Goal", type: "filter" },
     ],
   },
 };

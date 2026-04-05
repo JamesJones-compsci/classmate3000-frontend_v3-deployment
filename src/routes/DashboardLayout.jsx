@@ -29,6 +29,10 @@ export default function DashboardLayout() {
   );
 
   useEffect(() => {
+    setActiveFilter("all");
+  }, [currentSection]);
+
+  useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
 
