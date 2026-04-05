@@ -121,8 +121,8 @@ export default function CourseDetailPage() {
                   <p className={styles.muted}>No progress entries yet.</p>
                 ) : (
                   <div className={styles.infoList}>
-                    <div><strong>Current Grade:</strong> {latestProgress.currentGrade ?? "—"}%</div>
-                    <div><strong>Max Possible:</strong> {latestProgress.maxPossibleGrade ?? "—"}%</div>
+                    <div><strong>Current Grade:</strong> {latestProgress.currentGradePercent ?? "—"}%</div>
+                    <div><strong>Max Possible:</strong> {latestProgress.maxPossiblePercent ?? "—"}%</div>
                     <div><strong>Week Of:</strong> {latestProgress.weekOf || "—"}</div>
                   </div>
                 )}

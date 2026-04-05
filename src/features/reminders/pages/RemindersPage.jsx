@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
@@ -10,12 +10,36 @@ import ReminderRow from "../components/ReminderRow";
 import ReminderForm from "../components/ReminderForm";
 import styles from "./RemindersPage.module.css";
 
+function getReminderStatus(reminder) {
+  if (!reminder) return "—";
+  if (typeof reminder.sent === "boolean") return reminder.sent ? "Sent" : "Pending";
+  if (typeof reminder.isSent === "boolean") return reminder.isSent ? "Sent" : "Pending";
+  if (typeof reminder.wasSent === "boolean") return reminder.wasSent ? "Sent" : "Pending";
+  if (reminder.status) return String(reminder.status).toLowerCase();
+  return "pending";
+}
+
 export default function RemindersPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const filter = searchParams.get("filter") || "all";
+
   const { reminders, loading, error, addReminder } = useReminders();
   const { tasks } = useTasks();
 
   const [showCreate, setShowCreate] = useState(false);
+
+  const filteredReminders = useMemo(() => {
+    if (filter === "pending") {
+      return reminders.filter((reminder) => getReminderStatus(reminder) === "pending");
+    }
+
+    if (filter === "sent") {
+      return reminders.filter((reminder) => getReminderStatus(reminder) === "sent");
+    }
+
+    return reminders;
+  }, [reminders, filter]);
 
   return (
     <div className={styles.page}>
@@ -35,16 +59,16 @@ export default function RemindersPage() {
       <div className={styles.body}>
         {loading && <EmptyState title="Loading" message="Loading reminders..." />}
         {!loading && error && <EmptyState title="Error" message={error} />}
-        {!loading && !error && reminders.length === 0 && (
+        {!loading && !error && filteredReminders.length === 0 && (
           <EmptyState
-            title="No reminders yet"
-            message="Create your first reminder to get started."
+            title="No reminders found"
+            message="No reminders match this filter."
           />
         )}
 
-        {!loading && !error && reminders.length > 0 && (
+        {!loading && !error && filteredReminders.length > 0 && (
           <div className={styles.stack}>
-            {reminders.map((reminder) => (
+            {filteredReminders.map((reminder) => (
               <div
                 key={reminder.reminderId}
                 className={styles.selectable}

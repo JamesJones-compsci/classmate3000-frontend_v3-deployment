@@ -13,7 +13,7 @@ function getSectionFromPath(pathname) {
   return "courses";
 }
 
-function getProgressFilterFromSearch(search) {
+function getFilterFromSearch(search) {
   const params = new URLSearchParams(search);
   return params.get("filter") || "all";
 }
@@ -34,25 +34,23 @@ export default function DashboardLayout() {
   );
 
   useEffect(() => {
-  const isProgressListPage = location.pathname === "/dashboard/progress";
+    const isCoursesListPage = location.pathname === "/dashboard/courses";
+    const isTasksListPage = location.pathname === "/dashboard/tasks";
+    const isRemindersListPage = location.pathname === "/dashboard/reminders";
+    const isProgressListPage = location.pathname === "/dashboard/progress";
 
-  if (isProgressListPage) {
-    setActiveFilter(getProgressFilterFromSearch(location.search));
-    return;
-  }
+    if (isTasksListPage || isRemindersListPage || isProgressListPage) {
+      setActiveFilter(getFilterFromSearch(location.search));
+      return;
+    }
 
-  if (currentSection === "tasks" || currentSection === "reminders") {
-    setActiveFilter("all");
-    return;
-  }
+    if (isCoursesListPage) {
+      setActiveFilter("all");
+      return;
+    }
 
-  if (currentSection === "courses") {
-    setActiveFilter("all");
-    return;
-  }
-
-  setActiveFilter("");
-}, [currentSection, location.pathname, location.search]);
+    setActiveFilter("");
+  }, [currentSection, location.pathname, location.search]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", darkMode);
@@ -67,13 +65,35 @@ export default function DashboardLayout() {
   }
 
   function handleFilterChange(filterKey) {
+    if (currentSection === "tasks") {
+      navigate(
+        filterKey === "all"
+          ? "/dashboard/tasks"
+          : `/dashboard/tasks?filter=${filterKey}`
+      );
+      return;
+    }
+
+    if (currentSection === "reminders") {
+      navigate(
+        filterKey === "all"
+          ? "/dashboard/reminders"
+          : `/dashboard/reminders?filter=${filterKey}`
+      );
+      return;
+    }
+
     if (currentSection === "progress") {
-      const target =
+      navigate(
         filterKey === "all"
           ? "/dashboard/progress"
-          : `/dashboard/progress?filter=${filterKey}`;
+          : `/dashboard/progress?filter=${filterKey}`
+      );
+      return;
+    }
 
-      navigate(target);
+    if (currentSection === "courses") {
+      navigate("/dashboard/courses");
       return;
     }
 
@@ -118,10 +138,6 @@ export default function DashboardLayout() {
       <main className={styles.main}>
         <Navbar currentSection={currentSection} onNavigate={navigate} />
         <section className={styles.content}>
-          {/* OLD: no longer needed for Progress (now using URL-based filters) */}
-          {/* <Outlet context={{ activeFilter }} /> */}
-
-          {/* NEW */}
           <Outlet />
         </section>
       </main>

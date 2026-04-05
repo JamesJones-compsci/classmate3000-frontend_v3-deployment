@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
@@ -13,16 +13,27 @@ import styles from "./TasksPage.module.css";
 
 export default function TasksPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get("filter") || "all";
+
   const { tasks, loading, error, addTask } = useTasks();
   const { courses } = useCourses();
 
-  const [filter, setFilter] = useState("all");
   const [showCreate, setShowCreate] = useState(false);
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const week = new Date(today);
   week.setDate(today.getDate() + 7);
+
+  function handleFilterChange(nextFilter) {
+    if (nextFilter === "all") {
+      setSearchParams({});
+      return;
+    }
+
+    setSearchParams({ filter: nextFilter });
+  }
 
   const filteredTasks = useMemo(() => {
     const sortedTasks = [...tasks].sort((a, b) => {
@@ -71,7 +82,7 @@ export default function TasksPage() {
       />
 
       <div className={styles.body}>
-        <TaskFilterBar filter={filter} onFilterChange={setFilter} />
+        <TaskFilterBar filter={filter} onFilterChange={handleFilterChange} />
 
         {loading && <EmptyState title="Loading" message="Loading tasks..." />}
         {!loading && error && <EmptyState title="Error" message={error} />}
