@@ -1,41 +1,52 @@
 :root {
+  /* =========================
+     CORE COLORS
+     ========================= */
   --color-site-bg: #ffffff;
   --color-card: #ffffff;
   --color-text: #000000;
-  --color-muted: #666666;
+  --color-text-muted: #666666;
+  --color-text-soft: #8a8a8a;
   --color-outline: #d9d9d9;
+  --color-outline-soft: #ececec;
   --color-danger: #b42318;
+  --color-danger-soft: #faf2f2;
 
-  /* Courses */
+  /* =========================
+     FEATURE THEMES
+     ========================= */
   --courses-bg: #eff6e5;
   --courses-surface: #e1ead4;
   --courses-accent: #e1ead4;
   --courses-text: #000000;
 
-  /* Tasks */
   --tasks-bg: #ddebf8;
   --tasks-surface: #d1e2f1;
   --tasks-accent: #d1e2f1;
   --tasks-text: #000000;
 
-  /* Reminders */
   --reminders-bg: #fff6df;
   --reminders-surface: #fff3d4;
   --reminders-accent: #fff3d4;
   --reminders-text: #000000;
 
-  /* Progress */
   --progress-bg: #f1e9f9;
   --progress-surface: #e1d8ea;
   --progress-accent: #e1d8ea;
   --progress-text: #000000;
 
-  /* Type scale */
+  /* =========================
+     TYPOGRAPHY
+     ========================= */
+  --font-family-base: "Lexend", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  --font-weight-thin: 200;
   --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
 
+  --font-size-2xs: 11px;
   --font-size-xs: 12px;
   --font-size-sm: 13px;
   --font-size-md: 14px;
@@ -44,17 +55,115 @@
   --font-size-2xl: 30px;
 
   --line-height-tight: 1.05;
+  --line-height-snug: 1.2;
   --line-height-normal: 1.45;
 
+  /* =========================
+     SPACING
+     ========================= */
+  --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-7: 32px;
+  --space-3: 10px;
+  --space-4: 12px;
+  --space-5: 14px;
+  --space-6: 16px;
+  --space-7: 18px;
+  --space-8: 20px;
+  --space-9: 24px;
+  --space-10: 28px;
+  --space-11: 32px;
 
+  /* =========================
+     RADII
+     ========================= */
+  --radius-none: 0;
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-3xl: 18px;
+  --radius-pill: 999px;
+
+  /* =========================
+     BORDERS
+     ========================= */
+  --border-width: 1px;
+  --border-default: 1px solid var(--color-outline);
+  --border-soft: 1px solid var(--color-outline-soft);
+
+  /* =========================
+     LAYOUT
+     ========================= */
+  --sidebar-width: 250px;
+  --page-padding: 24px;
+  --panel-padding: 16px;
+  --card-padding: 18px;
+  --modal-shell-padding: 10px;
+  --modal-content-padding-x: 24px;
+  --modal-content-padding-y: 24px;
+
+  /* =========================
+     COMPONENT GAPS
+     ========================= */
+  --gap-xs: 6px;
+  --gap-sm: 8px;
+  --gap-md: 10px;
+  --gap-lg: 12px;
+  --gap-xl: 16px;
+  --gap-2xl: 18px;
+  --gap-3xl: 20px;
+
+  /* =========================
+     BUTTONS
+     ========================= */
+  --button-font-size-sm: var(--font-size-xs);
+  --button-font-size-md: var(--font-size-sm);
+  --button-font-size-lg: var(--font-size-md);
+
+  --button-padding-sm: 8px 12px;
+  --button-padding-md: 10px 14px;
+  --button-padding-lg: 12px 16px;
+
+  /* =========================
+     INPUTS
+     ========================= */
+  --input-font-size: var(--font-size-md);
+  --input-padding: 11px 12px;
+  --input-radius: var(--radius-md);
+  --input-border: var(--border-default);
+  --input-bg: #ffffff;
+
+  /* =========================
+     CARDS / PANELS
+     ========================= */
+  --card-radius: var(--radius-2xl);
+  --panel-radius: var(--radius-xl);
+  --link-row-radius: var(--radius-md);
+
+  /* =========================
+     TABS
+     ========================= */
+  --tab-radius: 16px 16px 0 0;
+  --tab-font-size: 20px;
+  --tab-font-weight: var(--font-weight-light);
+  --tab-padding: 10px 8px 9px;
+
+  /* =========================
+     MODALS
+     ========================= */
+  --modal-shell-radius: var(--radius-3xl);
+  --modal-inner-radius: var(--radius-lg);
+  --modal-title-size: var(--font-size-xl);
+  --modal-title-weight: var(--font-weight-light);
+
+  /* =========================
+     SCROLLBARS
+     ========================= */
+  --scrollbar-size: 10px;
+  --scrollbar-radius: 999px;
+  --scrollbar-track: rgba(0, 0, 0, 0.05);
+  --scrollbar-thumb: var(--section-accent, #d9d9d9);
+  --scrollbar-thumb-hover: var(--section-accent, #cfcfcf);
 }

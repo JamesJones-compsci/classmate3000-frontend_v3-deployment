@@ -2,9 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@200;300;400;500;600&display=swap");
 
 :root {
-  font-family: "Lexend", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.45;
-  font-weight: 300;
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-light);
   color: var(--color-text);
   background-color: var(--color-site-bg);
   font-synthesis: none;
