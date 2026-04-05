@@ -82,26 +82,26 @@
   --font-size-lg: 16px;
   --font-size-xl: 20px;
   --font-size-2xl: 30px;
+  --font-size-3xl: 40px;
 
   --line-height-tight: 1.05;
   --line-height-snug: 1.2;
   --line-height-normal: 1.45;
 
   /* =========================
-     SPACING
+     SPACING (4px scale)
      ========================= */
   --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
-  --space-3: 10px;
-  --space-4: 12px;
-  --space-5: 14px;
-  --space-6: 16px;
-  --space-7: 18px;
-  --space-8: 20px;
-  --space-9: 24px;
-  --space-10: 28px;
-  --space-11: 32px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 40px;
+  --space-10: 48px;
 
   /* =========================
      RADII
@@ -137,13 +137,13 @@
   /* =========================
      COMPONENT GAPS
      ========================= */
-  --gap-xs: 6px;
+  --gap-xs: 4px;
   --gap-sm: 8px;
-  --gap-md: 10px;
-  --gap-lg: 12px;
-  --gap-xl: 16px;
-  --gap-2xl: 18px;
-  --gap-3xl: 20px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 20px;
+  --gap-2xl: 24px;
+  --gap-3xl: 32px;
 
   /* =========================
      BUTTONS
@@ -156,6 +156,8 @@
   --button-padding-md: 10px 14px;
   --button-padding-lg: 12px 16px;
 
+  --button-radius: var(--radius-md);
+
   /* =========================
      INPUTS
      ========================= */
@@ -164,6 +166,19 @@
   --input-radius: var(--radius-md);
   --input-border: var(--border-default);
   --input-bg: #ffffff;
+
+   /* =========================
+     AUTH INPUTS / LAYOUT
+     ========================= */
+  --auth-shell-max-width: 980px;
+  --auth-card-max-width: 440px;
+  --auth-card-padding: 28px;
+  --auth-panel-padding: 32px;
+
+  --auth-input-padding-top: 20px;
+  --auth-input-padding-bottom: 8px;
+  --auth-input-padding-x: 12px;
+  --auth-input-padding-right-icon: 42px;
 
   /* =========================
      CARDS / PANELS
@@ -253,7 +268,7 @@
   --profile-accent-strong: #3a3a3d;
   --profile-text: #f5f5f5;
 
-   --auth-bg: #0F1115;
+  --auth-bg: #0F1115;
   --auth-surface: #1A1D23;
   --auth-border: #2A2F3A;
   --auth-text: #E5E7EB;
