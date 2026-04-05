@@ -5,22 +5,44 @@
   display: grid;
   place-items: center;
   z-index: 100;
-  padding: 20px;
+  padding: var(--space-8);
 }
 
 .shell {
   width: 100%;
   max-height: calc(100vh - 40px);
-  border: 1px solid var(--color-outline);
-  border-radius: 18px;
+  border: var(--border-default);
+  border-radius: var(--modal-shell-radius);
   background: var(--section-surface, #f5f5f5);
-  padding: 10px;
+  padding: var(--modal-shell-padding);
 }
 
 .inner {
   background: #ffffff;
   max-height: calc(100vh - 60px);
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--section-accent) transparent;
+}
+
+.inner::-webkit-scrollbar {
+  width: 12px;
+}
+
+.inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.inner::-webkit-scrollbar-thumb {
+  background-color: var(--section-accent);
+  border-radius: 999px;
+  border: 3px solid #ffffff;
+}
+
+.inner::-webkit-scrollbar-thumb:hover {
+  background-color: var(--section-accent-strong);
 }
 
 .md {
@@ -38,13 +60,13 @@
 
 .title {
   text-align: center;
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-light);
+  font-size: var(--modal-title-size);
+  font-weight: var(--modal-title-weight);
   margin: 0;
   color: var(--color-text);
-  padding: 24px 24px 0;
+  padding: var(--space-9) var(--modal-content-padding-x) 0;
 }
 
 .content {
-  padding: 16px 24px 24px;
+  padding: var(--space-6) var(--modal-content-padding-x) var(--modal-content-padding-y);
 }
