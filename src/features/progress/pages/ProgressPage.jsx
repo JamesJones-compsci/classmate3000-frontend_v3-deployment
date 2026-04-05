@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
 import { useCourses } from "../../courses/hooks/useCourses";
@@ -9,7 +9,9 @@ import styles from "./ProgressPage.module.css";
 
 export default function ProgressPage() {
   const navigate = useNavigate();
-  const { activeFilter } = useOutletContext();
+  const [searchParams] = useSearchParams();
+  const activeFilter = searchParams.get("filter") || "all";
+
   const { courses, loading: coursesLoading, error: coursesError } = useCourses();
   const { progressEntries, loading: progressLoading, error: progressError } = useProgress();
 
@@ -48,17 +50,18 @@ export default function ProgressPage() {
       })
       .filter(Boolean);
 
-   if (activeFilter === "meetingGoal") {
-    return mapped.filter((item) => item.isMeetingGoal);
-  }
+    if (activeFilter === "meetingGoal") {
+      return mapped.filter((item) => item.isMeetingGoal);
+    }
 
-  if (activeFilter === "atRisk") {
-    return mapped.filter((item) => item.isAtRisk);
-  }
+    if (activeFilter === "atRisk") {
+      return mapped.filter((item) => item.isAtRisk);
+    }
 
-  if (activeFilter === "cannotMeetGoal") {
-    return mapped.filter((item) => item.isCannotMeetGoal);
-  }
+    if (activeFilter === "cannotMeetGoal") {
+      return mapped.filter((item) => item.isCannotMeetGoal);
+    }
+
     return mapped;
   }, [courses, progressEntries, activeFilter]);
 

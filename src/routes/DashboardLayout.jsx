@@ -13,6 +13,11 @@ function getSectionFromPath(pathname) {
   return "courses";
 }
 
+function getProgressFilterFromSearch(search) {
+  const params = new URLSearchParams(search);
+  return params.get("filter") || "all";
+}
+
 export default function DashboardLayout() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,8 +34,25 @@ export default function DashboardLayout() {
   );
 
   useEffect(() => {
+  const isProgressListPage = location.pathname === "/dashboard/progress";
+
+  if (isProgressListPage) {
+    setActiveFilter(getProgressFilterFromSearch(location.search));
+    return;
+  }
+
+  if (currentSection === "tasks" || currentSection === "reminders") {
     setActiveFilter("all");
-  }, [currentSection]);
+    return;
+  }
+
+  if (currentSection === "courses") {
+    setActiveFilter("all");
+    return;
+  }
+
+  setActiveFilter("");
+}, [currentSection, location.pathname, location.search]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", darkMode);
@@ -45,6 +67,16 @@ export default function DashboardLayout() {
   }
 
   function handleFilterChange(filterKey) {
+    if (currentSection === "progress") {
+      const target =
+        filterKey === "all"
+          ? "/dashboard/progress"
+          : `/dashboard/progress?filter=${filterKey}`;
+
+      navigate(target);
+      return;
+    }
+
     setActiveFilter(filterKey);
 
     window.dispatchEvent(
@@ -86,7 +118,11 @@ export default function DashboardLayout() {
       <main className={styles.main}>
         <Navbar currentSection={currentSection} onNavigate={navigate} />
         <section className={styles.content}>
-          <Outlet context={{ activeFilter }} />
+          {/* OLD: no longer needed for Progress (now using URL-based filters) */}
+          {/* <Outlet context={{ activeFilter }} /> */}
+
+          {/* NEW */}
+          <Outlet />
         </section>
       </main>
     </div>
