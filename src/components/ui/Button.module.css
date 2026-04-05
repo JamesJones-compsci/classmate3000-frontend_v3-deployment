@@ -62,7 +62,7 @@
 }
 
 .courses:hover:not(:disabled) {
-  background: var(--courses-bg);
+  background: var(--courses-surface);
 }
 
 .tasks {
@@ -72,7 +72,7 @@
 }
 
 .tasks:hover:not(:disabled) {
-  background: var(--tasks-bg);
+  background: var(--tasks-surface);
 }
 
 .reminders {
@@ -82,7 +82,7 @@
 }
 
 .reminders:hover:not(:disabled) {
-  background: var(--reminders-bg);
+  background: var(--reminders-surface);
 }
 
 .progress {
@@ -92,7 +92,7 @@
 }
 
 .progress:hover:not(:disabled) {
-  background: var(--progress-bg);
+  background: var(--progress-surface);
 }
 
 .danger {

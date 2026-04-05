@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../auth/AuthContext";
@@ -27,6 +27,14 @@ export default function DashboardLayout() {
     [location.pathname]
   );
 
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      darkMode ? "dark" : "light"
+    );
+    sessionStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
   function handleAction(actionKey) {
     window.dispatchEvent(
       new CustomEvent("classmate:left-action", {
@@ -46,10 +54,7 @@ export default function DashboardLayout() {
   }
 
   function handleToggleDarkMode() {
-    const next = !darkMode;
-    setDarkMode(next);
-    document.documentElement.classList.toggle("dark-mode", next);
-    sessionStorage.setItem("theme", next ? "dark" : "light");
+    setDarkMode((prev) => !prev);
   }
 
   function handleOpenProfile() {

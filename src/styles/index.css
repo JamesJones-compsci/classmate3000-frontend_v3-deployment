@@ -13,10 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 html,
 body,
 #root {
@@ -28,6 +24,7 @@ body {
   min-width: 320px;
   background: var(--color-site-bg);
   color: var(--color-text);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 h1,

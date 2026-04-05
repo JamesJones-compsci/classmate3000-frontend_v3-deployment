@@ -106,7 +106,6 @@
   --border-default: 1px solid var(--color-outline);
   --border-soft: 1px solid var(--color-outline-soft);
   --border-danger: 1px solid var(--color-danger-border);
-  --border-overdue-accent: 3px solid var(--color-danger);
 
   /* =========================
      LAYOUT
@@ -186,17 +185,51 @@
      BREAKPOINTS
      ========================= */
   --breakpoint-tablet: 900px;
+}
 
-  /* =========================
-   INTERACTION / ELEVATION
-   ========================= */
-  --shadow-none: none;
-  --shadow-hover-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-hover-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+:root[data-theme="dark"] {
+  --color-site-bg: #141414;
+  --color-card: #1c1c1c;
+  --color-text: #f5f5f5;
+  --color-text-muted: #b8b8b8;
+  --color-text-soft: #9b9b9b;
+  --color-text-neutral: #d2d2d2;
 
-  --transition-fast: 0.15s ease;
-  --transition-medium: 0.2s ease;
+  --color-outline: #3a3a3a;
+  --color-outline-soft: #2a2a2a;
 
-  --scale-press: 0.995;
+  --color-danger: #ff7f7f;
+  --color-danger-text: #ffd1d1;
+  --color-danger-border: #7a3c3c;
+  --color-danger-soft: #2a1818;
 
+  --color-overlay: rgba(0, 0, 0, 0.45);
+  --color-hover-soft: rgba(255, 255, 255, 0.06);
+  --color-scrollbar-track: rgba(255, 255, 255, 0.08);
+
+  --courses-bg: #1f261b;
+  --courses-surface: #2a3423;
+  --courses-accent: #2f3c27;
+  --courses-accent-strong: #3a492f;
+  --courses-text: #f5f5f5;
+
+  --tasks-bg: #18222b;
+  --tasks-surface: #223240;
+  --tasks-accent: #273a4a;
+  --tasks-accent-strong: #31485b;
+  --tasks-text: #f5f5f5;
+
+  --reminders-bg: #2a2418;
+  --reminders-surface: #3a3222;
+  --reminders-accent: #433a27;
+  --reminders-accent-strong: #524631;
+  --reminders-text: #f5f5f5;
+
+  --progress-bg: #241d2a;
+  --progress-surface: #31263a;
+  --progress-accent: #392d43;
+  --progress-accent-strong: #463652;
+  --progress-text: #f5f5f5;
+
+  --input-bg: #1a1a1a;
 }
