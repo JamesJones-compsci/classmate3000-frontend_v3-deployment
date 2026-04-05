@@ -18,21 +18,25 @@
   --courses-bg: #eff6e5;
   --courses-surface: #e1ead4;
   --courses-accent: #e1ead4;
+  --courses-accent-strong: #cddbb8;
   --courses-text: #000000;
 
   --tasks-bg: #ddebf8;
   --tasks-surface: #d1e2f1;
   --tasks-accent: #d1e2f1;
+  --tasks-accent-strong: #bdd3ea;
   --tasks-text: #000000;
 
   --reminders-bg: #fff6df;
   --reminders-surface: #fff3d4;
   --reminders-accent: #fff3d4;
+  --reminders-accent-strong: #f3e7b8;
   --reminders-text: #000000;
 
   --progress-bg: #f1e9f9;
   --progress-surface: #e1d8ea;
   --progress-accent: #e1d8ea;
+  --progress-accent-strong: #cfc3dc;
   --progress-text: #000000;
 
   /* =========================
