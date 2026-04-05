@@ -1,30 +1,49 @@
 import styles from "./ProgressBarChart.module.css";
 
+function clampPercent(value) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.max(0, Math.min(100, Number(value)));
+}
+
+function formatSnapshotDate(dateValue) {
+  if (!dateValue) return "—";
+
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return dateValue;
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
 export default function ProgressBarChart({ course, entries }) {
   const sorted = [...entries].sort((a, b) => new Date(a.weekOf) - new Date(b.weekOf));
 
-  const data = sorted.map((entry, index) => ({
-    label: `Week ${index + 1}`,
-    accumulated:
-      entry.accumulatedPercentPoints != null
-        ? Number(entry.accumulatedPercentPoints)
-        : Number(entry.currentGradePercent ?? 0),
-    maxPossible: Number(entry.maxPossiblePercent ?? 0),
-  }));
+  const data = sorted.map((entry) => {
+    const accumulated = Number(entry.accumulatedPercentPoints ?? 0);
+    const used = Number(entry.usedPercentPoints ?? 0);
+    const lost = Number(entry.lostPercentPoints ?? 0);
+
+    const achievedPercent =
+      used > 0
+        ? clampPercent((accumulated / used) * 100)
+        : clampPercent(Number(entry.currentGradePercent ?? 0));
+
+    const possibleFinalPercent = clampPercent(100 - lost);
+
+    return {
+      dateLabel: formatSnapshotDate(entry.weekOf),
+      achievedPercent: Number(achievedPercent.toFixed(1)),
+      possibleFinalPercent: Number(possibleFinalPercent.toFixed(1)),
+    };
+  });
 
   if (!data.length) {
     return (
-      <div className={styles.chartBox}>
-        <div className={styles.title}>Progress Chart</div>
-        <p className={styles.empty}>No chart data yet.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className={styles.chartBox}>
-      <div className={styles.header}>
-        <div>
+      <div className={styles.chartCard}>
+        <div className={styles.titleBlock}>
           <div className={styles.title}>Progress by Week</div>
           {course ? (
             <div className={styles.subtitle}>
@@ -33,45 +52,138 @@ export default function ProgressBarChart({ course, entries }) {
           ) : null}
         </div>
 
-        <div className={styles.legend}>
-          <div className={styles.legendItem}>
-            <span className={`${styles.swatch} ${styles.accumulated}`} />
-            <span>Accumulated %</span>
+        <p className={styles.empty}>No chart data yet.</p>
+      </div>
+    );
+  }
+
+  const yTicks = [0, 20, 40, 60, 80, 100];
+  const goalGrade = clampPercent(Number(course?.gradeGoal ?? 0));
+
+  return (
+    <div className={styles.chartCard}>
+      <div className={styles.titleBlock}>
+        <div className={styles.title}>Progress by Week</div>
+        {course ? (
+          <div className={styles.subtitle}>
+            {course.code} — {course.title}
           </div>
-          <div className={styles.legendItem}>
-            <span className={`${styles.swatch} ${styles.maxPossible}`} />
-            <span>Max Possible %</span>
-          </div>
-        </div>
+        ) : null}
       </div>
 
-      <div className={styles.chartGrid}>
-        {data.map((item) => (
-          <div key={item.label} className={styles.group}>
-            <div className={styles.bars}>
-              <div className={styles.barWrap}>
-                <div
-                  className={`${styles.bar} ${styles.accumulated}`}
-                  style={{ height: `${Math.max(item.accumulated, 0)}%` }}
-                />
+      <div className={styles.chartWrap}>
+        <div className={styles.chartMain}>
+          <div className={styles.yAxisLabel}>Percent</div>
+
+          <div className={styles.yAxis}>
+            {yTicks.map((tick) => (
+              <div
+                key={tick}
+                className={styles.yTick}
+                style={{ bottom: `${tick}%` }}
+              >
+                {tick}
               </div>
+            ))}
 
-              <div className={styles.barWrap}>
-                <div
-                  className={`${styles.bar} ${styles.maxPossible}`}
-                  style={{ height: `${Math.max(item.maxPossible, 0)}%` }}
-                />
+            {goalGrade > 0 ? (
+              <div
+                className={styles.goalTick}
+                style={{ bottom: `${goalGrade}%` }}
+              >
+                {goalGrade}
               </div>
-            </div>
-
-            <div className={styles.values}>
-              <span>{item.accumulated}%</span>
-              <span>{item.maxPossible}%</span>
-            </div>
-
-            <div className={styles.label}>{item.label}</div>
+            ) : null}
           </div>
-        ))}
+
+          <div className={styles.plotArea}>
+            {yTicks.map((tick) => {
+              const lineBottom = tick === 100 ? "99.6%" : `${tick}%`;
+
+              return (
+                <div
+                  key={tick}
+                  className={styles.gridLine}
+                  style={{ bottom: lineBottom }}
+                />
+              );
+            })}
+
+            {goalGrade > 0 ? (
+              <div
+                className={styles.goalLine}
+                style={{ bottom: `${goalGrade}%` }}
+              />
+            ) : null}
+
+            <div className={styles.barGroups}>
+              {data.map((item) => (
+                <div key={item.dateLabel} className={styles.group}>
+                  <div className={styles.barPair}>
+                    <div className={styles.barColumn}>
+                      <div className={styles.barWrapper}>
+                        <div
+                          className={`${styles.bar} ${styles.achievedBar}`}
+                          style={{ height: `${item.achievedPercent}%` }}
+                        />
+                        <div className={`${styles.barValue} ${styles.achievedValue}`}>
+                          {item.achievedPercent}%
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.barColumn}>
+                      <div className={styles.barWrapper}>
+                        <div
+                          className={`${styles.bar} ${styles.possibleBar}`}
+                          style={{ height: `${item.possibleFinalPercent}%` }}
+                        />
+                        <div className={`${styles.barValue} ${styles.possibleValue}`}>
+                          {item.possibleFinalPercent}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.dateRow}>
+          <div className={styles.dateSpacer} />
+          <div className={styles.dateLabels}>
+            {data.map((item) => (
+              <div key={item.dateLabel} className={styles.dateLabel}>
+                {item.dateLabel}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.xAxisRow}>
+          <div className={styles.xAxisSpacer} />
+          <div className={styles.xAxisLabel}>Weekly Progress Snapshot</div>
+        </div>
+
+        <div className={styles.legendWrap}>
+          <div className={styles.legend}>
+            <div className={styles.legendItem}>
+              <span className={`${styles.swatch} ${styles.achievedSwatch}`} />
+              <span>Currently Achieved %</span>
+            </div>
+            <div className={styles.legendItem}>
+              <span className={`${styles.swatch} ${styles.possibleSwatch}`} />
+              <span>Possible Final %</span>
+            </div>
+            {goalGrade > 0 ? (
+              <div className={styles.legendItem}>
+                <span className={`${styles.lineSwatch} ${styles.goalSwatch}`} />
+                <span>Goal Grade</span>
+              </div>
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   );
