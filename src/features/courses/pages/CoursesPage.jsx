@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
@@ -38,6 +38,21 @@ export default function CoursesPage() {
       };
     });
   }, [courses, tasks, progressEntries]);
+
+  useEffect(() => {
+  function handleLeftAction(event) {
+    if (event.detail?.section === "courses" && event.detail?.action === "add") {
+      setShowCreate(true);
+    }
+  }
+
+  window.addEventListener("classmate:left-action", handleLeftAction);
+
+  return () => {
+    window.removeEventListener("classmate:left-action", handleLeftAction);
+  };
+}, []);
+
 
   return (
     <div className={styles.page}>

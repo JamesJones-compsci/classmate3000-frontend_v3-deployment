@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
@@ -21,10 +21,11 @@ export default function TaskDetailPage() {
   const { taskId } = useParams();
   const navigate = useNavigate();
 
-  const { tasks, loading, error, editTask, removeTask } = useTasks();
+  const { tasks, loading, error, addTask, editTask, removeTask } = useTasks();
   const { courses } = useCourses();
   const { reminders } = useReminders();
 
+  const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
@@ -44,6 +45,20 @@ export default function TaskDetailPage() {
       (reminder) => Number(reminder.taskId) === Number(task.taskId)
     );
   }, [reminders, task]);
+
+  useEffect(() => {
+  function handleLeftAction(event) {
+    if (event.detail?.section === "tasks" && event.detail?.action === "add") {
+      setShowCreate(true);
+    }
+  }
+
+  window.addEventListener("classmate:left-action", handleLeftAction);
+
+  return () => {
+    window.removeEventListener("classmate:left-action", handleLeftAction);
+  };
+}, []);
 
   return (
     <div className={styles.page}>
@@ -146,6 +161,23 @@ export default function TaskDetailPage() {
           </>
         )}
       </div>
+
+      {showCreate && (
+        <Modal title="Add Task" onClose={() => setShowCreate(false)}>
+            <TaskForm
+            mode="create"
+            courses={courses}
+            onCancel={() => setShowCreate(false)}
+            onSubmit={async (payload) => {
+                const created = await addTask(payload);
+                setShowCreate(false);
+                if (created?.taskId != null) {
+                navigate(`/dashboard/tasks/${created.taskId}`);
+                }
+            }}
+            />
+        </Modal>
+        )}
 
       {showEdit && task && (
         <Modal title="Edit Task" onClose={() => setShowEdit(false)}>

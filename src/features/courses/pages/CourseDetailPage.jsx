@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
@@ -31,10 +31,11 @@ export default function CourseDetailPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
 
-  const { courses, loading, error, editCourse, removeCourse } = useCourses();
+  const { courses, loading, error, addCourse, editCourse, removeCourse } = useCourses();
   const { tasks } = useTasks();
   const { entries } = useCourseProgress(courseId);
 
+  const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
@@ -56,6 +57,20 @@ export default function CourseDetailPage() {
 
   const latestProgress = entries[entries.length - 1] ?? null;
   const meetingLines = getMeetingLines(course);
+
+  useEffect(() => {
+  function handleLeftAction(event) {
+    if (event.detail?.section === "courses" && event.detail?.action === "add") {
+      setShowCreate(true);
+    }
+  }
+
+  window.addEventListener("classmate:left-action", handleLeftAction);
+
+  return () => {
+    window.removeEventListener("classmate:left-action", handleLeftAction);
+  };
+}, []);
 
   return (
     <div className={styles.page}>
@@ -168,6 +183,22 @@ export default function CourseDetailPage() {
           </>
         )}
       </div>
+
+      {showCreate && (
+        <Modal title="Add Course" onClose={() => setShowCreate(false)}>
+            <CourseForm
+            mode="create"
+            onCancel={() => setShowCreate(false)}
+            onSubmit={async (payload) => {
+                const created = await addCourse(payload);
+                setShowCreate(false);
+                if (created?.courseId != null) {
+                navigate(`/dashboard/courses/${created.courseId}`);
+                }
+            }}
+            />
+        </Modal>
+        )}
 
       {showEdit && course && (
         <Modal title="Edit Course" onClose={() => setShowEdit(false)}>

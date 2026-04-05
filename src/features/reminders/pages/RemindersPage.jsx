@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
@@ -40,6 +40,20 @@ export default function RemindersPage() {
 
     return reminders;
   }, [reminders, filter]);
+
+  useEffect(() => {
+  function handleLeftAction(event) {
+    if (event.detail?.section === "reminders" && event.detail?.action === "add") {
+      setShowCreate(true);
+    }
+  }
+
+  window.addEventListener("classmate:left-action", handleLeftAction);
+
+  return () => {
+    window.removeEventListener("classmate:left-action", handleLeftAction);
+  };
+}, []);
 
   return (
     <div className={styles.page}>

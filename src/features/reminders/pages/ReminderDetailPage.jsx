@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SectionHeader from "../../../components/ui/SectionHeader";
 import EmptyState from "../../../components/ui/EmptyState";
@@ -34,9 +34,10 @@ export default function ReminderDetailPage() {
   const { reminderId } = useParams();
   const navigate = useNavigate();
 
-  const { reminders, loading, error, editReminder, removeReminder } = useReminders();
+  const { reminders, loading, error, addReminder, editReminder, removeReminder } = useReminders();
   const { tasks } = useTasks();
 
+  const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
@@ -50,6 +51,20 @@ export default function ReminderDetailPage() {
     if (!reminder) return null;
     return tasks.find((item) => Number(item.taskId) === Number(reminder.taskId)) ?? null;
   }, [tasks, reminder]);
+
+  useEffect(() => {
+  function handleLeftAction(event) {
+    if (event.detail?.section === "reminders" && event.detail?.action === "add") {
+      setShowCreate(true);
+    }
+  }
+
+  window.addEventListener("classmate:left-action", handleLeftAction);
+
+  return () => {
+    window.removeEventListener("classmate:left-action", handleLeftAction);
+  };
+}, []);
 
   return (
     <div className={styles.page}>
@@ -128,6 +143,23 @@ export default function ReminderDetailPage() {
           </>
         )}
       </div>
+
+      {showCreate && (
+        <Modal title="Add Reminder" onClose={() => setShowCreate(false)}>
+            <ReminderForm
+            mode="create"
+            tasks={tasks}
+            onCancel={() => setShowCreate(false)}
+            onSubmit={async (payload) => {
+                const created = await addReminder(payload);
+                setShowCreate(false);
+                if (created?.reminderId != null) {
+                navigate(`/dashboard/reminders/${created.reminderId}`);
+                }
+            }}
+            />
+        </Modal>
+        )}
 
       {showEdit && reminder && (
         <Modal title="Edit Reminder" onClose={() => setShowEdit(false)}>
