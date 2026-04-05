@@ -185,4 +185,17 @@
      BREAKPOINTS
      ========================= */
   --breakpoint-tablet: 900px;
+
+  /* =========================
+   INTERACTION / ELEVATION
+   ========================= */
+  --shadow-none: none;
+  --shadow-hover-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-hover-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+
+  --transition-fast: 0.15s ease;
+  --transition-medium: 0.2s ease;
+
+  --scale-press: 0.995;
+
 }
