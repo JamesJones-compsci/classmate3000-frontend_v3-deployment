@@ -68,24 +68,31 @@ export default function LoginPage() {
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-row">
             <div className="auth-labelRow">
-              <label className="auth-label" htmlFor="email">
-                Email
-              </label>
+              <span className="auth-label">Email</span>
               {emailValid ? <span className="auth-statusOk">Valid</span> : null}
             </div>
 
-            <input
-              id="email"
-              className={`auth-input ${
-                email.trim() ? (emailValid ? "auth-input--success" : "auth-input--error") : ""
-              }`}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              autoComplete="email"
-              required
-            />
+            <div className="auth-inputWrap">
+              <input
+                id="email"
+                className={`auth-input ${
+                  email.trim()
+                    ? emailValid
+                      ? "auth-input--success"
+                      : "auth-input--error"
+                    : ""
+                }`}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                autoComplete="email"
+                required
+              />
+              <label className="auth-floatingLabel" htmlFor="email">
+                Email
+              </label>
+            </div>
 
             {email.trim() && !emailValid ? (
               <div className="auth-hint auth-hint--error">
@@ -95,19 +102,25 @@ export default function LoginPage() {
           </div>
 
           <div className="auth-row">
-            <label className="auth-label" htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              className="auth-input"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-              required
-            />
+            <div className="auth-labelRow">
+              <span className="auth-label">Password</span>
+            </div>
+
+            <div className="auth-inputWrap">
+              <input
+                id="password"
+                className="auth-input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                autoComplete="current-password"
+                required
+              />
+              <label className="auth-floatingLabel" htmlFor="password">
+                Password
+              </label>
+            </div>
           </div>
 
           <button

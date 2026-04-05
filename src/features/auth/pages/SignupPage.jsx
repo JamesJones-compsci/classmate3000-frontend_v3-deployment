@@ -154,57 +154,76 @@ export default function SignupPage() {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-row">
-            <label className="auth-label" htmlFor="firstName">
-              First Name
-            </label>
-            <input
-              id="firstName"
-              className="auth-input"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First Name"
-              autoComplete="given-name"
-              required
-            />
-          </div>
+            <div className="auth-labelRow">
+              <span className="auth-label">First Name</span>
+            </div>
 
-          <div className="auth-row">
-            <label className="auth-label" htmlFor="lastName">
-              Last Name
-            </label>
-            <input
-              id="lastName"
-              className="auth-input"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last Name"
-              autoComplete="family-name"
-              required
-            />
+            <div className="auth-inputWrap">
+              <input
+                id="firstName"
+                className="auth-input"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+                autoComplete="given-name"
+                required
+              />
+              <label className="auth-floatingLabel" htmlFor="firstName">
+                First Name
+              </label>
+            </div>
           </div>
 
           <div className="auth-row">
             <div className="auth-labelRow">
-              <label className="auth-label" htmlFor="email">
-                Email
+              <span className="auth-label">Last Name</span>
+            </div>
+
+            <div className="auth-inputWrap">
+              <input
+                id="lastName"
+                className="auth-input"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+                autoComplete="family-name"
+                required
+              />
+              <label className="auth-floatingLabel" htmlFor="lastName">
+                Last Name
               </label>
+            </div>
+          </div>
+
+          <div className="auth-row">
+            <div className="auth-labelRow">
+              <span className="auth-label">Email</span>
               {emailValid ? <span className="auth-statusOk">Valid</span> : null}
             </div>
 
-            <input
-              id="email"
-              className={`auth-input ${
-                email.trim() ? (emailValid ? "auth-input--success" : "auth-input--error") : ""
-              }`}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              autoComplete="email"
-              required
-            />
+            <div className="auth-inputWrap">
+              <input
+                id="email"
+                className={`auth-input ${
+                  email.trim()
+                    ? emailValid
+                      ? "auth-input--success"
+                      : "auth-input--error"
+                    : ""
+                }`}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                autoComplete="email"
+                required
+              />
+              <label className="auth-floatingLabel" htmlFor="email">
+                Email
+              </label>
+            </div>
 
             {email.trim() && !emailValid ? (
               <div className="auth-hint auth-hint--error">
@@ -214,9 +233,9 @@ export default function SignupPage() {
           </div>
 
           <div className="auth-row">
-            <label className="auth-label" htmlFor="password">
-              Password
-            </label>
+            <div className="auth-labelRow">
+              <span className="auth-label">Password</span>
+            </div>
 
             <div className="auth-inputWrapIcon">
               <input
@@ -227,10 +246,13 @@ export default function SignupPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
+                placeholder="Password"
                 autoComplete="new-password"
                 required
               />
+              <label className="auth-floatingLabel" htmlFor="password">
+                Password
+              </label>
               <button
                 type="button"
                 className="auth-iconBtn"
@@ -243,19 +265,13 @@ export default function SignupPage() {
 
             <div className="auth-strength">
               <span
-                className={`auth-strengthBar ${
-                  passwordStrength >= 1 ? strengthClass : ""
-                }`}
+                className={`auth-strengthBar ${passwordStrength >= 1 ? strengthClass : ""}`}
               />
               <span
-                className={`auth-strengthBar ${
-                  passwordStrength >= 2 ? strengthClass : ""
-                }`}
+                className={`auth-strengthBar ${passwordStrength >= 2 ? strengthClass : ""}`}
               />
               <span
-                className={`auth-strengthBar ${
-                  passwordStrength >= 3 ? strengthClass : ""
-                }`}
+                className={`auth-strengthBar ${passwordStrength >= 3 ? strengthClass : ""}`}
               />
             </div>
 
@@ -275,9 +291,9 @@ export default function SignupPage() {
           </div>
 
           <div className="auth-row">
-            <label className="auth-label" htmlFor="confirmPassword">
-              Confirm Password
-            </label>
+            <div className="auth-labelRow">
+              <span className="auth-label">Confirm Password</span>
+            </div>
 
             <div className="auth-inputWrapIcon">
               <input
@@ -296,6 +312,9 @@ export default function SignupPage() {
                 autoComplete="new-password"
                 required
               />
+              <label className="auth-floatingLabel" htmlFor="confirmPassword">
+                Confirm Password
+              </label>
               <button
                 type="button"
                 className="auth-iconBtn"
