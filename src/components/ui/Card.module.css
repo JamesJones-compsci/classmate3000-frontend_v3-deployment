@@ -1,6 +1,6 @@
 .card {
-  border: 1px solid var(--color-outline);
-  border-radius: 16px;
+  border: var(--border-default);
+  border-radius: var(--card-radius);
   background: var(--color-card);
   box-shadow: none;
 }
@@ -11,7 +11,7 @@
 }
 
 .clickable:hover {
-  border-color: #cfcfcf;
+  border-color: var(--color-outline);
 }
 
 .clickable:active {
@@ -23,15 +23,15 @@
 }
 
 .default {
-  background: #ffffff;
+  background: var(--color-card);
 }
 
 .soft {
-  background: #ffffff;
+  background: var(--section-surface, var(--color-card));
 }
 
 .warm {
-  background: #ffffff;
+  background: var(--color-card);
 }
 
 .flat {

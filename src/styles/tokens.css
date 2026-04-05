@@ -7,10 +7,19 @@
   --color-text: #000000;
   --color-text-muted: #666666;
   --color-text-soft: #8a8a8a;
+  --color-text-neutral: #444444;
+
   --color-outline: #d9d9d9;
   --color-outline-soft: #ececec;
+
   --color-danger: #b42318;
+  --color-danger-text: #7a1f1f;
+  --color-danger-border: #e2b8b8;
   --color-danger-soft: #faf2f2;
+
+  --color-overlay: rgba(0, 0, 0, 0.18);
+  --color-hover-soft: rgba(0, 0, 0, 0.04);
+  --color-scrollbar-track: rgba(0, 0, 0, 0.05);
 
   /* =========================
      FEATURE THEMES
@@ -96,6 +105,7 @@
   --border-width: 1px;
   --border-default: 1px solid var(--color-outline);
   --border-soft: 1px solid var(--color-outline-soft);
+  --border-danger: 1px solid var(--color-danger-border);
 
   /* =========================
      LAYOUT
@@ -167,7 +177,12 @@
      ========================= */
   --scrollbar-size: 10px;
   --scrollbar-radius: 999px;
-  --scrollbar-track: rgba(0, 0, 0, 0.05);
+  --scrollbar-track: var(--color-scrollbar-track);
   --scrollbar-thumb: var(--section-accent, #d9d9d9);
-  --scrollbar-thumb-hover: var(--section-accent, #cfcfcf);
+  --scrollbar-thumb-hover: var(--section-accent-strong, #cfcfcf);
+
+  /* =========================
+     BREAKPOINTS
+     ========================= */
+  --breakpoint-tablet: 900px;
 }

@@ -1,9 +1,9 @@
 .sidebar {
   background: var(--color-site-bg);
-  padding: 20px 16px;
+  padding: var(--space-8) var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-8);
   min-height: 100vh;
 }
 
@@ -11,13 +11,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 2px 4px 8px;
+  gap: var(--space-4);
+  padding: var(--space-1) var(--space-1) var(--space-2);
 }
 
 .brand {
-  font-weight: 300;
-  font-size: 22px;
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-xl);
   letter-spacing: -0.2px;
   color: var(--color-text);
 }
@@ -25,12 +25,12 @@
 .userBadge {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--color-outline);
-  border-radius: 999px;
-  background: #ffffff;
+  border: var(--border-default);
+  border-radius: var(--radius-pill);
+  background: var(--color-card);
   color: var(--color-text);
-  font-size: 13px;
-  font-weight: 400;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
   display: grid;
   place-items: center;
   flex-shrink: 0;

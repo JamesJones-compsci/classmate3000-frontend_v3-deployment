@@ -1,6 +1,6 @@
 .message {
-  margin-top: 16px;
-  color: var(--color-muted);
+  margin-top: var(--space-4);
+  color: var(--color-text-muted);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-light);
   text-align: center;
@@ -8,7 +8,7 @@
 
 .actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 18px;
+  justify-content: center;
+  gap: var(--gap-md);
+  margin-top: var(--space-7);
 }

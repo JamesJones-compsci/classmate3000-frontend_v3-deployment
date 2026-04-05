@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.18);
+  background: var(--color-overlay);
   display: grid;
   place-items: center;
   z-index: 100;
@@ -18,7 +18,7 @@
 }
 
 .inner {
-  background: #ffffff;
+  background: var(--color-card);
   max-height: calc(100vh - 60px);
   overflow-y: auto;
   overflow-x: hidden;
@@ -36,9 +36,9 @@
 }
 
 .inner::-webkit-scrollbar-thumb {
-  background-color: var(--section-accent);
-  border-radius: 999px;
-  border: 3px solid #ffffff;
+  background-color: var(--scrollbar-thumb);
+  border-radius: var(--scrollbar-radius);
+  border: 3px solid var(--color-card);
 }
 
 .inner::-webkit-scrollbar-thumb:hover {

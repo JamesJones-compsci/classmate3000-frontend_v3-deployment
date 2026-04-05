@@ -1,23 +1,23 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--gap-xs);
 }
 
 .label {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
 }
 
 .hint {
-  font-size: 12px;
-  color: var(--color-muted);
-  font-weight: 300;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
 }
 
 .error {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: var(--color-danger);
-  font-weight: 300;
+  font-weight: var(--font-weight-light);
 }

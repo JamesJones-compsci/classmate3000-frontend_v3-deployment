@@ -1,23 +1,24 @@
 .emptyState {
-  border: 1px dashed #d7dbd2;
-  background: #fafaf8;
-  padding: 24px;
-  border-radius: 12px;
+  border: var(--border-default);
+  background: var(--color-card);
+  padding: var(--space-9);
+  border-radius: var(--panel-radius);
   text-align: center;
 }
 
 .title {
-  font-size: 15px;
-  font-weight: 800;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-light);
   color: var(--color-text);
 }
 
 .message {
-  margin: 8px 0 0;
-  color: var(--color-muted);
-  font-size: 13px;
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
 }
 
 .action {
-  margin-top: 14px;
+  margin-top: var(--space-5);
 }
