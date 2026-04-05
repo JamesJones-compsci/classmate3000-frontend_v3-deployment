@@ -29,11 +29,7 @@ export default function DashboardLayout() {
   );
 
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      darkMode ? "dark" : "light"
-    );
-    sessionStorage.setItem("theme", darkMode ? "dark" : "light");
+    document.documentElement.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
 
   function handleAction(actionKey) {
@@ -55,7 +51,11 @@ export default function DashboardLayout() {
   }
 
   function handleToggleDarkMode() {
-    setDarkMode((prev) => !prev);
+    setDarkMode((prev) => {
+      const next = !prev;
+      sessionStorage.setItem("theme", next ? "dark" : "light");
+      return next;
+    });
   }
 
   function handleOpenProfile() {
