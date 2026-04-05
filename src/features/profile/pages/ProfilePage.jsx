@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import SectionHeader from "../components/ui/SectionHeader";
-import Button from "../components/ui/Button";
-import { useAuth } from "../auth/AuthContext";
-import { profileService } from "../features/profile/services/profile.service";
+import SectionHeader from "../../../components/ui/SectionHeader";
+import Button from "../../../components/ui/Button";
+import { useAuth } from "../../../auth/AuthContext";
+import { profileService } from "../services/profile.service";
 import styles from "./ProfilePage.module.css";
 
 function getInitials(firstName = "", lastName = "", email = "") {

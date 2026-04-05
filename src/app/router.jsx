@@ -1,10 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
+import Login from "../features/auth/pages/LoginPage";
+import Signup from "../features/auth/pages/SignupPage";
 import DashboardLayout from "../routes/DashboardLayout";
 
-import ProfilePage from "../pages/ProfilePage";
+import ProfilePage from "../features/profile/pages/ProfilePage";
 
 import CoursesPage from "../features/courses/pages/CoursesPage";
 import CourseDetailPage from "../features/courses/pages/CourseDetailPage";
@@ -47,7 +47,7 @@ export default function AppRouter() {
 
           <Route path="progress" element={<ProgressPage />} />
           <Route path="progress/:courseId" element={<ProgressDetailPage />} />
-          
+
           <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Routes>

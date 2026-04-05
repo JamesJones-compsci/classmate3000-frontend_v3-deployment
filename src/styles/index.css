@@ -121,24 +121,28 @@ a {
 
 .auth-input {
   width: 100%;
-  border: var(--input-border);
   border-radius: var(--input-radius);
   padding: var(--input-padding);
   font-size: var(--input-font-size);
   font-family: inherit;
   font-weight: var(--font-weight-light);
   outline: none;
-  background: var(--input-bg);
+  background: var(--color-surface);
   color: var(--color-text);
+  border: 1px solid var(--color-outline);
+}
+
+.auth-input::placeholder {
+  color: var(--color-muted);
 }
 
 .auth-input:focus {
-  border-color: var(--color-outline);
-  background: #fcfcfc;
+  outline: none;
+  border-color: var(--section-accent-strong);
 }
 
 .auth-input--error {
-  border-color: #ef4444;
+  border-color: var(--color-danger);
 }
 
 .auth-input--with-icon {
@@ -170,9 +174,9 @@ a {
 
 .auth-button {
   border-radius: var(--button-radius);
-  border: var(--border-default);
-  background: var(--courses-accent);
-  color: var(--courses-text);
+  border: 1px solid var(--color-outline);
+  background: var(--section-accent);
+  color: var(--section-text);
   padding: var(--button-padding-lg);
   font-size: var(--button-font-size-lg);
   font-weight: var(--font-weight-light);
@@ -180,7 +184,7 @@ a {
 }
 
 .auth-button:hover {
-  background: var(--courses-accent-strong);
+  background: var(--section-accent-strong);
 }
 
 .auth-button:disabled {
@@ -219,4 +223,33 @@ a {
 .auth-link {
   font-weight: var(--font-weight-regular);
   text-decoration: underline;
+}
+
+.dark-mode .auth-card {
+  background: var(--color-card);
+  border: var(--border-default);
+}
+
+.dark-mode .auth-input {
+  background: #e8e8e8;
+  color: #111111;
+  border-color: #d6d6d6;
+}
+
+.dark-mode .auth-input::placeholder {
+  color: #6f6f6f;
+}
+
+.dark-mode .auth-input:focus {
+  background: #f0f0f0;
+  color: #111111;
+  border-color: #c8c8c8;
+}
+
+.dark-mode .auth-icon-btn {
+  color: #555555;
+}
+
+.dark-mode .auth-icon-btn:hover {
+  color: #111111;
 }
