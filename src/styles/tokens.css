@@ -48,6 +48,12 @@
   --progress-accent-strong: #cfc3dc;
   --progress-text: #000000;
 
+  --profile-bg: #f5f5f6;
+  --profile-surface: #ececee;
+  --profile-accent: #e4e4e7;
+  --profile-accent-strong: #d6d6db;
+  --profile-text: #000000;
+
   /* =========================
      TYPOGRAPHY
      ========================= */
@@ -230,6 +236,12 @@
   --progress-accent: #392d43;
   --progress-accent-strong: #463652;
   --progress-text: #f5f5f5;
+
+  --profile-bg: #1a1a1c;
+  --profile-surface: #242426;
+  --profile-accent: #2e2e31;
+  --profile-accent-strong: #3a3a3d;
+  --profile-text: #f5f5f5;
 
   --input-bg: #1a1a1a;
 }

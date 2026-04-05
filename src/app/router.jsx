@@ -4,6 +4,8 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import DashboardLayout from "../routes/DashboardLayout";
 
+import ProfilePage from "../pages/ProfilePage";
+
 import CoursesPage from "../features/courses/pages/CoursesPage";
 import CourseDetailPage from "../features/courses/pages/CourseDetailPage";
 
@@ -45,6 +47,8 @@ export default function AppRouter() {
 
           <Route path="progress" element={<ProgressPage />} />
           <Route path="progress/:courseId" element={<ProgressDetailPage />} />
+          
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

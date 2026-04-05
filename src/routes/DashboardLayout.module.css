@@ -37,6 +37,14 @@
   --section-text: var(--progress-text);
 }
 
+.theme-profile {
+  --section-bg: var(--profile-bg);
+  --section-surface: var(--profile-surface);
+  --section-accent: var(--profile-accent);
+  --section-accent-strong: var(--profile-accent-strong);
+  --section-text: var(--profile-text);
+}
+
 .main {
   min-height: 100vh;
   display: flex;

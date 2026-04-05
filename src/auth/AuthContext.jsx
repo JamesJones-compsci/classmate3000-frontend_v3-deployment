@@ -30,6 +30,25 @@ export function AuthProvider({ children }) {
     setUser({ token, firstName, lastName, email });
   };
 
+  const updateProfile = ({ firstName = "", lastName = "", email = "" }) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+
+      const nextUser = {
+        ...prev,
+        firstName,
+        lastName,
+        email,
+      };
+
+      sessionStorage.setItem("firstName", firstName);
+      sessionStorage.setItem("lastName", lastName);
+      sessionStorage.setItem("email", email);
+
+      return nextUser;
+    });
+  };
+
   const logout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("firstName");
@@ -39,7 +58,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

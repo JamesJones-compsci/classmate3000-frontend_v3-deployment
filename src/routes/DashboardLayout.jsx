@@ -6,6 +6,7 @@ import { useAuth } from "../auth/AuthContext";
 import styles from "./DashboardLayout.module.css";
 
 function getSectionFromPath(pathname) {
+  if (pathname.startsWith("/dashboard/profile")) return "profile";
   if (pathname.startsWith("/dashboard/tasks")) return "tasks";
   if (pathname.startsWith("/dashboard/reminders")) return "reminders";
   if (pathname.startsWith("/dashboard/progress")) return "progress";
@@ -58,7 +59,7 @@ export default function DashboardLayout() {
   }
 
   function handleOpenProfile() {
-    window.dispatchEvent(new CustomEvent("classmate:open-profile"));
+    navigate("/dashboard/profile");
   }
 
   return (
