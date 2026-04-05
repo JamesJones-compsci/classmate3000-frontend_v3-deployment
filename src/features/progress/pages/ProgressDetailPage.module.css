@@ -15,6 +15,7 @@
   padding: var(--space-0);
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .body {
@@ -25,7 +26,6 @@
 }
 
 .filterSelect {
-  margin-left: auto;
   border: var(--input-border);
   border-radius: var(--input-radius);
   padding: var(--input-padding);
