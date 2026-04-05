@@ -4,7 +4,7 @@ const sectionConfig = {
   courses: {
     title: "COURSES",
     actions: [
-      { key: "all", label: "All Courses", type: "action" },
+      { key: "all", label: "All Courses", type: "filter" },
       { key: "add", label: "Add Course", type: "action" },
     ],
   },
