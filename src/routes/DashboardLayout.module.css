@@ -9,6 +9,7 @@
   --section-bg: var(--courses-bg);
   --section-surface: var(--courses-surface);
   --section-accent: var(--courses-accent);
+  --section-accent-strong: var(--courses-accent-strong);
   --section-text: var(--courses-text);
 }
 
@@ -16,6 +17,7 @@
   --section-bg: var(--tasks-bg);
   --section-surface: var(--tasks-surface);
   --section-accent: var(--tasks-accent);
+  --section-accent-strong: var(--tasks-accent-strong);
   --section-text: var(--tasks-text);
 }
 
@@ -23,6 +25,7 @@
   --section-bg: var(--reminders-bg);
   --section-surface: var(--reminders-surface);
   --section-accent: var(--reminders-accent);
+  --section-accent-strong: var(--reminders-accent-strong);
   --section-text: var(--reminders-text);
 }
 
@@ -30,6 +33,7 @@
   --section-bg: var(--progress-bg);
   --section-surface: var(--progress-surface);
   --section-accent: var(--progress-accent);
+  --section-accent-strong: var(--progress-accent-strong);
   --section-text: var(--progress-text);
 }
 
