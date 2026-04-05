@@ -1,37 +1,53 @@
 .card {
-  padding: 16px;
+  padding: var(--card-padding);
   min-height: 180px;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover-sm);
+}
+
+.card:active {
+  transform: scale(var(--scale-press));
 }
 
 .top {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--gap-lg);
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: var(--gap-md);
 }
 
 .course {
-  font-weight: 800;
-  font-size: 14px;
-  line-height: 1.4;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
 }
 
 .meta {
-  font-size: 12px;
-  color: var(--color-muted);
-  margin-top: 6px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--gap-xs);
+  font-weight: var(--font-weight-light);
 }
 
 .footer {
-  margin-top: 14px;
+  margin-top: var(--space-5);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-sm);
 }
 
 .count {
-  font-size: 12px;
-  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
 }
