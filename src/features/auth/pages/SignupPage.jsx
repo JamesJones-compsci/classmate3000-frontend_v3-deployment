@@ -23,7 +23,24 @@ function EyeIcon({ open }) {
 
 const MIN_PASSWORD_LENGTH = 6;
 
-export default function Signup() {
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+function getPasswordStrength(password) {
+  if (!password) return 0;
+
+  let score = 0;
+  if (password.length >= 6) score += 1;
+  if (password.length >= 8) score += 1;
+  if (/[A-Z]/.test(password) || /[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password)) {
+    score += 1;
+  }
+
+  return Math.min(score, 3);
+}
+
+export default function SignupPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -46,11 +63,19 @@ export default function Signup() {
     return password.length < MIN_PASSWORD_LENGTH;
   }, [password]);
 
+  const emailValid = useMemo(() => {
+    if (!email.trim()) return false;
+    return isValidEmail(email);
+  }, [email]);
+
+  const passwordStrength = useMemo(() => getPasswordStrength(password), [password]);
+
   const canSubmit = useMemo(() => {
     return (
       firstName.trim() &&
       lastName.trim() &&
       email.trim() &&
+      emailValid &&
       password &&
       confirmPassword &&
       !passwordMismatch &&
@@ -61,6 +86,7 @@ export default function Signup() {
     firstName,
     lastName,
     email,
+    emailValid,
     password,
     confirmPassword,
     passwordMismatch,
@@ -108,8 +134,15 @@ export default function Signup() {
     }
   };
 
+  const strengthClass =
+    passwordStrength === 1
+      ? "auth-strengthBar--activeWeak"
+      : passwordStrength === 2
+      ? "auth-strengthBar--activeMedium"
+      : "auth-strengthBar--activeStrong";
+
   return (
-    <div className="auth-page" data-theme="auth">
+    <div className="auth-page">
       <div className="auth-card">
         <div className="auth-brand">ClassMate™</div>
         <h2 className="auth-title">Sign Up</h2>
@@ -153,12 +186,18 @@ export default function Signup() {
           </div>
 
           <div className="auth-row">
-            <label className="auth-label" htmlFor="email">
-              Email
-            </label>
+            <div className="auth-labelRow">
+              <label className="auth-label" htmlFor="email">
+                Email
+              </label>
+              {emailValid ? <span className="auth-statusOk">Valid</span> : null}
+            </div>
+
             <input
               id="email"
-              className="auth-input"
+              className={`auth-input ${
+                email.trim() ? (emailValid ? "auth-input--success" : "auth-input--error") : ""
+              }`}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -166,13 +205,20 @@ export default function Signup() {
               autoComplete="email"
               required
             />
+
+            {email.trim() && !emailValid ? (
+              <div className="auth-hint auth-hint--error">
+                Please enter a valid email address.
+              </div>
+            ) : null}
           </div>
 
           <div className="auth-row">
             <label className="auth-label" htmlFor="password">
               Password
             </label>
-            <div className="auth-input-wrap">
+
+            <div className="auth-inputWrapIcon">
               <input
                 id="password"
                 className={`auth-input auth-input--with-icon ${
@@ -187,29 +233,61 @@ export default function Signup() {
               />
               <button
                 type="button"
-                className="auth-icon-btn"
+                className="auth-iconBtn"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 onClick={() => setShowPassword((v) => !v)}
               >
                 <EyeIcon open={showPassword} />
               </button>
             </div>
-            {passwordTooShort && (
+
+            <div className="auth-strength">
+              <span
+                className={`auth-strengthBar ${
+                  passwordStrength >= 1 ? strengthClass : ""
+                }`}
+              />
+              <span
+                className={`auth-strengthBar ${
+                  passwordStrength >= 2 ? strengthClass : ""
+                }`}
+              />
+              <span
+                className={`auth-strengthBar ${
+                  passwordStrength >= 3 ? strengthClass : ""
+                }`}
+              />
+            </div>
+
+            {passwordTooShort ? (
               <div className="auth-hint auth-hint--error">
                 Password must be at least {MIN_PASSWORD_LENGTH} characters.
               </div>
-            )}
+            ) : password ? (
+              <div className="auth-hint auth-hint--success">
+                {passwordStrength === 1
+                  ? "Weak password"
+                  : passwordStrength === 2
+                  ? "Medium password"
+                  : "Strong password"}
+              </div>
+            ) : null}
           </div>
 
           <div className="auth-row">
             <label className="auth-label" htmlFor="confirmPassword">
               Confirm Password
             </label>
-            <div className="auth-input-wrap">
+
+            <div className="auth-inputWrapIcon">
               <input
                 id="confirmPassword"
                 className={`auth-input auth-input--with-icon ${
-                  passwordMismatch ? "auth-input--error" : ""
+                  passwordMismatch
+                    ? "auth-input--error"
+                    : confirmPassword && !passwordMismatch
+                    ? "auth-input--success"
+                    : ""
                 }`}
                 type={showPassword ? "text" : "password"}
                 value={confirmPassword}
@@ -220,16 +298,19 @@ export default function Signup() {
               />
               <button
                 type="button"
-                className="auth-icon-btn"
+                className="auth-iconBtn"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 onClick={() => setShowPassword((v) => !v)}
               >
                 <EyeIcon open={showPassword} />
               </button>
             </div>
-            {passwordMismatch && (
+
+            {passwordMismatch ? (
               <div className="auth-hint auth-hint--error">Passwords do not match.</div>
-            )}
+            ) : confirmPassword ? (
+              <div className="auth-hint auth-hint--success">Passwords match.</div>
+            ) : null}
           </div>
 
           <button className="auth-button" type="submit" disabled={!canSubmit}>

@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
 import { authService } from "../services/auth.service";
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +15,11 @@ export default function LoginPage() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const emailValid = useMemo(() => {
+    if (!email.trim()) return false;
+    return isValidEmail(email);
+  }, [email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,11 +36,6 @@ export default function LoginPage() {
       login(data.token, data.firstName, data.lastName, data.email);
       navigate("/dashboard");
     } catch (err) {
-      console.error("Login failed", {
-        status: err?.response?.status,
-        data: err?.response?.data,
-      });
-
       let message = "Something went wrong. Please try again.";
 
       if (err?.response?.status === 401) {
@@ -51,7 +55,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="auth-page" data-theme="auth">
+    <div className="auth-page">
       <div className="auth-card">
         <div className="auth-brand">ClassMate™</div>
         <h1 className="auth-title">Login</h1>
@@ -63,12 +67,18 @@ export default function LoginPage() {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-row">
-            <label className="auth-label" htmlFor="email">
-              Email
-            </label>
+            <div className="auth-labelRow">
+              <label className="auth-label" htmlFor="email">
+                Email
+              </label>
+              {emailValid ? <span className="auth-statusOk">Valid</span> : null}
+            </div>
+
             <input
               id="email"
-              className="auth-input"
+              className={`auth-input ${
+                email.trim() ? (emailValid ? "auth-input--success" : "auth-input--error") : ""
+              }`}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -76,6 +86,12 @@ export default function LoginPage() {
               autoComplete="email"
               required
             />
+
+            {email.trim() && !emailValid ? (
+              <div className="auth-hint auth-hint--error">
+                Please enter a valid email address.
+              </div>
+            ) : null}
           </div>
 
           <div className="auth-row">
@@ -97,7 +113,7 @@ export default function LoginPage() {
           <button
             className="auth-button"
             type="submit"
-            disabled={isSubmitting || !email.trim() || !password}
+            disabled={isSubmitting || !email.trim() || !password || !emailValid}
           >
             {isSubmitting ? "Signing in…" : "Login"}
           </button>
