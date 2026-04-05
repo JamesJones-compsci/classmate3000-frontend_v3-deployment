@@ -54,6 +54,16 @@
   --profile-accent-strong: #d6d6db;
   --profile-text: #000000;
 
+  --auth-bg: #F7F8FA;
+  --auth-surface: #FFFFFF;
+  --auth-border: #E6E8EE;
+  --auth-text: #1F2937;
+  --auth-muted: #6B7280;
+
+  --auth-accent: #DDEBF8;
+  --auth-accent-strong: #D1E2F1;
+
+
   /* =========================
      TYPOGRAPHY
      ========================= */
@@ -242,6 +252,15 @@
   --profile-accent: #2e2e31;
   --profile-accent-strong: #3a3a3d;
   --profile-text: #f5f5f5;
+
+   --auth-bg: #0F1115;
+  --auth-surface: #1A1D23;
+  --auth-border: #2A2F3A;
+  --auth-text: #E5E7EB;
+  --auth-muted: #9CA3AF;
+
+  --auth-accent: #2C3E55;
+  --auth-accent-strong: #3A4E6A;
 
   --input-bg: #1a1a1a;
 }

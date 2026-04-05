@@ -109,7 +109,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="auth-page">
+    <div className="auth-page" data-theme="auth">
       <div className="auth-card">
         <div className="auth-brand">ClassMate™</div>
         <h2 className="auth-title">Sign Up</h2>

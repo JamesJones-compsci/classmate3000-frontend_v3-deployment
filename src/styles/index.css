@@ -69,35 +69,39 @@ a {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: var(--color-site-bg);
-  padding: var(--space-10);
+  background: var(--auth-bg);
+  padding: 24px;
 }
 
 .auth-card {
   width: 100%;
-  max-width: 520px;
-  border: var(--border-default);
-  border-radius: var(--radius-3xl);
-  padding: var(--space-10);
-  background: var(--color-card);
+  max-width: 420px;
+  background: var(--auth-surface);
+  border: 1px solid var(--auth-border);
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .auth-brand {
-  font-size: var(--font-size-xl);
+  font-size: 20px;
   font-weight: var(--font-weight-light);
-  margin-bottom: var(--space-4);
+  color: var(--auth-text);
 }
 
 .auth-title {
   font-size: var(--font-size-2xl);
   line-height: var(--line-height-snug);
   font-weight: var(--font-weight-light);
+  color: var(--auth-text);
   margin: 0 0 var(--space-2) 0;
 }
 
 .auth-subtitle {
   margin: 0 0 var(--space-8) 0;
-  color: var(--color-muted);
+  color: var(--auth-muted);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-light);
 }
@@ -127,18 +131,18 @@ a {
   font-family: inherit;
   font-weight: var(--font-weight-light);
   outline: none;
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 1px solid var(--color-outline);
+  background: var(--auth-surface);
+  color: var(--auth-text);
+  border: 1px solid var(--auth-border);
 }
 
 .auth-input::placeholder {
-  color: var(--color-muted);
+  color: var(--auth-muted);
 }
 
 .auth-input:focus {
   outline: none;
-  border-color: var(--section-accent-strong);
+  border-color: var(--auth-accent-strong);
 }
 
 .auth-input--error {
@@ -174,9 +178,9 @@ a {
 
 .auth-button {
   border-radius: var(--button-radius);
-  border: 1px solid var(--color-outline);
-  background: var(--section-accent);
-  color: var(--section-text);
+  border: 1px solid var(--auth-border);
+  background: var(--auth-accent);
+  color: var(--auth-text);
   padding: var(--button-padding-lg);
   font-size: var(--button-font-size-lg);
   font-weight: var(--font-weight-light);
@@ -184,7 +188,7 @@ a {
 }
 
 .auth-button:hover {
-  background: var(--section-accent-strong);
+  background: var(--auth-accent-strong);
 }
 
 .auth-button:disabled {
@@ -203,9 +207,9 @@ a {
 }
 
 .auth-error {
-  border: 1px solid #f1c9c9;
+  border: 1px solid rgba(220, 38, 38, 0.2);
   background: var(--color-danger-soft);
-  color: #7a1f1f;
+  color: var(--color-danger);
   padding: var(--space-5) var(--space-6);
   border-radius: var(--radius-lg);
   font-size: var(--font-size-md);

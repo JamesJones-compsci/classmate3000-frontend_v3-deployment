@@ -51,7 +51,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="auth-page">
+    <div className="auth-page" data-theme="auth">
       <div className="auth-card">
         <div className="auth-brand">ClassMate™</div>
         <h1 className="auth-title">Login</h1>
