@@ -5,7 +5,6 @@ import EmptyState from "../../../components/ui/EmptyState";
 import Modal from "../../../components/ui/Modal";
 import ConfirmDialog from "../../../components/ui/ConfirmDialog";
 import Button from "../../../components/ui/Button";
-import ReminderRow from "../components/ReminderRow";
 import ReminderForm from "../components/ReminderForm";
 import { useReminders } from "../hooks/useReminders";
 import { useTasks } from "../../tasks/hooks/useTasks";
@@ -53,18 +52,18 @@ export default function ReminderDetailPage() {
   }, [tasks, reminder]);
 
   useEffect(() => {
-  function handleLeftAction(event) {
-    if (event.detail?.section === "reminders" && event.detail?.action === "add") {
-      setShowCreate(true);
+    function handleLeftAction(event) {
+      if (event.detail?.section === "reminders" && event.detail?.action === "add") {
+        setShowCreate(true);
+      }
     }
-  }
 
-  window.addEventListener("classmate:left-action", handleLeftAction);
+    window.addEventListener("classmate:left-action", handleLeftAction);
 
-  return () => {
-    window.removeEventListener("classmate:left-action", handleLeftAction);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("classmate:left-action", handleLeftAction);
+    };
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -96,35 +95,63 @@ export default function ReminderDetailPage() {
 
         {!loading && !error && reminder && (
           <>
-            <div className={styles.topRow}>
-              <ReminderRow reminder={reminder} />
-            </div>
+            <section className={`${styles.fullWidth} ${styles.summaryRow}`}>
+              <button type="button" className={styles.statusBadgeButton}>
+                {getReminderStatus(reminder)}
+              </button>
+            </section>
 
             <div className={styles.grid}>
               <section className={styles.panel}>
                 <h3 className={styles.panelTitle}>Reminder Info</h3>
-                <div className={styles.infoList}>
-                  <div><strong>Message:</strong> {reminder.message || "—"}</div>
-                  <div><strong>Scheduled Time:</strong> {getReminderTime(reminder)}</div>
-                  <div><strong>Status:</strong> {getReminderStatus(reminder)}</div>
+
+                <div className={styles.infoGrid}>
+                  <div className={styles.infoBlock}>
+                    <div className={styles.infoLabel}>Message</div>
+                    <div className={styles.infoValue}>{reminder.message || "—"}</div>
+                  </div>
+
+                  <div className={styles.infoBlock}>
+                    <div className={styles.infoLabel}>Scheduled Time</div>
+                    <div className={styles.infoValue}>{getReminderTime(reminder)}</div>
+                  </div>
+
+                  <div className={styles.infoBlock}>
+                    <div className={styles.infoLabel}>Status</div>
+                    <div className={styles.infoValue}>{getReminderStatus(reminder)}</div>
+                  </div>
                 </div>
               </section>
 
               <section className={styles.panel}>
                 <h3 className={styles.panelTitle}>Linked Task</h3>
+
                 {!task ? (
                   <p className={styles.muted}>No linked task found.</p>
                 ) : (
                   <>
-                    <div className={styles.infoList}>
-                      <div><strong>Title:</strong> {task.title || "—"}</div>
-                      <div><strong>Type:</strong> {task.type || "—"}</div>
-                      <div><strong>Due Date:</strong> {task.dueDate || "—"}</div>
+                    <div className={styles.infoGrid}>
+                      <div className={styles.infoBlock}>
+                        <div className={styles.infoLabel}>Title</div>
+                        <div className={styles.infoValue}>{task.title || "—"}</div>
+                      </div>
+
+                      <div className={styles.infoBlock}>
+                        <div className={styles.infoLabel}>Type</div>
+                        <div className={styles.infoValue}>{task.type || "—"}</div>
+                      </div>
+
+                      <div className={styles.infoBlock}>
+                        <div className={styles.infoLabel}>Due Date</div>
+                        <div className={styles.infoValue}>
+                          {task.dueDate ? task.dueDate.slice(0, 10) : "—"}
+                        </div>
+                      </div>
                     </div>
 
                     <div className={styles.sectionAction}>
                       <Button
-                        variant="tasks"
+                        variant="secondary"
                         onClick={() => navigate(`/dashboard/tasks/${task.taskId}`)}
                       >
                         View Task
@@ -137,7 +164,7 @@ export default function ReminderDetailPage() {
 
             <div className={styles.bottomAction}>
               <Button variant="ghost" onClick={() => navigate("/dashboard/reminders")}>
-                Back to reminders
+                Back to All Reminders
               </Button>
             </div>
           </>
@@ -146,20 +173,20 @@ export default function ReminderDetailPage() {
 
       {showCreate && (
         <Modal title="Add Reminder" onClose={() => setShowCreate(false)}>
-            <ReminderForm
+          <ReminderForm
             mode="create"
             tasks={tasks}
             onCancel={() => setShowCreate(false)}
             onSubmit={async (payload) => {
-                const created = await addReminder(payload);
-                setShowCreate(false);
-                if (created?.reminderId != null) {
+              const created = await addReminder(payload);
+              setShowCreate(false);
+              if (created?.reminderId != null) {
                 navigate(`/dashboard/reminders/${created.reminderId}`);
-                }
+              }
             }}
-            />
+          />
         </Modal>
-        )}
+      )}
 
       {showEdit && reminder && (
         <Modal title="Edit Reminder" onClose={() => setShowEdit(false)}>
