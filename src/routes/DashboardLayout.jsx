@@ -4,6 +4,8 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../auth/AuthContext";
 import styles from "./DashboardLayout.module.css";
+import Modal from "../components/ui/Modal";
+import { remindersService } from "../features/reminders/services/reminders.service";
 
 function getSectionFromPath(pathname) {
   if (pathname.startsWith("/dashboard/profile")) return "profile";
@@ -27,6 +29,11 @@ export default function DashboardLayout() {
     () => sessionStorage.getItem("theme") === "dark"
   );
   const [activeFilter, setActiveFilter] = useState("all");
+
+  // Stores reminders that are past due
+  const [dueReminders, setDueReminders] = useState([]);
+  // Controls visibility of the reminder popup
+  const [showReminderModal, setShowReminderModal] = useState(false);
 
   const currentSection = useMemo(
     () => getSectionFromPath(location.pathname),
@@ -55,6 +62,27 @@ export default function DashboardLayout() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
+
+  // On mount, fetch reminders and show popup if any are past due
+  useEffect(() => {
+    async function checkReminders() {
+      try {
+        const reminders = await remindersService.getReminders();
+        const now = new Date();
+        // Filter reminders that are due and not yet sent
+        const due = reminders.filter(
+          (r) => r.scheduledAt && !r.wasSent && new Date(r.scheduledAt) <= now
+        );
+        if (due.length > 0) {
+          setDueReminders(due);
+          setShowReminderModal(true);
+        }
+      } catch (err) {
+        console.error("Failed to fetch reminders", err);
+      }
+    }
+    checkReminders();
+  }, []);
 
   function handleAction(actionKey) {
     window.dispatchEvent(
@@ -120,6 +148,24 @@ export default function DashboardLayout() {
 
   return (
     <div className={`${styles.appShell} ${styles[`theme-${currentSection}`]}`}>
+
+      {/* Show popup if user has past due reminders */}
+      {showReminderModal && (
+        <Modal
+          title="You have due reminders!"
+          onClose={() => setShowReminderModal(false)}
+        >
+          <ul>
+            {dueReminders.map((r) => (
+              <li key={r.reminderId}>
+                {r.message} — {new Date(r.scheduledAt).toLocaleString()}
+              </li>
+            ))}
+          </ul>
+          <button onClick={() => setShowReminderModal(false)}>Dismiss</button>
+        </Modal>
+      )}
+
       <Sidebar
         currentSection={currentSection}
         user={user}
