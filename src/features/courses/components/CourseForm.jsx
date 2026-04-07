@@ -1,11 +1,47 @@
 import { useState } from "react";
-import FormField from "../../../components/ui/FormField";
 import FormShell from "../../../components/ui/FormShell";
 import CourseFields from "./CourseFields";
 
 function toTimeInput(timeStr) {
   if (!timeStr) return "";
   return timeStr.slice(0, 5);
+}
+
+// Validates a single field — rules match backend CourseRequestDTO constraints
+function validateField(field, value) {
+  switch (field) {
+    case "title":
+      return value.trim() ? "" : "Course name is required.";
+    case "code":
+      if (!value.trim()) return "Course code is required.";
+      if (value.trim().length > 10) return "Course code must be at most 10 characters.";
+      return "";
+    case "instructor":
+      return value.trim() ? "" : "Instructor is required.";
+    case "gradeGoal":
+      if (!value && value !== 0) return "Grade goal is required.";
+      if (Number(value) < 0 || Number(value) > 100) return "Grade goal must be between 0 and 100.";
+      return "";
+    case "startWeek":
+      return value ? "" : "Start week is required.";
+    case "startTime":
+      return value ? "" : "Start time is required.";
+    case "endTime":
+      return value ? "" : "End time is required.";
+    default:
+      return "";
+  }
+}
+
+// Validates all fields at once and returns an errors object
+function validateAll(form) {
+  const fields = ["title", "code", "instructor", "gradeGoal", "startWeek", "startTime", "endTime"];
+  const errors = {};
+  fields.forEach((field) => {
+    const msg = validateField(field, form[field]);
+    if (msg) errors[field] = msg;
+  });
+  return errors;
 }
 
 export default function CourseForm({
@@ -27,19 +63,24 @@ export default function CourseForm({
     endTime: toTimeInput(firstMeeting?.endTime ?? ""),
   });
 
+  const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  // Passed to CourseFields — validates inline as the user edits each field
+  function handleFieldChange(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!form.title.trim()) return setError("Course name is required.");
-    if (!form.code.trim()) return setError("Course code is required.");
-    if (!form.instructor.trim()) return setError("Instructor is required.");
-    if (!form.gradeGoal) return setError("Grade goal is required.");
-    if (!form.startWeek) return setError("Start week is required.");
-    if (!form.startTime || !form.endTime) {
-      return setError("Class start and end time are required.");
+    // Run full validation before submitting
+    const allErrors = validateAll(form);
+    if (Object.keys(allErrors).length > 0) {
+      setErrors(allErrors);
+      return;
     }
 
     setSaving(true);
@@ -77,7 +118,8 @@ export default function CourseForm({
       submitLabel={mode === "edit" ? "Update" : "Save"}
       submitVariant="courses"
     >
-      <CourseFields form={form} setForm={setForm} />
+      {/* Pass errors and handleFieldChange so CourseFields can show inline validation */}
+      <CourseFields form={form} setForm={handleFieldChange} errors={errors} />
     </FormShell>
   );
 }

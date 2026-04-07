@@ -11,24 +11,26 @@ const DAYS = [
   { label: "Sunday", value: 7 },
 ];
 
-export default function CourseFields({ form, setForm }) {
+// Accepts optional errors object to show inline validation messages per field
+export default function CourseFields({ form, setForm, errors = {} }) {
   function handleChange(field) {
     return (e) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+      setForm(field, e.target.value);
     };
   }
 
   return (
     <>
-      <FormField label="Name">
+      <FormField label="Name" error={errors.title}>
         <input className={styles.input} value={form.title} onChange={handleChange("title")} />
       </FormField>
 
-      <FormField label="Course Code">
-        <input className={styles.input} value={form.code} onChange={handleChange("code")} />
+      <FormField label="Course Code" error={errors.code}>
+        {/* maxLength matches backend constraint: code must be at most 10 characters */}
+        <input className={styles.input} value={form.code} onChange={handleChange("code")} maxLength={10} />
       </FormField>
 
-      <FormField label="Instructor">
+      <FormField label="Instructor" error={errors.instructor}>
         <input className={styles.input} value={form.instructor} onChange={handleChange("instructor")} />
       </FormField>
 
@@ -43,17 +45,17 @@ export default function CourseFields({ form, setForm }) {
       </FormField>
 
       <div className={styles.row}>
-        <FormField label="Start Time">
+        <FormField label="Start Time" error={errors.startTime}>
           <input className={styles.input} type="time" value={form.startTime} onChange={handleChange("startTime")} />
         </FormField>
 
-        <FormField label="End Time">
+        <FormField label="End Time" error={errors.endTime}>
           <input className={styles.input} type="time" value={form.endTime} onChange={handleChange("endTime")} />
         </FormField>
       </div>
 
       <div className={styles.row}>
-        <FormField label="Grade Goal (%)">
+        <FormField label="Grade Goal (%)" error={errors.gradeGoal}>
           <input
             className={styles.input}
             type="number"
@@ -64,7 +66,7 @@ export default function CourseFields({ form, setForm }) {
           />
         </FormField>
 
-        <FormField label="Start Week">
+        <FormField label="Start Week" error={errors.startWeek}>
           <input className={styles.input} type="date" value={form.startWeek} onChange={handleChange("startWeek")} />
         </FormField>
       </div>
