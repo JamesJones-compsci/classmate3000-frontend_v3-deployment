@@ -13,15 +13,17 @@ function formatSnapshotDate(dateValue) {
 
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
 
-  return `${day}-${month}-${year}`;
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export default function ProgressBarChart({ course, entries }) {
   const sorted = [...entries].sort((a, b) => new Date(a.weekOf) - new Date(b.weekOf));
 
-  const data = sorted.map((entry) => {
+  const data = sorted.slice(1).map((entry) => {
     const accumulated = Number(entry.accumulatedPercentPoints ?? 0);
     const used = Number(entry.usedPercentPoints ?? 0);
     const lost = Number(entry.lostPercentPoints ?? 0);
@@ -40,7 +42,7 @@ export default function ProgressBarChart({ course, entries }) {
     };
   });
 
-  if (!data.length) {
+  if (sorted.length <= 1) {
     return (
       <div className={styles.chartCard}>
         <div className={styles.titleBlock}>

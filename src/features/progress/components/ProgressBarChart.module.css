@@ -102,8 +102,9 @@
   position: absolute;
   inset: 0 var(--space-3) 0 var(--space-4);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
-  gap: var(--gap-xl);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: var(--gap-md);
   align-items: stretch;
 }
 
@@ -112,6 +113,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  min-width: 0;
 }
 
 .barPair {
@@ -141,7 +143,6 @@
 .bar {
   width: 100%;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  transition: height var(--transition-medium);
 }
 
 .achievedBar {
@@ -161,9 +162,6 @@
   font-weight: var(--font-weight-regular);
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity var(--transition-fast),
-    transform var(--transition-fast);
   white-space: nowrap;
   z-index: 3;
 }
@@ -194,8 +192,9 @@
 
 .dateLabels {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
-  gap: var(--gap-xl);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: var(--gap-md);
 }
 
 .dateLabel {
@@ -304,13 +303,15 @@
   }
 
   .barGroups {
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    gap: var(--gap-md);
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--gap-sm);
   }
 
   .dateLabels {
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    gap: var(--gap-md);
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--gap-sm);
   }
 
   .legend {
