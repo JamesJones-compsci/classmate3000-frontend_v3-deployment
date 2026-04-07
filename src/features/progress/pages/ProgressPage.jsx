@@ -6,6 +6,7 @@ import { useCourses } from "../../courses/hooks/useCourses";
 import { useProgress } from "../hooks/useProgress";
 import ProgressSummaryCard from "../components/ProgressSummaryCard";
 import styles from "./ProgressPage.module.css";
+import Button from "../../../components/ui/Button";
 
 export default function ProgressPage() {
   const navigate = useNavigate();
@@ -98,6 +99,11 @@ export default function ProgressPage() {
             ))}
           </div>
         )}
+      </div>
+      <div className={styles.bottomAction}>
+        <Button variant="ghost" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          Back to Top
+        </Button>
       </div>
     </div>
   );

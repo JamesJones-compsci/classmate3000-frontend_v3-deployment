@@ -94,7 +94,15 @@ export default function CoursesPage() {
                   }
                 }}
               >
-                <CourseCard course={course} />
+                <CourseCard
+                  course={course}
+                  upcomingTasks={tasks.filter((task) => Number(task.courseId) === Number(course.courseId))}
+                  latestProgress={
+                    progressEntries
+                      .filter((entry) => Number(entry.courseId) === Number(course.courseId))
+                      .at(-1) ?? null
+                  }
+                />
 
                 <div className={styles.meta}>
                   <span>Tasks: {taskCount}</span>
@@ -107,8 +115,14 @@ export default function CoursesPage() {
                 </div>
               </div>
             ))}
+            
           </div>
         )}
+        <div className={styles.bottomAction}>
+          <Button variant="ghost" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            Back to Top
+          </Button>
+        </div>
       </div>
 
       {showCreate && (

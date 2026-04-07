@@ -12,19 +12,59 @@ import { useTasks } from "../../tasks/hooks/useTasks";
 import { useCourseProgress } from "../../progress/hooks/useCourseProgress";
 import styles from "./CourseDetailPage.module.css";
 
-function getMeetingLines(course) {
-  const lines = [];
+const DAY_LABELS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-  if (course?.meetingDays || course?.meetingTime) {
-    lines.push(
-      [course.meetingDays, course.meetingTime].filter(Boolean).join(" • ")
-    );
+function formatMeetingTime(timeValue) {
+  if (!timeValue) return "";
+  const [h, m] = timeValue.split(":");
+  const d = new Date();
+  d.setHours(Number(h), Number(m));
+  return d.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  }).toLowerCase();
+}
+
+function getMeetingLines(course) {
+  if (!course?.meetings?.length) return [];
+
+  return course.meetings.map((meeting) => {
+    const day = DAY_LABELS[meeting.dayOfWeek] || "—";
+    const start = formatMeetingTime(meeting.startTime);
+    const end = formatMeetingTime(meeting.endTime);
+    return `${day}: ${start}-${end}`;
+  });
+}
+
+function getGoalStatusMessage(course, latestProgress) {
+  const goal = Number(course?.gradeGoal);
+  const current = Number(latestProgress?.currentGradePercent);
+  const maxPossible = Number(latestProgress?.maxPossiblePercent);
+
+  if (Number.isNaN(goal)) return "No grade goal has been set.";
+  if (Number.isNaN(current) || Number.isNaN(maxPossible)) {
+    return "Not enough progress data to evaluate the grade goal yet.";
   }
 
-  if (course?.location) lines.push(course.location);
-  if (course?.semester) lines.push(course.semester);
+  if (current >= goal) {
+    return `You are meeting your grade goal. Your current grade is ${current}%.`;
+  }
 
-  return lines.filter(Boolean);
+  if (maxPossible >= goal) {
+    return `You have not met your grade goal yet, but it is still possible. Your current grade is ${current}%, your goal is ${goal}%, and your max possible is ${maxPossible}%.`;
+  }
+
+  return `Your grade goal is no longer possible based on current results. Your current grade is ${current}%, your goal is ${goal}%, and your max possible is ${maxPossible}%.`;
+}
+
+function getAchievedGrade(task) {
+  if (task?.scorePercent != null) return `${task.scorePercent}%`;
+  if (task?.achievedGradePercent != null) return `${task.achievedGradePercent}%`;
+  if (task?.gradeAchievedPercent != null) return `${task.gradeAchievedPercent}%`;
+  if (task?.gradePercent != null) return `${task.gradePercent}%`;
+  if (task?.earnedPercent != null) return `${task.earnedPercent}%`;
+  if (task?.score != null) return `${task.score}%`;
+  return "—";
 }
 
 export default function CourseDetailPage() {
@@ -54,6 +94,10 @@ export default function CourseDetailPage() {
         return new Date(a.dueDate) - new Date(b.dueDate);
       });
   }, [tasks, courseId]);
+
+  const resultTasks = useMemo(() => {
+  return relatedTasks.filter((t) => t.isCompleted);
+}, [relatedTasks]);
 
   const latestProgress = entries[entries.length - 1] ?? null;
   const meetingLines = getMeetingLines(course);
@@ -102,76 +146,107 @@ export default function CourseDetailPage() {
 
         {!loading && !error && course && (
           <>
-            <div className={styles.topCard}>
-              <CourseCard course={course} />
-            </div>
-
             <div className={styles.grid}>
-              <section className={styles.panel}>
-                <h3 className={styles.panelTitle}>Course Info</h3>
-                <div className={styles.infoList}>
-                  <div><strong>Code:</strong> {course.code || "—"}</div>
-                  <div><strong>Title:</strong> {course.title || "—"}</div>
-                  <div><strong>Instructor:</strong> {course.instructor || "—"}</div>
-                  <div><strong>Grade Goal:</strong> {course.gradeGoal ?? "—"}</div>
+              <section className={`${styles.fullWidth} ${styles.summaryRow}`}>
+                <div className={styles.summaryCell}>
+                  <div className={styles.summaryLabel}>Schedule</div>
+                  {meetingLines.length === 0 ? (
+                    <div className={styles.summaryValue}>No scheduled meetings</div>
+                  ) : (
+                    meetingLines.map((line) => (
+                      <div key={line} className={styles.summaryValue}>
+                        {line}
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className={styles.summaryCellRight}>
+                  <div className={styles.summaryLabel}>Instructor</div>
+                  <div className={styles.summaryValue}>{course.instructor || "—"}</div>
                 </div>
               </section>
-
               <section className={styles.panel}>
-                <h3 className={styles.panelTitle}>Meetings</h3>
-                {meetingLines.length === 0 ? (
-                  <p className={styles.muted}>No meeting details available.</p>
+                <h3 className={styles.panelTitle}>Upcoming Tasks</h3>
+
+                {relatedTasks.filter((task) => !task.isCompleted).length === 0 ? (
+                  <p className={styles.muted}>No upcoming tasks.</p>
                 ) : (
-                  <div className={styles.infoList}>
-                    {meetingLines.map((line) => (
-                      <div key={line}>{line}</div>
-                    ))}
+                  <div className={styles.taskList}>
+                    {relatedTasks
+                      .filter((task) => !task.isCompleted)
+                      .map((task) => (
+                        <button
+                          key={task.taskId}
+                          type="button"
+                          className={styles.taskLink}
+                          onClick={() => navigate(`/dashboard/tasks/${task.taskId}`)}
+                        >
+                          <div className={styles.taskContent}>
+                            <div className={styles.taskMainRow}>
+                              <span>{task.title || "Untitled task"}</span>
+                              <span>{task.dueDate ? task.dueDate.slice(0, 10) : "No date"}</span>
+                            </div>
+
+                            <div className={styles.taskMetaRow}>
+                              <span>{task.type || "—"}</span>
+                              <span>{task.weight != null ? `${task.weight}%` : "—"}</span>
+                            </div>
+                          </div>
+
+                          <span className={styles.taskArrow}>›</span>
+                        </button>
+                      ))}
                   </div>
                 )}
               </section>
 
               <section className={styles.panel}>
-                <h3 className={styles.panelTitle}>Latest Progress</h3>
-                {!latestProgress ? (
-                  <p className={styles.muted}>No progress entries yet.</p>
+                <h3 className={styles.panelTitle}>Completed Tasks</h3>
+
+                {resultTasks.length === 0 ? (
+                  <p className={styles.muted}>No completed tasks yet.</p>
                 ) : (
-                  <div className={styles.infoList}>
-                    <div><strong>Current Grade:</strong> {latestProgress.currentGradePercent ?? "—"}%</div>
-                    <div><strong>Max Possible:</strong> {latestProgress.maxPossiblePercent ?? "—"}%</div>
-                    <div><strong>Week Of:</strong> {latestProgress.weekOf || "—"}</div>
-                  </div>
-                )}
-
-                <div className={styles.sectionAction}>
-                  <Button
-                    variant="progress"
-                    onClick={() => navigate(`/dashboard/progress/${course.courseId}`)}
-                  >
-                    View Progress
-                  </Button>
-                </div>
-              </section>
-
-              <section className={`${styles.panel} ${styles.fullWidth}`}>
-                <h3 className={styles.panelTitle}>Related Tasks</h3>
-
-                {relatedTasks.length === 0 ? (
-                  <p className={styles.muted}>No tasks linked to this course yet.</p>
-                ) : (
-                  <div className={styles.linkList}>
-                    {relatedTasks.map((task) => (
+                  <div className={styles.taskList}>
+                    {resultTasks.map((task) => (
                       <button
                         key={task.taskId}
                         type="button"
-                        className={styles.linkRow}
+                        className={styles.taskLink}
                         onClick={() => navigate(`/dashboard/tasks/${task.taskId}`)}
                       >
-                        <span>{task.title || "Untitled task"}</span>
-                        <span>{task.dueDate || "No due date"}</span>
+                        <div className={styles.taskContent}>
+                          <div className={styles.taskMainRow}>
+                            <span>{task.title || "Untitled task"}</span>
+                            <span>
+                              {getAchievedGrade(task)}
+                            </span>
+                          </div>
+
+                          <div className={styles.taskMetaRow}>
+                            <span>{task.type || "—"}</span>
+                            <span>{task.weight != null ? `${task.weight}%` : "—"}</span>
+                          </div>
+                        </div>
+
+                        <span className={styles.taskArrow}>›</span>
                       </button>
                     ))}
                   </div>
                 )}
+              </section>
+
+              <section className={`${styles.panel} ${styles.fullWidth}`}>
+                <div className={styles.goalHeader}>
+                  <h3 className={styles.panelTitle}>Goal Status</h3>
+                  <span className={styles.goalBadge}>
+                    Goal {course.gradeGoal ?? "—"}%
+                  </span>
+                </div>
+
+                <p className={styles.goalMessage}>
+                  {getGoalStatusMessage(course, latestProgress)}
+                </p>
               </section>
             </div>
 

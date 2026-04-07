@@ -3,57 +3,60 @@
   background: var(--color-card);
   border-radius: var(--card-radius);
 }
-
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--gap-xl);
-}
-
-.titleBlock {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  min-width: 0;
-}
-
-.code {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--section-text);
-}
-
 .title {
-  font-size: var(--font-size-xl);
-  line-height: var(--line-height-snug);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
+  margin: 0 0 var(--space-5);
+  text-align: center;
+  font-size: var(--font-size-heading-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
 }
 
-.infoGrid {
+.meetings {
+  text-align: center;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--gap-lg);
-  margin-top: var(--space-7);
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-light);
 }
 
-.infoBlock {
-  background: var(--section-surface);
-  border: var(--border-default);
-  border-radius: var(--radius-lg);
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-4);
+}
+
+.panel {
   padding: var(--space-4);
+  border-radius: var(--card-radius);
+  background: var(--section-surface);
+  display: grid;
+  gap: var(--space-2);
 }
 
-.label {
-  font-size: var(--font-size-2xs);
+.panelTitle {
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-heading-sm);
   font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+.progressBlock {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.emptyText {
   color: var(--color-text-muted);
-  margin-bottom: var(--gap-xs);
+  font-weight: var(--font-weight-light);
 }
 
-.value {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text);
+.taskPreviewItem {
+  font-weight: var(--font-weight-light);
+}
+
+.metricValue {
+  font-weight: var(--font-weight-light);
 }

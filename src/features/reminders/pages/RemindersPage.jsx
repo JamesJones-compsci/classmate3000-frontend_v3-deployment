@@ -100,6 +100,11 @@ export default function RemindersPage() {
             ))}
           </div>
         )}
+        <div className={styles.bottomAction}>
+          <Button variant="ghost" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            Back to Top
+          </Button>
+        </div>
       </div>
 
       {showCreate && (
