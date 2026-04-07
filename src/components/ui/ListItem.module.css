@@ -9,16 +9,14 @@
 .clickable {
   cursor: pointer;
   transition:
-    border-color var(--transition-fast),
-    background var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+    border-color 0.15s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .clickable:hover {
-  border-color: var(--color-outline);
-  background: var(--section-surface);
-  box-shadow: var(--shadow-hover-sm);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 .clickable:active {

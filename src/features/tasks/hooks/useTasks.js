@@ -35,6 +35,14 @@ export function useTasks() {
     return updated;
   }
 
+  async function updateTask(taskId, updates) {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.taskId === taskId ? { ...t, ...updates } : t
+      )
+    );
+  }
+
   async function removeTask(id) {
     await tasksService.deleteTask(id);
     setTasks((prev) =>
@@ -53,6 +61,7 @@ export function useTasks() {
     loadTasks,
     addTask,
     editTask,
+    updateTask,
     removeTask,
   };
 }

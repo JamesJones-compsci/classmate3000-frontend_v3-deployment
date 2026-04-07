@@ -16,7 +16,7 @@ export default function TasksPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("filter") || "all";
 
-  const { tasks, loading, error, addTask } = useTasks();
+  const { tasks, loading, error, addTask, updateTask } = useTasks();
   const { courses } = useCourses();
 
   const [showCreate, setShowCreate] = useState(false);
@@ -65,6 +65,20 @@ export default function TasksPage() {
       return true;
     });
   }, [tasks, filter, today, week]);
+
+  function handleToggleStatus(task) {
+    if (!task.isCompleted && !task.isPriority) {
+      updateTask(task.taskId, { isCompleted: false, isPriority: true });
+      return;
+    }
+
+    if (!task.isCompleted && task.isPriority) {
+      updateTask(task.taskId, { isCompleted: true, isPriority: false });
+      return;
+    }
+
+    updateTask(task.taskId, { isCompleted: false, isPriority: false });
+  }
 
   useEffect(() => {
   function handleLeftAction(event) {
@@ -120,7 +134,7 @@ export default function TasksPage() {
                   }
                 }}
               >
-                <TaskRow task={task} />
+                <TaskRow task={task} onToggleStatus={handleToggleStatus} />
               </div>
             ))}
           </div>
