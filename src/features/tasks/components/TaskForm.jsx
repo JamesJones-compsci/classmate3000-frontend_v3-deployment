@@ -7,6 +7,35 @@ function toDateInput(isoString) {
   return isoString.split("T")[0];
 }
 
+// Validates a single field — rules match backend TaskRequestDTO constraints
+function validateField(field, value) {
+  switch (field) {
+    case "courseId":
+      return value ? "" : "Course is required.";
+    case "title":
+      return value.trim() ? "" : "Task name is required.";
+    case "dueDate":
+      return value ? "" : "Due date is required.";
+    case "weight":
+      if (value === "" || value === null) return "";
+      if (Number(value) < 0 || Number(value) > 100) return "Weight must be between 0 and 100.";
+      return "";
+    default:
+      return "";
+  }
+}
+
+// Validates all required fields at once, returns errors object
+function validateAll(form) {
+  const fields = ["courseId", "title", "dueDate", "weight"];
+  const errors = {};
+  fields.forEach((field) => {
+    const msg = validateField(field, form[field]);
+    if (msg) errors[field] = msg;
+  });
+  return errors;
+}
+
 export default function TaskForm({
   mode = "create",
   initialValues = null,
@@ -24,14 +53,25 @@ export default function TaskForm({
     isCompleted: initialValues?.isCompleted ?? false,
   });
 
+  const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  // Validates inline as the user edits each field
+  function handleFieldChange(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!form.courseId) return setError("Course is required.");
-    if (!form.title.trim()) return setError("Task name is required.");
+    // Run full validation before submitting
+    const allErrors = validateAll(form);
+    if (Object.keys(allErrors).length > 0) {
+      setErrors(allErrors);
+      return;
+    }
 
     setSaving(true);
     setError("");
@@ -62,7 +102,8 @@ export default function TaskForm({
       submitLabel={mode === "edit" ? "Update" : "Save"}
       submitVariant="tasks"
     >
-      <TaskFields form={form} setForm={setForm} courses={courses} mode={mode} />
+      {/* Pass errors and handleFieldChange so TaskFields can show inline validation */}
+      <TaskFields form={form} setForm={handleFieldChange} courses={courses} mode={mode} errors={errors} />
     </FormShell>
   );
 }

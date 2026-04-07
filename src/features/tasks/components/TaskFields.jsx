@@ -3,17 +3,18 @@ import styles from "./TaskFields.module.css";
 
 const TASK_TYPES = ["ASSIGNMENT", "STUDY", "LAB", "EXAM", "PROJECT", "OTHER"];
 
-export default function TaskFields({ form, setForm, courses = [], mode = "create" }) {
+// Accepts optional errors object to show inline validation messages per field
+export default function TaskFields({ form, setForm, courses = [], mode = "create", errors = {} }) {
   function handleChange(field) {
     return (e) => {
       const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-      setForm((prev) => ({ ...prev, [field]: value }));
+      setForm(field, value);
     };
   }
 
   return (
     <>
-      <FormField label="Course">
+      <FormField label="Course" error={errors.courseId}>
         <select className={styles.input} value={form.courseId} onChange={handleChange("courseId")}>
           <option value="">Select a course...</option>
           {courses.map((course) => (
@@ -24,7 +25,7 @@ export default function TaskFields({ form, setForm, courses = [], mode = "create
         </select>
       </FormField>
 
-      <FormField label="Task Name">
+      <FormField label="Task Name" error={errors.title}>
         <input className={styles.input} value={form.title} onChange={handleChange("title")} />
       </FormField>
 
@@ -39,13 +40,13 @@ export default function TaskFields({ form, setForm, courses = [], mode = "create
           </select>
         </FormField>
 
-        <FormField label="Due Date">
+        <FormField label="Due Date" error={errors.dueDate}>
           <input className={styles.input} type="date" value={form.dueDate} onChange={handleChange("dueDate")} />
         </FormField>
       </div>
 
       <div className={styles.row}>
-        <FormField label="Weight (%)">
+        <FormField label="Weight (%)" error={errors.weight}>
           <input
             className={styles.input}
             type="number"
