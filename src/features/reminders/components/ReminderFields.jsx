@@ -1,17 +1,18 @@
 import FormField from "../../../components/ui/FormField";
 import styles from "./ReminderFields.module.css";
 
-export default function ReminderFields({ form, setForm, tasks = [] }) {
+// Accepts optional errors object to show inline validation messages per field
+export default function ReminderFields({ form, setForm, tasks = [], errors = {} }) {
   function handleChange(field) {
     return (e) => {
       const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-      setForm((prev) => ({ ...prev, [field]: value }));
+      setForm(field, value);
     };
   }
 
   return (
     <>
-      <FormField label="Task">
+      <FormField label="Task" error={errors.taskId}>
         <select className={styles.input} value={form.taskId} onChange={handleChange("taskId")}>
           <option value="">Select a task...</option>
           {tasks.map((task) => (
@@ -22,11 +23,11 @@ export default function ReminderFields({ form, setForm, tasks = [] }) {
         </select>
       </FormField>
 
-      <FormField label="Message">
+      <FormField label="Message" error={errors.message}>
         <input className={styles.input} value={form.message} onChange={handleChange("message")} />
       </FormField>
 
-      <FormField label="Scheduled At">
+      <FormField label="Scheduled At" error={errors.scheduledAt}>
         <input
           className={styles.input}
           type="datetime-local"
