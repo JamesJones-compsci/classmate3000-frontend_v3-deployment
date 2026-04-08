@@ -9,11 +9,12 @@ React + Vite frontend. Connects to the ClassMate microservices backend via API G
 - React 18 + Vite
 - React Router v6
 - Axios (JWT interceptor)
-- Plain CSS — no UI framework
+- CSS
 
 ---
 
 ## Quick Start
+
 ```bash
 npm install
 npm run dev
@@ -22,11 +23,25 @@ npm run dev
 Create `.env` in project root:
 ```env
 VITE_API_GATEWAY_URL=http://localhost:8091
+VITE_USE_MOCK_AUTH=false
+VITE_USE_MOCK_API=false
 ```
 
 App → `http://localhost:5173`
 
 > Backend must be running first. See [classmate-backend_v3](https://github.com/ClassMate3000/classmate-backend_v3)
+
+---
+
+## Mock Mode
+
+Mock mode is controlled via `.env`. Set both flags to `true` to run without a backend:
+```env
+VITE_USE_MOCK_AUTH=true
+VITE_USE_MOCK_API=true
+```
+
+Mock flags are read in `src/config/env.js` and passed to each feature service.
 
 ---
 
@@ -36,7 +51,7 @@ User fills Login/Signup
         ↓
 POST /api/v1/auth/login  or  /register
         ↓
-Backend returns JWT token
+Backend returns JWT token + firstName + lastName
         ↓
 Token stored in sessionStorage (clears on tab close)
         ↓
@@ -56,40 +71,49 @@ API Gateway validates token → routes to service
 ```
 src/
 ├── api/
-│   └── axios.js                 # Axios instance. Attaches Bearer token. Default port: 8091
+│   ├── client.js                 # Axios instance. Attaches Bearer token. Default port: 8091
+│   ├── auth.api.js               # Login, register
+│   ├── courses.api.js            # Course CRUD
+│   ├── tasks.api.js              # Task CRUD
+│   ├── reminders.api.js          # Reminder CRUD
+│   └── progress.api.js           # Course progress CRUD
 │
 ├── auth/
 │   ├── AuthContext.jsx           # login(), logout(), user state (token + firstName + lastName)
 │   └── ProtectedRoute.jsx        # Redirects to /login if no token in sessionStorage
 │
+├── config/
+│   └── env.js                    # USE_MOCK_AUTH and USE_MOCK_API flags (read from .env)
+│
 ├── components/
-│   ├── Sidebar.jsx               # Brand, user initials, bell icon, LeftPanel, Logout
-│   ├── LeftPanel.jsx             # Tab-aware action menu: Add / Edit / Delete / All
+│   ├── Sidebar.jsx               # Brand, user initials, LeftPanel, Logout
+│   ├── LeftPanel.jsx             # Tab-aware action menu
 │   ├── Navbar.jsx                # Top tab navigation
-│   ├── AppShell.jsx              # Layout wrapper
-│   └── modals/
-│       ├── AddCourseModal.jsx    # Requires: code, title, instructor, gradeGoal, startWeek, meetings[]
-│       ├── EditCourseModal.jsx   # Pre-populates meetings[0] from backend
-│       ├── AddTaskModal.jsx      # Course dropdown (live)
-│       ├── EditTaskModal.jsx     # Course dropdown (live)
-│       ├── AddReminderModal.jsx  # Task dropdown (live)
-│       ├── EditReminderModal.jsx # Task dropdown (live)
-│       ├── AddGradeModal.jsx     # Course dropdown (live), weekOf auto-set to Monday
-│       ├── EditGradeModal.jsx    # Course dropdown (live)
-│       └── DeleteConfirmModal.jsx # Shared confirm dialog — works for all item types
+│   └── ui/                       # Shared UI components
+│       ├── Modal.jsx             # Reusable modal wrapper
+│       ├── Button.jsx
+│       ├── Card.jsx
+│       ├── FormField.jsx         # Supports inline error display
+│       ├── FormShell.jsx         # Form wrapper with save/cancel actions
+│       ├── ConfirmDialog.jsx
+│       ├── EmptyState.jsx
+│       ├── ListItem.jsx
+│       ├── Badge.jsx
+│       └── SectionHeader.jsx
 │
-├── mocks/
-│   └── loadMockCourses.js        # Shown on Courses tab if backend is unreachable
+├── features/
+│   ├── auth/                     # Login, Signup pages + mock/real service
+│   ├── courses/                  # CoursesPage, CourseDetailPage, CourseForm (inline validation)
+│   ├── tasks/                    # TasksPage, TaskDetailPage, TaskForm (inline validation)
+│   ├── reminders/                # RemindersPage, ReminderDetailPage, ReminderForm (inline validation)
+│   ├── progress/                 # ProgressPage, ProgressDetailPage, ProgressForm
+│   └── profile/                  # ProfilePage
 │
-├── pages/
-│   ├── Login.jsx                 # Email + password. Status-based error messages.
-│   ├── Signup.jsx                # firstName, lastName, email, password (min 6 chars)
-│   └── Dashboard.jsx             # Owns ALL state and API calls. Everything flows from here.
+├── routes/
+│   └── DashboardLayout.jsx       # Dashboard shell. Shows due reminder popup on login.
 │
-└── styles/
-    ├── App.css                   # Resets Vite scaffold defaults only
-    ├── index.css                 # Global base styles + Login/Signup auth styles
-    └── dashboard.css             # Dashboard layout, cards, modals, filter strip, sidebar
+└── app/
+    └── router.jsx                # All routes defined here
 ```
 
 ---
@@ -101,41 +125,61 @@ src/
 | Courses | `/api/v1/courses` | `courseId` | — |
 | Tasks | `/api/v1/tasks` | `taskId` | Course |
 | Reminders | `/api/v1/reminders` | `reminderId` | Task |
-| Grades | `/api/v1/course-progress` | `progressId` | Course |
+| Progress | `/api/v1/course-progress` | `progressId` | Course |
 
 **How selection works:**
-1. Click any card/row → item is selected (blue outline)
+1. Click any card/row → item is selected
 2. Edit + Delete buttons activate in the left panel
-3. Click Edit → modal pre-filled with existing data
+3. Click Edit → form pre-filled with existing data
 4. Click Delete → confirm dialog → item removed
 
 **Tasks tab extras:**
 - Sorted by due date (nearest first)
-- Filter strip: `All` · `Overdue` · `Due Today` · `This Week` · `By Course ▾`
+- Filter strip: `All` · `Overdue` · `Due Today` · `This Week`
 - Overdue tasks → red left border
 
 **Sidebar:**
-- Bell icon → badge shows overdue + due-today count → click navigates to Tasks tab
 - User initials circle → derived from firstName + lastName stored in sessionStorage
+
+---
+
+## Form Validation
+
+All forms include inline validation — errors appear per field as the user types.
+Validation rules match backend DTO constraints:
+
+| Form | Rules |
+|---|---|
+| Course | All fields required, code max 10 chars, grade goal 0–100 |
+| Task | Course, title, due date required, weight 0–100 |
+| Reminder | Task, message, scheduled date required |
+| Signup | All fields required, valid email, password min 6 chars |
+
+---
+
+## Due Reminder Popup
+
+On dashboard load, the app fetches reminders and shows a modal if any are past due and not yet sent.
+Implemented in `DashboardLayout.jsx` using the existing `Modal` component.
 
 ---
 
 ## Course Model (backend required fields)
 ```json
 {
-  "code": "COMP3059",
-  "title": "Capstone I",
-  "instructor": "Prof. Laily Ajellu",
-  "gradeGoal": 75,
-  "startWeek": "2026-01-06",
+  "code": "COMP3095",
+  "title": "Capstone Project I",
+  "instructor": "GBC",
+  "gradeGoal": 85,
+  "startWeek": "2026-02-10",
   "meetings": [
-    { "dayOfWeek": 2, "startTime": "10:00:00", "endTime": "12:00:00" }
+    { "dayOfWeek": 1, "startTime": "10:00:00", "endTime": "12:00:00" }
   ]
 }
 ```
 
 > `dayOfWeek`: 1 = Monday, 7 = Sunday (ISO standard)
-> All fields are required — backend returns 400 if any are missing
+> All fields required — backend returns 400 if any are missing
 
 ---
 
@@ -144,8 +188,7 @@ src/
 | Issue | Status |
 |---|---|
 | Keycloak integration | Deferred to v2 — current auth uses JJWT |
-| Integration tests outdated after model overhaul | In progress |
-| API Gateway occasional routing instability | Being debugged |
+| Course progress (GET) returns 404 | Backend endpoint under development |
 | courseId int/Long mismatch across services | Frontend coerces to Number as workaround |
 
 ---
