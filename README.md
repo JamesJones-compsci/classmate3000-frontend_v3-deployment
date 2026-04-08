@@ -76,7 +76,7 @@ src/
 │   ├── courses.api.js            # Course CRUD
 │   ├── tasks.api.js              # Task CRUD
 │   ├── reminders.api.js          # Reminder CRUD
-│   └── progress.api.js           # Course progress CRUD
+│   └── progress.api.js           # Course progress CRUD — endpoint: /api/v1/course-progress
 │
 ├── auth/
 │   ├── AuthContext.jsx           # login(), logout(), user state (token + firstName + lastName)
@@ -181,17 +181,6 @@ Implemented in `DashboardLayout.jsx` using the existing `Modal` component.
 > `dayOfWeek`: 1 = Monday, 7 = Sunday (ISO standard)
 > All fields required — backend returns 400 if any are missing
 
----
-
-## Known Issues / Open Items
-
-| Issue | Status |
-|---|---|
-| Keycloak integration | Deferred to v2 — current auth uses JJWT |
-| Course progress (GET) returns 404 | Backend endpoint under development |
-| courseId int/Long mismatch across services | Frontend coerces to Number as workaround |
-
----
 
 ## Backend
 
