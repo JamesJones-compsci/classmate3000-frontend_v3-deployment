@@ -1,0 +1,45 @@
+.card {
+  border: var(--border-default);
+  border-radius: var(--card-radius);
+  background: var(--color-card);
+  box-shadow: none;
+}
+
+.clickable {
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.clickable:hover {
+  border-color: var(--color-outline);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.clickable:active {
+  transform: none;
+}
+
+.selected {
+  outline: none;
+}
+
+.default {
+  background: var(--color-card);
+}
+
+.soft {
+  background: var(--section-surface, var(--color-card));
+}
+
+.warm {
+  background: var(--color-card);
+}
+
+.flat {
+  box-shadow: none;
+}

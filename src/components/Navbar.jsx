@@ -1,19 +1,27 @@
-// src/components/Navbar.jsx
-export default function Navbar({ activeTab, onSelect }) {
-  const items = ["Courses", "Tasks", "Reminders", "Grades"];
+import styles from "./Navbar.module.css";
 
+const tabs = [
+  { key: "courses", label: "Courses", path: "/dashboard/courses" },
+  { key: "tasks", label: "Tasks", path: "/dashboard/tasks" },
+  { key: "reminders", label: "Reminders", path: "/dashboard/reminders" },
+  { key: "progress", label: "Progress", path: "/dashboard/progress" },
+];
+
+export default function Navbar({ currentSection, onNavigate }) {
   return (
-    <nav className="nav">
-      {items.map((item) => (
+    <div className={`${styles.topTabs} ${styles[`theme-${currentSection}`]}`}>
+      {tabs.map((tab) => (
         <button
-          key={item}
+          key={tab.key}
           type="button"
-          className={`nav-item ${activeTab === item ? "nav-item--active" : ""}`}
-          onClick={() => onSelect(item)}
+          className={`${styles.tab} ${styles[tab.key]} ${
+            currentSection === tab.key ? styles.active : ""
+          }`}
+          onClick={() => onNavigate(tab.path)}
         >
-          {item}
+          {tab.label}
         </button>
       ))}
-    </nav>
+    </div>
   );
 }

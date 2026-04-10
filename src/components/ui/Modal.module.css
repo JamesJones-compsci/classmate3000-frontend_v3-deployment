@@ -1,0 +1,72 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: var(--space-8);
+}
+
+.shell {
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  border: var(--border-default);
+  border-radius: var(--modal-shell-radius);
+  background: var(--section-surface, #f5f5f5);
+  padding: var(--modal-shell-padding);
+}
+
+.inner {
+  background: var(--color-card);
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--section-accent) transparent;
+}
+
+.inner::-webkit-scrollbar {
+  width: 12px;
+}
+
+.inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.inner::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: var(--scrollbar-radius);
+  border: 3px solid var(--color-card);
+}
+
+.inner::-webkit-scrollbar-thumb:hover {
+  background-color: var(--section-accent-strong);
+}
+
+.md {
+  max-width: 460px;
+}
+
+.lg {
+  max-width: 720px;
+}
+
+.narrow {
+  max-width: 360px;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+  font-size: var(--modal-title-size);
+  font-weight: var(--modal-title-weight);
+  margin: 0;
+  color: var(--color-text);
+  padding: var(--space-9) var(--modal-content-padding-x) 0;
+}
+
+.content {
+  padding: var(--space-6) var(--modal-content-padding-x) var(--modal-content-padding-y);
+}

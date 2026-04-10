@@ -1,0 +1,125 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3xl);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2xl);
+}
+
+.actions {
+  display: flex;
+  gap: var(--gap-md);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ===== TOP STATUS ===== */
+
+.summaryRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.statusBadgeButton {
+  border: var(--border-default);
+  border-radius: var(--radius-pill);
+  background: var(--reminders-surface);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  cursor: default;
+}
+
+/* ===== GRID ===== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap-xl);
+}
+
+.panel {
+  grid-column: span 6;
+  background: var(--color-card);
+  border: var(--border-default);
+  border-radius: var(--panel-radius);
+  padding: var(--panel-padding);
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+/* ===== PANEL CONTENT ===== */
+
+.panelTitle {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  text-align: center;
+  color: var(--color-text);
+}
+
+/* ===== INFO GRID (REPLACES infoList) ===== */
+
+.infoGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.infoLabel {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.infoValue {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+}
+
+/* ===== STATES ===== */
+
+.muted {
+  color: var(--color-text-muted);
+  margin: 0;
+  font-weight: var(--font-weight-light);
+}
+
+/* ===== ACTIONS ===== */
+
+.sectionAction {
+  margin-top: var(--space-5);
+}
+
+.bottomAction {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--space-1);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: var(--breakpoint-tablet)) {
+  .panel {
+    grid-column: 1 / -1;
+  }
+
+  .summaryRow {
+    justify-content: flex-start;
+  }
+}

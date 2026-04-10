@@ -1,0 +1,26 @@
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3xl);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-none);
+  box-shadow: none;
+}
+
+.body {
+  padding: var(--space-0);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-2xl);
+}
+
+@media (max-width: var(--breakpoint-tablet)) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

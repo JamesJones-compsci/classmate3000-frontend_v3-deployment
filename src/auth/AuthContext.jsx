@@ -1,27 +1,67 @@
-import { createContext, useContext, useState } from 'react';
+// src/auth/AuthContext.jsx
+// Global authentication context for ClassMate.
+// Stores JWT token, firstName, lastName, and email in sessionStorage.
+// sessionStorage is cleared automatically when the browser tab is closed.
 
-const AuthContext = createContext();
+import { createContext, useContext, useEffect, useState } from "react";
+
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(
-        localStorage.getItem('token') ? { token: localStorage.getItem('token') } : null
-    );
+  const [user, setUser] = useState(null);
 
-    const login = (token) => {
-        localStorage.setItem('token', token);
-        setUser({ token });
-    };
+  useEffect(() => {
+    const token     = sessionStorage.getItem("token");
+    const firstName = sessionStorage.getItem("firstName") ?? "";
+    const lastName  = sessionStorage.getItem("lastName")  ?? "";
+    const email     = sessionStorage.getItem("email")     ?? "";
+    setUser(token ? { token, firstName, lastName, email } : null);
+  }, []);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-    };
+  const login = (token, firstName = "", lastName = "", email = "") => {
+    if (!token) {
+      console.warn("login() called without a token.");
+      return;
+    }
+    sessionStorage.setItem("token",     token);
+    sessionStorage.setItem("firstName", firstName);
+    sessionStorage.setItem("lastName",  lastName);
+    sessionStorage.setItem("email",     email);
+    setUser({ token, firstName, lastName, email });
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const updateProfile = ({ firstName = "", lastName = "", email = "" }) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+
+      const nextUser = {
+        ...prev,
+        firstName,
+        lastName,
+        email,
+      };
+
+      sessionStorage.setItem("firstName", firstName);
+      sessionStorage.setItem("lastName", lastName);
+      sessionStorage.setItem("email", email);
+
+      return nextUser;
+    });
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("firstName");
+    sessionStorage.removeItem("lastName");
+    sessionStorage.removeItem("email");
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, updateProfile }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export const useAuth = () => useContext(AuthContext);

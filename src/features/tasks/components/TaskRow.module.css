@@ -1,0 +1,73 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.statusButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: var(--border-default);
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.statusIcon {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.content {
+  flex: 1;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.mainText {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.subRow {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-lg);
+}
+
+.title {
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+}
+
+.meta {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-light);
+}
+
+.date {
+  margin-right: var(--space-2);
+}
+
+.weight {
+  margin-left: var(--space-2);
+}

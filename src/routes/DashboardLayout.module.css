@@ -1,0 +1,66 @@
+.appShell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+  background: var(--color-site-bg);
+}
+
+.theme-courses {
+  --section-bg: var(--courses-bg);
+  --section-surface: var(--courses-surface);
+  --section-accent: var(--courses-accent);
+  --section-accent-strong: var(--courses-accent-strong);
+  --section-text: var(--courses-text);
+}
+
+.theme-tasks {
+  --section-bg: var(--tasks-bg);
+  --section-surface: var(--tasks-surface);
+  --section-accent: var(--tasks-accent);
+  --section-accent-strong: var(--tasks-accent-strong);
+  --section-text: var(--tasks-text);
+}
+
+.theme-reminders {
+  --section-bg: var(--reminders-bg);
+  --section-surface: var(--reminders-surface);
+  --section-accent: var(--reminders-accent);
+  --section-accent-strong: var(--reminders-accent-strong);
+  --section-text: var(--reminders-text);
+}
+
+.theme-progress {
+  --section-bg: var(--progress-bg);
+  --section-surface: var(--progress-surface);
+  --section-accent: var(--progress-accent);
+  --section-accent-strong: var(--progress-accent-strong);
+  --section-text: var(--progress-text);
+}
+
+.theme-profile {
+  --section-bg: var(--profile-bg);
+  --section-surface: var(--profile-surface);
+  --section-accent: var(--profile-accent);
+  --section-accent-strong: var(--profile-accent-strong);
+  --section-text: var(--profile-text);
+}
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-8) var(--space-8) var(--space-9) 0;
+  background: var(--color-site-bg);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--section-bg);
+  border: var(--border-default);
+  border-top: none;
+  border-radius: var(--radius-none);
+  padding: var(--page-padding);
+  min-height: 0;
+}

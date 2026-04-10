@@ -1,0 +1,322 @@
+.chartCard {
+  border: var(--border-default);
+  border-radius: var(--panel-radius);
+  padding: var(--panel-padding);
+  background: var(--color-card);
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text);
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
+}
+
+.chartWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.chartMain {
+  display: grid;
+  grid-template-columns: 34px 44px 1fr;
+  gap: var(--gap-lg);
+  align-items: stretch;
+}
+
+.yAxisLabel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
+}
+
+.yAxis {
+  position: relative;
+  height: 320px;
+}
+
+.yTick {
+  position: absolute;
+  right: 0;
+  transform: translateY(50%);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
+}
+
+.goalTick {
+  position: absolute;
+  right: 0;
+  transform: translateY(50%);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+}
+
+.plotArea {
+  position: relative;
+  height: 320px;
+  border-left: var(--border-default);
+  border-right: var(--border-default);
+  border-bottom: var(--border-default);
+  padding: 0 var(--space-3) 0 var(--space-4);
+  overflow: visible;
+}
+
+.gridLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--color-outline-soft);
+}
+
+.goalLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 2px solid var(--section-accent-strong);
+  z-index: 1;
+}
+
+.barGroups {
+  position: absolute;
+  inset: 0 var(--space-3) 0 var(--space-4);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: var(--gap-md);
+  align-items: stretch;
+}
+
+.group {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+}
+
+.barPair {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--gap-sm);
+}
+
+.barColumn {
+  width: 22px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.barWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.achievedBar {
+  background: var(--section-accent-strong);
+}
+
+.possibleBar {
+  background: var(--section-accent);
+}
+
+.barValue {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, -4px);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.achievedValue {
+  color: var(--section-accent-strong);
+}
+
+.possibleValue {
+  color: var(--section-accent);
+}
+
+.barWrapper:hover .barValue {
+  opacity: 1;
+  transform: translate(-50%, -8px);
+}
+
+.dateRow {
+  display: grid;
+  grid-template-columns: 34px 44px 1fr;
+  gap: var(--gap-lg);
+  align-items: start;
+}
+
+.dateSpacer {
+  grid-column: 1 / 3;
+}
+
+.dateLabels {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: var(--gap-md);
+}
+
+.dateLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: var(--line-height-snug);
+}
+
+.xAxisRow {
+  display: grid;
+  grid-template-columns: 34px 44px 1fr;
+  gap: var(--gap-lg);
+  align-items: center;
+}
+
+.xAxisSpacer {
+  grid-column: 1 / 3;
+}
+
+.xAxisLabel {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.legendWrap {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.legend {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-xl);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border: var(--border-default);
+  border-radius: var(--panel-radius);
+  background: var(--color-card);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-sm);
+}
+
+.achievedSwatch {
+  background: var(--section-accent-strong);
+}
+
+.possibleSwatch {
+  background: var(--section-accent);
+}
+
+.lineSwatch {
+  width: 18px;
+  height: 0;
+  border-top-width: 2px;
+  border-top-style: solid;
+}
+
+.goalSwatch {
+  border-top-color: var(--section-accent-strong);
+}
+
+.empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
+}
+
+@media (max-width: var(--breakpoint-tablet)) {
+  .chartMain {
+    grid-template-columns: 28px 36px 1fr;
+    gap: var(--gap-md);
+  }
+
+  .dateRow {
+    grid-template-columns: 28px 36px 1fr;
+    gap: var(--gap-md);
+  }
+
+  .xAxisRow {
+    grid-template-columns: 28px 36px 1fr;
+    gap: var(--gap-md);
+  }
+
+  .plotArea,
+  .yAxis {
+    height: 260px;
+  }
+
+  .barGroups {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--gap-sm);
+  }
+
+  .dateLabels {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--gap-sm);
+  }
+
+  .legend {
+    width: 100%;
+    justify-content: flex-start;
+    gap: var(--gap-sm);
+  }
+}

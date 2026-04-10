@@ -1,0 +1,116 @@
+.button {
+  border-radius: var(--radius-md);
+  border: var(--border-default);
+  font-weight: var(--font-weight-light);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sm {
+  padding: var(--button-padding-sm);
+  font-size: var(--button-font-size-sm);
+}
+
+.md {
+  padding: var(--button-padding-md);
+  font-size: var(--button-font-size-md);
+}
+
+.lg {
+  padding: var(--button-padding-lg);
+  font-size: var(--button-font-size-lg);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.primary {
+  background: var(--color-card);
+  color: var(--color-text);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-outline-soft);
+}
+
+.secondary {
+  background: var(--color-card);
+  color: var(--color-text);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--color-outline-soft);
+}
+
+.courses {
+  background: var(--courses-accent);
+  border-color: var(--color-outline);
+  color: var(--courses-text);
+}
+
+.courses:hover:not(:disabled) {
+  background: var(--courses-bg);
+}
+
+.tasks {
+  background: var(--tasks-accent);
+  border-color: var(--color-outline);
+  color: var(--tasks-text);
+}
+
+.tasks:hover:not(:disabled) {
+  background: var(--tasks-bg);
+}
+
+.reminders {
+  background: var(--reminders-accent);
+  border-color: var(--color-outline);
+  color: var(--reminders-text);
+}
+
+.reminders:hover:not(:disabled) {
+  background: var(--reminders-bg);
+}
+
+.progress {
+  background: var(--progress-accent);
+  border-color: var(--color-outline);
+  color: var(--progress-text);
+}
+
+.progress:hover:not(:disabled) {
+  background: var(--progress-bg);
+}
+
+.danger {
+  background: var(--color-card);
+  border: var(--border-danger);
+  color: var(--color-danger-text);
+}
+
+.danger:hover:not(:disabled) {
+  background: var(--color-danger-soft);
+}
+
+.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-text-neutral);
+}
+
+.ghost:hover:not(:disabled) {
+  background: var(--color-hover-soft);
+}

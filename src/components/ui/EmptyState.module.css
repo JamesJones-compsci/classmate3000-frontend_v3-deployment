@@ -1,0 +1,24 @@
+.emptyState {
+  border: var(--border-default);
+  background: var(--color-card);
+  padding: var(--space-9);
+  border-radius: var(--panel-radius);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+}
+
+.message {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+}
+
+.action {
+  margin-top: var(--space-5);
+}

@@ -1,0 +1,292 @@
+:root {
+  /* =========================
+     CORE COLORS
+     ========================= */
+  --color-site-bg: #ffffff;
+  --color-card: #ffffff;
+  --color-text: #000000;
+  --color-text-muted: #666666;
+  --color-text-soft: #8a8a8a;
+  --color-text-neutral: #444444;
+
+  --color-outline: #d9d9d9;
+  --color-outline-soft: #ececec;
+
+  --color-danger: #b42318;
+  --color-danger-text: #7a1f1f;
+  --color-danger-border: #e2b8b8;
+  --color-danger-soft: #faf2f2;
+
+  --color-success: #3f6f4a;
+  --color-success-text: #2f5237;
+  --color-success-soft: #e8f2ea;
+  --color-success-border: #c7dccb;
+
+  --color-overlay: rgba(0, 0, 0, 0.18);
+  --color-hover-soft: rgba(0, 0, 0, 0.04);
+  --color-scrollbar-track: rgba(0, 0, 0, 0.05);
+
+  /* =========================
+     FEATURE THEMES
+     ========================= */
+  --courses-bg: #eff6e5;
+  --courses-surface: #e1ead4;
+  --courses-accent: #e1ead4;
+  --courses-accent-strong: #cddbb8;
+  --courses-text: #000000;
+
+  --tasks-bg: #ddebf8;
+  --tasks-surface: #d1e2f1;
+  --tasks-accent: #d1e2f1;
+  --tasks-accent-strong: #bdd3ea;
+  --tasks-text: #000000;
+
+  --reminders-bg: #fff6df;
+  --reminders-surface: #fff3d4;
+  --reminders-accent: #fff3d4;
+  --reminders-accent-strong: #f3e7b8;
+  --reminders-text: #000000;
+
+  --progress-bg: #f1e9f9;
+  --progress-surface: #e1d8ea;
+  --progress-accent: #e1d8ea;
+  --progress-accent-strong: #cfc3dc;
+  --progress-text: #000000;
+
+  --profile-bg: #f5f5f6;
+  --profile-surface: #ececee;
+  --profile-accent: #e4e4e7;
+  --profile-accent-strong: #d6d6db;
+  --profile-text: #000000;
+
+  --auth-bg: #F7F8FA;
+  --auth-surface: #FFFFFF;
+  --auth-border: #E6E8EE;
+  --auth-text: #1F2937;
+  --auth-muted: #6B7280;
+
+  --auth-accent: #DDEBF8;
+  --auth-accent-strong: #D1E2F1;
+
+
+  /* =========================
+     TYPOGRAPHY
+     ========================= */
+  --font-family-base: "Lexend", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  --font-weight-thin: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --font-size-2xs: 11px;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 30px;
+  --font-size-3xl: 40px;
+
+  --line-height-tight: 1.05;
+  --line-height-snug: 1.2;
+  --line-height-normal: 1.45;
+
+  /* =========================
+     SPACING (4px scale)
+     ========================= */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 40px;
+  --space-10: 48px;
+
+  /* =========================
+     RADII
+     ========================= */
+  --radius-none: 0;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-3xl: 18px;
+  --radius-pill: 999px;
+
+  /* =========================
+     BORDERS
+     ========================= */
+  --border-width: 1px;
+  --border-default: 1px solid var(--color-outline);
+  --border-soft: 1px solid var(--color-outline-soft);
+  --border-danger: 1px solid var(--color-danger-border);
+
+  /* =========================
+     LAYOUT
+     ========================= */
+  --sidebar-width: 250px;
+  --page-padding: 24px;
+  --panel-padding: 16px;
+  --card-padding: 18px;
+  --modal-shell-padding: 10px;
+  --modal-content-padding-x: 24px;
+  --modal-content-padding-y: 24px;
+
+  /* =========================
+     COMPONENT GAPS
+     ========================= */
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 20px;
+  --gap-2xl: 24px;
+  --gap-3xl: 32px;
+
+  /* =========================
+     BUTTONS
+     ========================= */
+  --button-font-size-sm: var(--font-size-xs);
+  --button-font-size-md: var(--font-size-sm);
+  --button-font-size-lg: var(--font-size-md);
+
+  --button-padding-sm: 8px 12px;
+  --button-padding-md: 10px 14px;
+  --button-padding-lg: 12px 16px;
+
+  --button-radius: var(--radius-md);
+
+  /* =========================
+     INPUTS
+     ========================= */
+  --input-font-size: var(--font-size-md);
+  --input-padding: 11px 12px;
+  --input-radius: var(--radius-md);
+  --input-border: var(--border-default);
+  --input-bg: #ffffff;
+
+   /* =========================
+     AUTH INPUTS / LAYOUT
+     ========================= */
+  --auth-shell-max-width: 980px;
+  --auth-card-max-width: 440px;
+  --auth-card-padding: 28px;
+  --auth-panel-padding: 32px;
+
+  --auth-input-padding-top: 20px;
+  --auth-input-padding-bottom: 8px;
+  --auth-input-padding-x: 12px;
+  --auth-input-padding-right-icon: 42px;
+
+  /* =========================
+     CARDS / PANELS
+     ========================= */
+  --card-radius: var(--radius-2xl);
+  --panel-radius: var(--radius-xl);
+  --link-row-radius: var(--radius-md);
+
+  /* =========================
+     TABS
+     ========================= */
+  --tab-radius: 16px 16px 0 0;
+  --tab-font-size: 20px;
+  --tab-font-weight: var(--font-weight-light);
+  --tab-padding: 10px 8px 9px;
+
+  /* =========================
+     MODALS
+     ========================= */
+  --modal-shell-radius: var(--radius-3xl);
+  --modal-inner-radius: var(--radius-lg);
+  --modal-title-size: var(--font-size-xl);
+  --modal-title-weight: var(--font-weight-light);
+
+  /* =========================
+     SCROLLBARS
+     ========================= */
+  --scrollbar-size: 10px;
+  --scrollbar-radius: 999px;
+  --scrollbar-track: var(--color-scrollbar-track);
+  --scrollbar-thumb: var(--section-accent, #d9d9d9);
+  --scrollbar-thumb-hover: var(--section-accent-strong, #cfcfcf);
+
+  /* =========================
+     BREAKPOINTS
+     ========================= */
+  --breakpoint-tablet: 900px;
+}
+
+/* :root[data-theme="dark"], */
+:root.dark-mode {
+  --color-site-bg: #141414;
+  --color-card: #1c1c1c;
+  --color-text: #f5f5f5;
+  --color-text-muted: #b8b8b8;
+  --color-text-soft: #9b9b9b;
+  --color-text-neutral: #d2d2d2;
+
+  --color-outline: #3a3a3a;
+  --color-outline-soft: #2a2a2a;
+
+  --color-danger: #d46a6a;
+  --color-danger-text: #f5dada;
+  --color-danger-border: #5a2e2e;
+  --color-danger-soft: #241515;
+
+  --color-success: #7bc48a;
+  --color-success-text: #e6f6ea;
+  --color-success-soft: #1b2a20;
+  --color-success-border: #2f4a36;
+
+  --color-overlay: rgba(0, 0, 0, 0.45);
+  --color-hover-soft: rgba(255, 255, 255, 0.06);
+  --color-scrollbar-track: rgba(255, 255, 255, 0.08);
+
+  --courses-bg: #1f261b;
+  --courses-surface: #2a3423;
+  --courses-accent: #2f3c27;
+  --courses-accent-strong: #3a492f;
+  --courses-text: #f5f5f5;
+
+  --tasks-bg: #18222b;
+  --tasks-surface: #223240;
+  --tasks-accent: #273a4a;
+  --tasks-accent-strong: #31485b;
+  --tasks-text: #f5f5f5;
+
+  --reminders-bg: #2a2418;
+  --reminders-surface: #3a3222;
+  --reminders-accent: #433a27;
+  --reminders-accent-strong: #524631;
+  --reminders-text: #f5f5f5;
+
+  --progress-bg: #241d2a;
+  --progress-surface: #31263a;
+  --progress-accent: #392d43;
+  --progress-accent-strong: #463652;
+  --progress-text: #f5f5f5;
+
+  --profile-bg: #1a1a1c;
+  --profile-surface: #242426;
+  --profile-accent: #2e2e31;
+  --profile-accent-strong: #3a3a3d;
+  --profile-text: #f5f5f5;
+
+  --auth-bg: #0F1115;
+  --auth-surface: #1A1D23;
+  --auth-border: #2A2F3A;
+  --auth-text: #E5E7EB;
+  --auth-muted: #9CA3AF;
+
+  --auth-accent: #2C3E55;
+  --auth-accent-strong: #3A4E6A;
+
+  --input-bg: #1a1a1a;
+}

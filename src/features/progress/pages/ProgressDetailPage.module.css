@@ -1,0 +1,147 @@
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3xl);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-none);
+  box-shadow: none;
+}
+
+.toolbar {
+  display: flex;
+  gap: var(--gap-sm);
+  padding: var(--space-0);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.body {
+  padding: var(--space-0);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+}
+
+.filterSelect {
+  border: var(--input-border);
+  border-radius: var(--input-radius);
+  padding: var(--input-padding);
+  background: var(--input-bg);
+  font-size: var(--input-font-size);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+}
+
+.filterSelect:focus,
+.filterSelect:focus-visible {
+  outline: none;
+  border-color: var(--color-outline);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-xl);
+}
+
+.panel {
+  border: var(--border-default);
+  border-radius: var(--panel-radius);
+  background: var(--color-card);
+  padding: var(--panel-padding);
+}
+
+.panelTitle {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  text-align: center;
+  color: var(--color-text);
+}
+
+.taskList {
+  display: grid;
+  border-top: var(--border-default);
+  border-bottom: var(--border-default);
+}
+
+.taskLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-2);
+  margin: 0 calc(var(--space-2) * -1);
+  border: 0;
+  border-bottom: var(--border-default);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.taskLink:last-child {
+  border-bottom: 0;
+}
+
+.taskLink:hover,
+.taskLink:focus-visible {
+  background: var(--progress-surface);
+  outline: none;
+}
+
+.taskContent {
+  flex: 1;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.taskMainRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.taskMetaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+}
+
+.taskArrow {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+}
+
+.muted {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+}
+
+.footerAction {
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media (max-width: var(--breakpoint-tablet)) {
+  .filterSelect {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

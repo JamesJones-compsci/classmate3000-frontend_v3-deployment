@@ -1,0 +1,56 @@
+.row {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.mainText {
+  flex: 1;
+  min-width: 0;
+}
+
+.message {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  line-height: var(--line-height-snug);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.metaLabel {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+}
+
+.metaValue {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+}
+
+.courseLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.courseLink:hover {
+  color: var(--reminders-accent-strong);
+}

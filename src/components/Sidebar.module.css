@@ -1,0 +1,54 @@
+.sidebar {
+  background: var(--color-site-bg);
+  padding: var(--space-9) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-4xl);
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--space-1) var(--space-1) var(--space-3);
+}
+
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.brand {
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-xl);
+  letter-spacing: -0.2px;
+  color: var(--color-text);
+}
+
+.userBadge {
+  width: 40px;
+  height: 40px;
+  border: var(--border-default);
+  border-radius: var(--radius-pill);
+  background: var(--color-card);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.userBadge:hover {
+  background: var(--section-surface);
+}
+
+.leftpanelSlot {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}

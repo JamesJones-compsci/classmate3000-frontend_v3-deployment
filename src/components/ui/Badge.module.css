@@ -1,0 +1,55 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+}
+
+.sm {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-2xs);
+}
+
+.md {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+}
+
+.neutral {
+  background: var(--color-outline-soft);
+  color: var(--color-text-neutral);
+  border: var(--border-default);
+}
+
+.success {
+  background: var(--color-success-soft);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success-border);
+}
+
+.info {
+  background: var(--tasks-surface);
+  color: var(--tasks-text);
+  border: var(--border-default);
+}
+
+.warning {
+  background: var(--reminders-surface);
+  color: var(--reminders-text);
+  border: var(--border-default);
+}
+
+.danger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger-text);
+  border: var(--border-danger);
+}
+
+.progress {
+  background: var(--progress-surface);
+  color: var(--progress-text);
+  border: var(--border-default);
+}

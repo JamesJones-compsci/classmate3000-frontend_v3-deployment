@@ -1,0 +1,40 @@
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3xl);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-none);
+  box-shadow: none;
+}
+
+.body {
+  padding: var(--space-0);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.selectable {
+  cursor: pointer;
+  border-radius: var(--link-row-radius);
+  transition:
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.selectable:hover {
+  box-shadow: var(--shadow-hover-sm);
+}
+
+.selectable:active {
+  transform: scale(var(--scale-press));
+}
+
+.selected {
+  outline: none;
+}

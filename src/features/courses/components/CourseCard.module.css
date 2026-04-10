@@ -1,0 +1,62 @@
+.card {
+  padding: var(--card-padding);
+  background: var(--color-card);
+  border-radius: var(--card-radius);
+}
+.title {
+  margin: 0 0 var(--space-5);
+  text-align: center;
+  font-size: var(--font-size-heading-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+}
+
+.meetings {
+  text-align: center;
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-light);
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-4);
+}
+
+.panel {
+  padding: var(--space-4);
+  border-radius: var(--card-radius);
+  background: var(--section-surface);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.panelTitle {
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-heading-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+.progressBlock {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.emptyText {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-light);
+}
+
+.taskPreviewItem {
+  font-weight: var(--font-weight-light);
+}
+
+.metricValue {
+  font-weight: var(--font-weight-light);
+}
